@@ -1,0 +1,2 @@
+-- V1: Initial schema — tables will be added in subsequent migrations
+-- This baseline migration is intentionally empty.

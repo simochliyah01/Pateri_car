@@ -42,7 +42,9 @@ cd backend
 ./mvnw spring-boot:run
 ```
 
-API available at `http://localhost:8080`
+API available at `http://localhost:8090`  
+Swagger UI: `http://localhost:8090/api/docs`  
+Health check: `http://localhost:8090/api/actuator/health`
 
 ### 3. Start the admin dashboard
 
