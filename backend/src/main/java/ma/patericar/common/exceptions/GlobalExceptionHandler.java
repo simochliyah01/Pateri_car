@@ -4,6 +4,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -25,6 +28,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleConflict(ConflictException ex,
                                                    HttpServletRequest req) {
         return build(HttpStatus.CONFLICT, ex.getMessage(), req.getRequestURI(), null);
+    }
+
+    @ExceptionHandler({BadCredentialsException.class, UsernameNotFoundException.class})
+    public ResponseEntity<ApiError> handleUnauthorized(Exception ex, HttpServletRequest req) {
+        return build(HttpStatus.UNAUTHORIZED, "Invalid email or password", req.getRequestURI(), null);
+    }
+
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<ApiError> handleDisabled(DisabledException ex, HttpServletRequest req) {
+        return build(HttpStatus.FORBIDDEN, "Account is disabled", req.getRequestURI(), null);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
