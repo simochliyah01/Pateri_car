@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+// TODO: replace with JWT-based security in the auth module
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -17,16 +18,7 @@ public class SecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/actuator/health",
-                    "/actuator/info",
-                    "/docs/**",
-                    "/api-docs/**",
-                    "/swagger-ui/**"
-                ).permitAll()
-                .anyRequest().authenticated()
-            );
+            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
         return http.build();
     }
 }
