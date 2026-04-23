@@ -13,10 +13,9 @@ import { LucideAngularModule, Menu, X, User, Globe } from 'lucide-angular';
         <div class="flex justify-between items-center h-16">
           <!-- Logo -->
           <a routerLink="/home" class="flex items-center">
-            <span class="text-xl font-bold tracking-tight">
-              <span class="text-primary-500">PATERI</span>
-              <span class="text-ink-900">CAR</span>
-            </span>
+            <img src="assets/logo/logo-full.png"
+                 alt="PATERI CAR"
+                 class="h-10 w-auto" />
           </a>
 
           <!-- Desktop Navigation -->
