@@ -14,9 +14,10 @@ import { LucideAngularModule, Phone, Mail, MapPin,
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <!-- Brand -->
           <div>
-            <div class="text-xl font-bold mb-3">
-              <span class="text-primary-400">PATERI</span>
-              <span class="text-white">CAR</span>
+            <div class="mb-3">
+              <img src="assets/logo/logo-full.png"
+                   alt="PATERI CAR"
+                   class="h-10 w-auto bg-white p-2 rounded-md inline-block" />
             </div>
             <p class="text-sm text-gray-400 leading-relaxed">
               Location de voitures à Taza. Tarifs transparents,
