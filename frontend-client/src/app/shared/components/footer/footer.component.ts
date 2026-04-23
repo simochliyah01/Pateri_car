@@ -54,7 +54,7 @@ import { LucideAngularModule, Phone, Mail, MapPin,
               </li>
               <li class="flex items-center gap-2">
                 <lucide-icon [img]="Mail" [size]="16"></lucide-icon>
-                <span>contact@patericar.ma</span>
+                <span>contact&#64;patericar.ma</span>
               </li>
             </ul>
           </div>
