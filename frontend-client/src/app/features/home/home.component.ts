@@ -20,10 +20,17 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
     <!-- HERO — VIDEO BACKGROUND                                       -->
     <!-- ============================================================ -->
     <section class="relative h-[90vh] min-h-[600px] overflow-hidden">
-      <video autoplay muted loop playsinline
+      <video autoplay muted loop playsinline preload="auto"
              class="absolute inset-0 w-full h-full object-cover"
              poster="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920&q=80">
-        <source src="https://cdn.coverr.co/videos/coverr-driving-on-a-highway-2633/1080p.mp4"
+        <!-- Pexels CDN — highway driving (primary) -->
+        <source src="https://videos.pexels.com/video-files/2103099/2103099-uhd_2560_1440_30fps.mp4"
+                type="video/mp4" />
+        <!-- Pexels CDN — alternative 1 -->
+        <source src="https://videos.pexels.com/video-files/3066464/3066464-hd_1920_1080_24fps.mp4"
+                type="video/mp4" />
+        <!-- Pexels CDN — alternative 2 -->
+        <source src="https://videos.pexels.com/video-files/4434242/4434242-uhd_2560_1440_30fps.mp4"
                 type="video/mp4" />
       </video>
 
