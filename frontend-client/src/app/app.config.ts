@@ -8,6 +8,7 @@ import {
   Facebook, Instagram,
   Car, CarFront, Search, Fuel, Settings2, Users, Calendar, Star, Filter,
   ArrowRight, Wallet, Truck, Sparkles, Package, Tag, Clock, ShieldCheck,
+  ChevronDown, Banknote,
 } from 'lucide-angular';
 import { routes } from './app.routes';
 
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
         Facebook, Instagram,
         Car, CarFront, Search, Fuel, Settings2, Users, Calendar, Star, Filter,
         ArrowRight, Wallet, Truck, Sparkles, Package, Tag, Clock, ShieldCheck,
+        ChevronDown, Banknote,
       })
     ),
   ]
