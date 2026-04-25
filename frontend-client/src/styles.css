@@ -102,6 +102,90 @@ body {
   }
 }
 
+@layer utilities {
+  /* Premium mesh gradient — multi-layered for depth */
+  .bg-mesh-premium {
+    background-color: #FFFFFF;
+    background-image:
+      radial-gradient(at 20% 0%,  rgba(20, 184, 166, 0.15) 0px, transparent 50%),
+      radial-gradient(at 90% 10%, rgba(45, 212, 191, 0.10) 0px, transparent 50%),
+      radial-gradient(at 80% 90%, rgba(20, 184, 166, 0.12) 0px, transparent 50%),
+      radial-gradient(at 0%  100%, rgba(204, 251, 241, 0.5) 0px, transparent 50%);
+  }
+
+  /* Subtle noise texture */
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity: 0.025;
+  }
+
+  /* Aurora ambient light */
+  .bg-aurora::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(20, 184, 166, 0.25) 0%, transparent 70%);
+    top: -200px;
+    right: -100px;
+    border-radius: 50%;
+    filter: blur(60px);
+    animation: spotlight 8s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  /* Premium glass effect */
+  .glass-premium {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 1) inset,
+      0 8px 24px -8px rgba(20, 184, 166, 0.15),
+      0 16px 48px -16px rgba(15, 23, 42, 0.1);
+  }
+
+  /* Shimmer text for trust stats */
+  .shimmer-text {
+    background: linear-gradient(90deg, #14B8A6 0%, #5EEAD4 50%, #14B8A6 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s linear infinite;
+  }
+
+  /* Stage / podium radial for car display */
+  .car-stage {
+    background: radial-gradient(
+      ellipse at center bottom,
+      rgba(20, 184, 166, 0.15) 0%,
+      rgba(20, 184, 166, 0.05) 30%,
+      transparent 70%
+    );
+  }
+
+  /* Refined dot grid */
+  .bg-dot-grid-premium {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(20, 184, 166, 0.15) 1px,
+      transparent 0
+    );
+    background-size: 24px 24px;
+    -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+  }
+}
+
+/* Spotlight keyframe (referenced by .bg-aurora::before and animate-spotlight) */
+@keyframes spotlight {
+  0%, 100% { opacity: 0.4; transform: translate(0, 0) scale(1); }
+  33%       { opacity: 0.6; transform: translate(30px, -20px) scale(1.1); }
+  66%       { opacity: 0.5; transform: translate(-20px, 30px) scale(0.95); }
+}
+
 html {
   scroll-behavior: smooth;
 }
