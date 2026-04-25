@@ -26,57 +26,103 @@ export interface CarSlide {
          (mouseenter)="pause()"
          (mouseleave)="resume()">
 
-      <!-- Car image area -->
-      <div class="relative flex-1 flex items-end justify-center min-h-[140px]">
+      <!-- Premium label header -->
+      <div class="flex items-center justify-between mb-6 px-1">
+        <div>
+          <p class="text-[11px] font-semibold tracking-[0.2em] text-primary-600 uppercase mb-1">
+            Notre flotte
+          </p>
+          <h3 class="text-3xl font-bold text-ink-900 tracking-tight transition-all duration-500 ease-out">
+            {{ currentSlide().brand }}
+            <span class="text-primary-500">{{ currentSlide().name }}</span>
+          </h3>
+        </div>
+        <div class="text-right">
+          <div class="text-[11px] text-ink-500 uppercase tracking-wider mb-0.5 font-medium">
+            À partir de
+          </div>
+          <div class="flex items-baseline gap-1 justify-end">
+            <span class="text-3xl font-bold text-ink-900 leading-none">
+              {{ currentSlide().pricePerDay }}
+            </span>
+            <span class="text-sm font-medium text-ink-500">DH</span>
+          </div>
+          <div class="text-[10px] text-ink-500 mt-0.5">par jour</div>
+        </div>
+      </div>
 
-        <!-- Floor shadow ellipse -->
-        <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-[68%] h-5 rounded-full"
+      <!-- HERO CAR DISPLAY — the centrepiece -->
+      <div class="relative flex-1 flex items-end justify-center
+                  min-h-[280px] sm:min-h-[340px] car-stage rounded-3xl overflow-hidden">
+
+        <!-- Floating ambient particles -->
+        <div class="absolute top-10 left-10 w-2 h-2 bg-primary-400/40
+                    rounded-full animate-float pointer-events-none"></div>
+        <div class="absolute top-20 right-12 w-1.5 h-1.5 bg-primary-500/30
+                    rounded-full animate-float-delayed pointer-events-none"></div>
+        <div class="absolute bottom-32 left-16 w-1 h-1 bg-primary-300/50
+                    rounded-full animate-float pointer-events-none"></div>
+
+        <!-- Realistic floor shadow ellipse -->
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2
+                    w-[75%] h-8 rounded-full pointer-events-none"
              style="background: radial-gradient(ellipse at center,
-                    rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.07) 45%,
-                    rgba(0,0,0,0) 70%); filter: blur(6px);">
+                    rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.12) 40%,
+                    rgba(0,0,0,0) 70%); filter: blur(12px);">
         </div>
 
+        <!-- Stacked car images — premium fade + scale -->
         @for (car of slides; track car.id; let i = $index) {
           <img [src]="car.image"
                [alt]="car.brand + ' ' + car.name"
-               class="absolute bottom-2 max-h-[92%] max-w-[86%] object-contain
-                      transition-opacity duration-700 ease-in-out select-none"
-               [style.opacity]="i === currentIndex() ? '1' : '0'"
-               [style.pointer-events]="i === currentIndex() ? 'auto' : 'none'"
-               style="filter: drop-shadow(0 12px 12px rgba(0,0,0,0.10));"
-               draggable="false" />
+               class="absolute bottom-8 max-h-[80%] max-w-[90%] object-contain
+                      transition-all duration-1000 ease-[cubic-bezier(0.4,0,0.2,1)]"
+               [class.opacity-100]="i === currentIndex()"
+               [class.opacity-0]="i !== currentIndex()"
+               [class.scale-100]="i === currentIndex()"
+               [class.scale-95]="i !== currentIndex()"
+               [class.pointer-events-none]="i !== currentIndex()"
+               style="filter: drop-shadow(0 30px 30px rgba(0,0,0,0.18))
+                              drop-shadow(0 12px 12px rgba(20,184,166,0.08));" />
         }
-      </div>
 
-      <!-- Car info row -->
-      <div class="flex items-center justify-between px-1 pt-3 pb-1">
-        <div class="min-w-0">
-          <h3 class="text-sm font-semibold text-ink-900 truncate">
-            {{ currentSlide().brand }} {{ currentSlide().name }}
-          </h3>
-          <p class="text-[11px] text-ink-500 mt-0.5 truncate">
-            {{ currentSlide().category }} · {{ currentSlide().transmission }} · {{ currentSlide().fuel }}
-          </p>
+        <!-- Floating spec chips -->
+        <div class="absolute top-6 left-6 glass-premium px-3 py-1.5
+                    rounded-full flex items-center gap-2 animate-fade-up">
+          <span class="w-1.5 h-1.5 bg-primary-500 rounded-full animate-soft-pulse"></span>
+          <span class="text-xs font-medium text-ink-900">Disponible</span>
         </div>
-        <div class="text-right ml-3 flex-shrink-0">
-          <div class="text-lg font-bold text-primary-600 leading-none">
-            {{ currentSlide().pricePerDay }} DH
-          </div>
-          <div class="text-[10px] text-ink-500 mt-0.5">/jour</div>
+
+        <div class="absolute top-6 right-6 glass-premium px-3 py-1.5
+                    rounded-full text-xs font-medium text-ink-900 animate-fade-up">
+          {{ currentSlide().category }}
         </div>
       </div>
 
-      <!-- Dot indicators -->
-      <div class="flex items-center justify-center gap-1.5 pt-2.5">
-        @for (car of slides; track car.id; let i = $index) {
-          <button (click)="goTo(i)"
-                  class="h-1.5 rounded-full transition-all duration-300 hover:bg-primary-400"
-                  [class.w-6]="i === currentIndex()"
-                  [class.bg-primary-500]="i === currentIndex()"
-                  [class.w-1.5]="i !== currentIndex()"
-                  [class.bg-primary-200]="i !== currentIndex()">
-          </button>
-        }
+      <!-- Bottom: specs + dot indicators -->
+      <div class="mt-6 flex items-center justify-between">
+        <div class="flex items-center gap-4 text-xs text-ink-500">
+          <span class="flex items-center gap-1.5">
+            <lucide-icon name="settings-2" [size]="14"></lucide-icon>
+            {{ currentSlide().transmission }}
+          </span>
+          <span class="flex items-center gap-1.5">
+            <lucide-icon name="fuel" [size]="14"></lucide-icon>
+            {{ currentSlide().fuel }}
+          </span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          @for (car of slides; track car.id; let i = $index) {
+            <button (click)="goTo(i)"
+                    class="h-1.5 rounded-full transition-all duration-500 hover:bg-primary-400"
+                    [class.w-8]="i === currentIndex()"
+                    [class.bg-primary-500]="i === currentIndex()"
+                    [class.w-1\.5]="i !== currentIndex()"
+                    [class.bg-gray-300]="i !== currentIndex()">
+            </button>
+          }
+        </div>
       </div>
     </div>
   `,
