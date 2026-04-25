@@ -5,6 +5,7 @@ import { LucideAngularModule } from 'lucide-angular';
 import { VehicleService } from '../../core/services/vehicle.service';
 import { Vehicle } from '../../core/models/vehicle.model';
 import { CarCardComponent } from '../../shared/components/car-card/car-card.component';
+import { CarCarouselComponent, CarSlide } from '../../shared/components/car-carousel/car-carousel.component';
 import { FadeInDirective } from '../../shared/directives/fade-in.directive';
 import { CountUpDirective } from '../../shared/directives/count-up.directive';
 
@@ -13,93 +14,106 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
   standalone: true,
   imports: [
     CommonModule, RouterLink, LucideAngularModule,
-    CarCardComponent, FadeInDirective, CountUpDirective,
+    CarCardComponent, CarCarouselComponent,
+    FadeInDirective, CountUpDirective,
   ],
   template: `
     <!-- ============================================================ -->
-    <!-- HERO — VIDEO BACKGROUND                                       -->
+    <!-- HERO — SPLIT LAYOUT (text left / carousel right)             -->
     <!-- ============================================================ -->
-    <section class="relative h-[90vh] min-h-[600px] overflow-hidden">
-      <video autoplay muted loop playsinline preload="auto"
-             class="absolute inset-0 w-full h-full object-cover"
-             poster="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920&q=80">
-        <!-- Pexels CDN — highway driving (primary) -->
-        <source src="https://videos.pexels.com/video-files/2103099/2103099-uhd_2560_1440_30fps.mp4"
-                type="video/mp4" />
-        <!-- Pexels CDN — alternative 1 -->
-        <source src="https://videos.pexels.com/video-files/3066464/3066464-hd_1920_1080_24fps.mp4"
-                type="video/mp4" />
-        <!-- Pexels CDN — alternative 2 -->
-        <source src="https://videos.pexels.com/video-files/4434242/4434242-uhd_2560_1440_30fps.mp4"
-                type="video/mp4" />
-      </video>
+    <section class="relative min-h-[90vh] flex items-center
+                    bg-gradient-to-br from-white via-surface-50 to-primary-50/30
+                    border-b border-gray-200 overflow-hidden">
 
-      <div class="absolute inset-0 bg-gradient-to-b from-ink-900/60 via-ink-900/40 to-ink-900/80"></div>
+      <!-- Decorative blurred circles -->
+      <div class="absolute top-16 left-8 w-80 h-80 bg-primary-100/40
+                  rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute bottom-16 right-8 w-96 h-96 bg-primary-50/60
+                  rounded-full blur-3xl pointer-events-none"></div>
 
-      <div class="relative h-full flex flex-col justify-center
-                  max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
 
-        <div class="flex items-center gap-2 mb-6">
-          <span class="w-2 h-2 bg-primary-400 rounded-full animate-soft-pulse"></span>
-          <span class="text-sm font-medium text-white/90 uppercase tracking-wider">
-            Service de location à Taza
-          </span>
-        </div>
-
-        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight
-                   text-white mb-6 max-w-3xl leading-tight">
-          La route est à vous,<br>
-          <span class="text-primary-400">on s'occupe du reste.</span>
-        </h1>
-
-        <p class="text-lg sm:text-xl text-white/80 max-w-2xl mb-10">
-          Réservez votre voiture en quelques clics. Tarifs transparents,
-          assurance incluse, service 24/7.
-        </p>
-
-        <!-- Glass search card -->
-        <div class="glass rounded-2xl p-5 sm:p-6 max-w-4xl border border-white/20">
-          <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
-            <div>
-              <label class="block text-xs font-semibold text-ink-700
-                            uppercase tracking-wider mb-2">Lieu</label>
-              <select class="w-full px-3 py-2.5 bg-white/80 border border-gray-200
-                             rounded-lg text-sm focus:outline-none focus:border-primary-500">
-                <option>Agence Taza</option>
-                <option>Gare ferroviaire</option>
-                <option>Livraison domicile</option>
-              </select>
+          <!-- ── LEFT: Text + Search ── -->
+          <div>
+            <div class="inline-flex items-center gap-2 mb-6">
+              <span class="w-2 h-2 bg-primary-500 rounded-full animate-soft-pulse"></span>
+              <span class="text-xs font-semibold text-primary-700 uppercase tracking-wider">
+                Service de location à Taza
+              </span>
             </div>
-            <div>
-              <label class="block text-xs font-semibold text-ink-700
-                            uppercase tracking-wider mb-2">Départ</label>
-              <input type="date" class="w-full px-3 py-2.5 bg-white/80 border border-gray-200
-                             rounded-lg text-sm focus:outline-none focus:border-primary-500" />
+
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight
+                       text-ink-900 mb-6 leading-tight">
+              La route est à vous,<br>
+              <span class="text-primary-500">on s'occupe du reste.</span>
+            </h1>
+
+            <p class="text-lg text-ink-500 mb-8 max-w-xl">
+              Réservez votre voiture en quelques clics. Tarifs transparents,
+              assurance incluse, service 24/7.
+            </p>
+
+            <!-- Search card -->
+            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm max-w-2xl">
+              <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-ink-700
+                                uppercase tracking-wider mb-2">Lieu</label>
+                  <select class="w-full px-3 py-2.5 bg-white border border-gray-200
+                                 rounded-lg text-sm focus:outline-none focus:border-primary-500">
+                    <option>Agence Taza</option>
+                    <option>Gare ferroviaire</option>
+                    <option>Livraison domicile</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-ink-700
+                                uppercase tracking-wider mb-2">Départ</label>
+                  <input type="date" class="w-full px-3 py-2.5 bg-white border border-gray-200
+                                 rounded-lg text-sm focus:outline-none focus:border-primary-500" />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-ink-700
+                                uppercase tracking-wider mb-2">Retour</label>
+                  <input type="date" class="w-full px-3 py-2.5 bg-white border border-gray-200
+                                 rounded-lg text-sm focus:outline-none focus:border-primary-500" />
+                </div>
+                <div class="flex items-end">
+                  <a routerLink="/voitures"
+                     class="w-full bg-primary-500 hover:bg-primary-600 active:bg-primary-700
+                            text-white font-semibold px-5 py-2.5 rounded-lg
+                            transition-colors flex items-center justify-center gap-2">
+                    <lucide-icon name="search" [size]="18"></lucide-icon>
+                    Rechercher
+                  </a>
+                </div>
+              </div>
             </div>
-            <div>
-              <label class="block text-xs font-semibold text-ink-700
-                            uppercase tracking-wider mb-2">Retour</label>
-              <input type="date" class="w-full px-3 py-2.5 bg-white/80 border border-gray-200
-                             rounded-lg text-sm focus:outline-none focus:border-primary-500" />
-            </div>
-            <div class="flex items-end">
-              <a routerLink="/voitures"
-                 class="w-full bg-primary-500 hover:bg-primary-600 active:bg-primary-700
-                        text-white font-semibold px-5 py-2.5 rounded-lg
-                        transition-colors flex items-center justify-center gap-2">
-                <lucide-icon name="search" [size]="18"></lucide-icon>
-                Rechercher
-              </a>
+
+            <!-- Trust badges -->
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-6 text-sm text-ink-500">
+              <span class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 bg-primary-500 rounded-full"></span>
+                500+ clients satisfaits
+              </span>
+              <span class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 bg-primary-500 rounded-full"></span>
+                Assurance incluse
+              </span>
+              <span class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 bg-primary-500 rounded-full"></span>
+                Service 24/7
+              </span>
             </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Scroll indicator -->
-      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60
-                  flex flex-col items-center gap-2 animate-bounce">
-        <span class="text-xs uppercase tracking-wider">Découvrir</span>
-        <lucide-icon name="chevron-down" [size]="20"></lucide-icon>
+          <!-- ── RIGHT: Car Carousel ── -->
+          <div class="h-[480px] sm:h-[560px]">
+            <app-car-carousel [slides]="heroCars"></app-car-carousel>
+          </div>
+
+        </div>
       </div>
     </section>
 
@@ -137,8 +151,7 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
             <div class="text-3xl sm:text-4xl font-bold text-white mb-1
                         flex items-center justify-center gap-1">
               4.9
-              <lucide-icon name="star" [size]="24"
-                           class="text-primary-400"></lucide-icon>
+              <lucide-icon name="star" [size]="24" class="text-primary-400"></lucide-icon>
             </div>
             <p class="text-xs sm:text-sm text-white/60 uppercase tracking-wider">
               Note moyenne
@@ -206,18 +219,16 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
           </h2>
         </div>
 
-        <!-- Bento Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[260px]">
 
-          <!-- Big card spanning 2 cols × 2 rows -->
+          <!-- Big card 2×2 -->
           <div class="md:col-span-2 md:row-span-2 bg-ink-900 text-white
                       rounded-3xl p-8 sm:p-10 flex flex-col justify-between
                       relative overflow-hidden group" appFadeIn>
             <div>
               <div class="w-12 h-12 bg-primary-500/20 rounded-xl
                           flex items-center justify-center mb-6">
-                <lucide-icon name="shield-check" [size]="24"
-                             class="text-primary-400"></lucide-icon>
+                <lucide-icon name="shield-check" [size]="24" class="text-primary-400"></lucide-icon>
               </div>
               <h3 class="text-2xl sm:text-3xl font-bold mb-3 max-w-md">
                 Une flotte récente, contrôlée et assurée
@@ -253,7 +264,7 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
             </div>
           </div>
 
-          <!-- Clock card (teal) -->
+          <!-- Teal clock card -->
           <div class="bg-primary-500 text-white rounded-3xl p-6
                       flex flex-col justify-between" appFadeIn>
             <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center
@@ -268,15 +279,14 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
             </div>
           </div>
 
-          <!-- Wide bottom card -->
+          <!-- Wide payment card -->
           <div class="md:col-span-3 bg-white border border-gray-200
                       rounded-3xl p-6 sm:p-8 flex items-center justify-between
                       gap-6 hover:border-primary-500 transition-colors" appFadeIn>
             <div class="flex items-center gap-5">
               <div class="w-12 h-12 bg-primary-50 rounded-xl flex items-center
                           justify-center flex-shrink-0">
-                <lucide-icon name="banknote" [size]="22"
-                             class="text-primary-600"></lucide-icon>
+                <lucide-icon name="banknote" [size]="22" class="text-primary-600"></lucide-icon>
               </div>
               <div>
                 <h3 class="font-semibold text-ink-900 mb-1 text-lg">
@@ -350,7 +360,6 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
-          <!-- Connecting line, desktop only -->
           <div class="hidden lg:block absolute top-7 left-[12.5%] right-[12.5%]
                       h-px bg-gradient-to-r from-primary-500/30 via-primary-500
                       to-primary-500/30"></div>
@@ -396,8 +405,7 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
                         transition-all duration-300">
               <div class="flex gap-0.5 mb-4">
                 @for (s of [1,2,3,4,5]; track s) {
-                  <lucide-icon name="star" [size]="14"
-                               class="text-primary-500"></lucide-icon>
+                  <lucide-icon name="star" [size]="14" class="text-primary-500"></lucide-icon>
                 }
               </div>
               <p class="text-ink-700 leading-relaxed mb-6 text-sm">"{{ t.text }}"</p>
@@ -470,24 +478,45 @@ export class HomeComponent {
     this.vehicles().filter(v => v.status === 'AVAILABLE').slice(0, 4)
   );
 
+  heroCars: CarSlide[] = [
+    {
+      id: 1, brand: 'Renault', name: 'Clio 5',
+      image: 'assets/cars/clio5.png',
+      pricePerDay: 280, category: 'Compacte',
+      fuel: 'Essence', transmission: 'Manuelle',
+    },
+    {
+      id: 2, brand: 'Peugeot', name: '208',
+      image: 'assets/cars/peugeot-208.png',
+      pricePerDay: 300, category: 'Compacte',
+      fuel: 'Essence', transmission: 'Manuelle',
+    },
+    {
+      id: 3, brand: 'Dacia', name: 'Logan',
+      image: 'assets/cars/dacia.png',
+      pricePerDay: 200, category: 'Économique',
+      fuel: 'Essence', transmission: 'Manuelle',
+    },
+    {
+      id: 4, brand: 'Opel', name: 'Corsa',
+      image: 'assets/cars/opel.png',
+      pricePerDay: 290, category: 'Compacte',
+      fuel: 'Essence', transmission: 'Manuelle',
+    },
+  ];
+
   categories = [
-    { key: 'ECONOMY',
-      label: 'Économique',
+    { key: 'ECONOMY',     label: 'Économique',
       image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600&q=80' },
-    { key: 'COMPACT',
-      label: 'Compacte',
+    { key: 'COMPACT',     label: 'Compacte',
       image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&q=80' },
-    { key: 'SUV',
-      label: 'SUV',
+    { key: 'SUV',         label: 'SUV',
       image: 'https://images.unsplash.com/photo-1567343483496-bb5c12bd1d96?w=600&q=80' },
-    { key: 'LUXURY',
-      label: 'Premium',
+    { key: 'LUXURY',      label: 'Premium',
       image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80' },
-    { key: 'VAN',
-      label: 'Utilitaire',
+    { key: 'VAN',         label: 'Utilitaire',
       image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&q=80' },
-    { key: 'CONVERTIBLE',
-      label: 'Cabriolet',
+    { key: 'CONVERTIBLE', label: 'Cabriolet',
       image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=80' },
   ];
 
