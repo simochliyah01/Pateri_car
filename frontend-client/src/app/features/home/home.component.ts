@@ -22,7 +22,19 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
     <!-- HERO — PREMIUM MESH + BIG CAROUSEL                          -->
     <!-- ============================================================ -->
     <section class="relative bg-mesh-premium border-b border-gray-200
-                    overflow-hidden min-h-[92vh] flex items-center bg-aurora">
+                    overflow-hidden min-h-[85vh] sm:min-h-[88vh]
+                    flex items-center bg-aurora">
+
+      <!-- Blurred background image — Moroccan road atmosphere -->
+      <div class="absolute inset-0 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=2400&q=80"
+             alt=""
+             class="absolute inset-0 w-full h-full object-cover scale-110"
+             style="filter: blur(40px) saturate(1.2);"
+             aria-hidden="true" />
+        <div class="absolute inset-0 bg-white/85"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-white/60 via-primary-50/40 to-primary-100/30"></div>
+      </div>
 
       <!-- Layered backgrounds for depth -->
       <div class="absolute inset-0 bg-noise pointer-events-none"></div>
@@ -35,10 +47,10 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
       <div class="absolute bottom-[20%] -left-32 w-[28rem] h-[28rem] rounded-full
                   bg-primary-100/40 blur-3xl pointer-events-none"></div>
 
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8
-                  py-12 sm:py-16 lg:py-20 w-full">
+      <div class="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-12
+                  pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24 w-full">
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-12 xl:gap-x-16 items-center">
 
           <!-- ═══ LEFT: Text + search (5 cols) ═══ -->
           <div class="lg:col-span-5 animate-fade-up">
@@ -58,8 +70,8 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
             </div>
 
             <!-- Premium headline -->
-            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold
-                       tracking-[-0.03em] text-ink-900 mb-6 leading-[0.95]">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold
+                       tracking-[-0.03em] text-ink-900 mb-6 leading-[1] lg:leading-[0.95]">
               La route est<br>
               <span class="relative inline-block">
                 <span class="text-primary-500">à vous</span>
@@ -166,7 +178,7 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
 
           <!-- ═══ RIGHT: Big premium car carousel (7 cols) ═══ -->
           <div class="lg:col-span-7 animate-fade-up" style="animation-delay: 200ms;">
-            <div class="relative h-[480px] sm:h-[560px] lg:h-[600px]">
+            <div class="relative h-[420px] sm:h-[500px] lg:h-[560px] xl:h-[600px]">
               <app-car-carousel [slides]="heroCars"></app-car-carousel>
             </div>
           </div>
