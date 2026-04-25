@@ -6,6 +6,7 @@ import { VehicleService } from '../../core/services/vehicle.service';
 import { Vehicle } from '../../core/models/vehicle.model';
 import { CarCardComponent } from '../../shared/components/car-card/car-card.component';
 import { CarCarouselComponent, CarSlide } from '../../shared/components/car-carousel/car-carousel.component';
+import { TazaMapComponent } from '../../shared/components/taza-map/taza-map.component';
 import { FadeInDirective } from '../../shared/directives/fade-in.directive';
 import { CountUpDirective } from '../../shared/directives/count-up.directive';
 
@@ -14,53 +15,62 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
   standalone: true,
   imports: [
     CommonModule, RouterLink, LucideAngularModule,
-    CarCardComponent, CarCarouselComponent,
+    CarCardComponent, CarCarouselComponent, TazaMapComponent,
     FadeInDirective, CountUpDirective,
   ],
   template: `
     <!-- ============================================================ -->
-    <!-- HERO — SPLIT LAYOUT (text left / carousel right)             -->
+    <!-- HERO — MESH GRADIENT + MAP + CAROUSEL                        -->
     <!-- ============================================================ -->
-    <section class="relative min-h-[90vh] flex items-center
-                    bg-gradient-to-br from-white via-surface-50 to-primary-50/30
-                    border-b border-gray-200 overflow-hidden">
+    <section class="relative bg-mesh-hero border-b border-gray-200
+                    overflow-hidden min-h-[88vh] flex items-center">
 
-      <!-- Decorative blurred circles -->
-      <div class="absolute top-16 left-8 w-80 h-80 bg-primary-100/40
-                  rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute bottom-16 right-8 w-96 h-96 bg-primary-50/60
-                  rounded-full blur-3xl pointer-events-none"></div>
+      <!-- Decorative orbs -->
+      <div class="absolute -top-20 -right-20 w-96 h-96 rounded-full
+                  bg-primary-100/40 blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-32 left-1/4 w-[28rem] h-[28rem] rounded-full
+                  bg-primary-50/60 blur-3xl pointer-events-none"></div>
 
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+      <!-- Dot grid overlay -->
+      <div class="absolute inset-0 bg-dot-grid pointer-events-none"></div>
 
-          <!-- ── LEFT: Text + Search ── -->
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center">
+
+          <!-- ── LEFT: Text + search + stats ── -->
           <div>
-            <div class="inline-flex items-center gap-2 mb-6">
-              <span class="w-2 h-2 bg-primary-500 rounded-full animate-soft-pulse"></span>
+            <!-- Kicker badge -->
+            <div class="inline-flex items-center gap-2 px-3 py-1.5
+                        bg-primary-50 border border-primary-200 rounded-full mb-7">
+              <span class="w-1.5 h-1.5 bg-primary-500 rounded-full animate-soft-pulse"></span>
               <span class="text-xs font-semibold text-primary-700 uppercase tracking-wider">
-                Service de location à Taza
+                Service à Taza
               </span>
             </div>
 
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight
-                       text-ink-900 mb-6 leading-tight">
-              La route est à vous,<br>
-              <span class="text-primary-500">on s'occupe du reste.</span>
+            <!-- Headline: strikethrough + italic serif accent -->
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight
+                       text-ink-900 mb-5 leading-[1.05]">
+              <span class="line-through decoration-primary-500/40 decoration-[3px]
+                           text-ink-500 font-normal text-3xl sm:text-4xl lg:text-5xl">
+                Louer une voiture
+              </span><br>
+              c'est <span class="font-serif italic text-primary-500">simple, ici.</span>
             </h1>
 
-            <p class="text-lg text-ink-500 mb-8 max-w-xl">
-              Réservez votre voiture en quelques clics. Tarifs transparents,
-              assurance incluse, service 24/7.
+            <p class="text-base sm:text-lg text-ink-500 mb-7 max-w-xl leading-relaxed">
+              Réservez en quelques clics. Tarifs transparents, assurance incluse,
+              service 24/7. Aucune surprise — promis.
             </p>
 
-            <!-- Search card -->
-            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm max-w-2xl">
-              <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+            <!-- Glass search card -->
+            <div class="bg-white/80 backdrop-blur-md border border-primary-100
+                        rounded-2xl p-4 sm:p-5 shadow-sm max-w-2xl mb-6">
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div>
-                  <label class="block text-xs font-semibold text-ink-700
-                                uppercase tracking-wider mb-2">Lieu</label>
-                  <select class="w-full px-3 py-2.5 bg-white border border-gray-200
+                  <label class="block text-[10px] font-semibold text-ink-500
+                                uppercase tracking-wider mb-1.5">Lieu</label>
+                  <select class="w-full px-3 py-2 border border-gray-200 bg-white
                                  rounded-lg text-sm focus:outline-none focus:border-primary-500">
                     <option>Agence Taza</option>
                     <option>Gare ferroviaire</option>
@@ -68,49 +78,78 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
                   </select>
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-ink-700
-                                uppercase tracking-wider mb-2">Départ</label>
-                  <input type="date" class="w-full px-3 py-2.5 bg-white border border-gray-200
+                  <label class="block text-[10px] font-semibold text-ink-500
+                                uppercase tracking-wider mb-1.5">Départ</label>
+                  <input type="date" class="w-full px-3 py-2 border border-gray-200 bg-white
                                  rounded-lg text-sm focus:outline-none focus:border-primary-500" />
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-ink-700
-                                uppercase tracking-wider mb-2">Retour</label>
-                  <input type="date" class="w-full px-3 py-2.5 bg-white border border-gray-200
+                  <label class="block text-[10px] font-semibold text-ink-500
+                                uppercase tracking-wider mb-1.5">Retour</label>
+                  <input type="date" class="w-full px-3 py-2 border border-gray-200 bg-white
                                  rounded-lg text-sm focus:outline-none focus:border-primary-500" />
                 </div>
-                <div class="flex items-end">
+                <div class="col-span-2 sm:col-span-1 flex items-end">
                   <a routerLink="/voitures"
                      class="w-full bg-primary-500 hover:bg-primary-600 active:bg-primary-700
-                            text-white font-semibold px-5 py-2.5 rounded-lg
-                            transition-colors flex items-center justify-center gap-2">
-                    <lucide-icon name="search" [size]="18"></lucide-icon>
+                            text-white font-semibold px-4 py-2.5 rounded-lg transition-colors
+                            flex items-center justify-center gap-1.5 text-sm">
+                    <lucide-icon name="search" [size]="16"></lucide-icon>
                     Rechercher
                   </a>
                 </div>
               </div>
             </div>
 
-            <!-- Trust badges -->
-            <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-6 text-sm text-ink-500">
-              <span class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 bg-primary-500 rounded-full"></span>
-                500+ clients satisfaits
-              </span>
-              <span class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 bg-primary-500 rounded-full"></span>
-                Assurance incluse
-              </span>
-              <span class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 bg-primary-500 rounded-full"></span>
-                Service 24/7
-              </span>
+            <!-- Live stats row -->
+            <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-ink-500">
+              <div class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 bg-primary-500 rounded-full animate-soft-pulse"></span>
+                <span>
+                  <strong class="text-ink-900 font-semibold">{{ vehicles().length || 11 }}</strong> dispos
+                </span>
+              </div>
+              <div class="flex items-center gap-1">
+                <strong class="text-ink-900 font-semibold">4.9</strong>
+                <lucide-icon name="star" [size]="14" class="text-primary-500"></lucide-icon>
+              </div>
+              <div>
+                <strong class="text-ink-900 font-semibold">500+</strong> clients
+              </div>
             </div>
           </div>
 
-          <!-- ── RIGHT: Car Carousel ── -->
-          <div class="h-[480px] sm:h-[560px]">
-            <app-car-carousel [slides]="heroCars"></app-car-carousel>
+          <!-- ── RIGHT: Map + Carousel panel ── -->
+          <div>
+            <div class="bg-white border border-primary-100 rounded-3xl p-5 shadow-sm">
+
+              <!-- Panel header -->
+              <div class="flex items-start justify-between mb-4">
+                <div class="inline-flex items-center gap-1.5 bg-primary-50
+                            text-primary-700 px-3 py-1 rounded-full text-xs font-medium">
+                  <lucide-icon name="map-pin" [size]="12"></lucide-icon>
+                  Centre Taza
+                </div>
+                <div class="text-right">
+                  <div class="text-2xl font-bold text-primary-500 leading-none">
+                    {{ vehicles().length || 11 }}
+                  </div>
+                  <div class="text-[10px] text-ink-500 uppercase tracking-wider mt-1">
+                    Voitures
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mini Taza map -->
+              <div class="h-44 sm:h-52 mb-4">
+                <app-taza-map></app-taza-map>
+              </div>
+
+              <!-- Car carousel (compact) -->
+              <div class="h-52 sm:h-60">
+                <app-car-carousel [slides]="heroCars"></app-car-carousel>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -482,26 +521,26 @@ export class HomeComponent {
     {
       id: 1, brand: 'Renault', name: 'Clio 5',
       image: 'assets/cars/clio5.png',
-      pricePerDay: 280, category: 'Compacte',
-      fuel: 'Essence', transmission: 'Manuelle',
+      category: 'Compacte', transmission: 'Manuelle', fuel: 'Essence',
+      pricePerDay: 280,
     },
     {
       id: 2, brand: 'Peugeot', name: '208',
-      image: 'assets/cars/peugeot-208.png',
-      pricePerDay: 300, category: 'Compacte',
-      fuel: 'Essence', transmission: 'Manuelle',
+      image: 'assets/cars/208.png',
+      category: 'Compacte', transmission: 'Manuelle', fuel: 'Essence',
+      pricePerDay: 300,
     },
     {
       id: 3, brand: 'Dacia', name: 'Logan',
       image: 'assets/cars/dacia.png',
-      pricePerDay: 200, category: 'Économique',
-      fuel: 'Essence', transmission: 'Manuelle',
+      category: 'Économique', transmission: 'Manuelle', fuel: 'Essence',
+      pricePerDay: 200,
     },
     {
       id: 4, brand: 'Opel', name: 'Corsa',
       image: 'assets/cars/opel.png',
-      pricePerDay: 290, category: 'Compacte',
-      fuel: 'Essence', transmission: 'Manuelle',
+      category: 'Compacte', transmission: 'Manuelle', fuel: 'Essence',
+      pricePerDay: 290,
     },
   ];
 
