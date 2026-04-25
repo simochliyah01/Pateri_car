@@ -70,39 +70,54 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
             </div>
 
             <!-- Premium headline -->
-            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold
-                       tracking-[-0.02em] text-ink-900 mb-5 leading-[1.1] lg:leading-[1.05] max-w-lg">
-              La route est<br>
+            <h1 class="text-2xl sm:text-3xl lg:text-[2.5rem] xl:text-5xl
+                       font-bold tracking-[-0.02em] text-ink-900 mb-4
+                       leading-[1.15] lg:leading-[1.1] max-w-md">
+              La route est
               <span class="relative inline-block">
                 <span class="text-primary-500">à vous</span>
-                <svg class="absolute -bottom-2 left-0 w-full"
-                     height="12" viewBox="0 0 200 12" fill="none"
+                <svg class="absolute -bottom-1 left-0 w-full"
+                     height="8" viewBox="0 0 200 8" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 9C50 3 100 3 198 9"
-                        stroke="#14B8A6" stroke-width="3"
+                  <path d="M2 5C50 1 100 1 198 5"
+                        stroke="#14B8A6" stroke-width="2.5"
                         stroke-linecap="round" stroke-opacity="0.4"/>
                 </svg>
-              </span>,<br>
+              </span>,
               <span class="text-ink-700 font-medium">on s'occupe du reste.</span>
             </h1>
 
             <!-- Subtitle -->
-            <p class="text-base text-ink-500 mb-7 max-w-md leading-relaxed">
+            <p class="text-sm sm:text-base text-ink-500 mb-8 max-w-md leading-relaxed">
               Réservez en quelques clics. Tarifs transparents, assurance
               incluse, service 24/7.
               <span class="text-ink-900 font-medium">Aucune surprise.</span>
             </p>
 
-            <!-- Premium glass search card -->
-            <div class="glass-premium rounded-2xl p-1.5 max-w-lg mb-7">
-              <div class="grid grid-cols-1 sm:grid-cols-[1fr_1fr_1fr_auto] gap-1.5 items-stretch">
+            <!-- Search card label -->
+            <div class="text-[10px] font-bold text-primary-700 uppercase
+                        tracking-[0.2em] mb-3 flex items-center gap-2">
+              <span class="w-6 h-px bg-primary-500"></span>
+              Réservez maintenant
+            </div>
 
-                <div class="px-3 py-2.5 hover:bg-white/40 rounded-xl transition-colors cursor-pointer">
-                  <label class="block text-[9px] font-bold text-primary-600 uppercase tracking-[0.15em] mb-0.5">
-                    Lieu
+            <!-- BIG, PROMINENT SEARCH CARD -->
+            <div class="bg-white rounded-2xl p-3 max-w-2xl mb-8
+                        shadow-[0_20px_60px_-15px_rgba(20,184,166,0.25)]
+                        border border-primary-100">
+              <div class="grid grid-cols-1 sm:grid-cols-[1.1fr_1fr_1fr_auto] gap-2 items-stretch">
+
+                <div class="px-4 py-3.5 hover:bg-primary-50/50 rounded-xl
+                            transition-colors cursor-pointer
+                            border border-transparent hover:border-primary-200">
+                  <label class="block text-[10px] font-bold text-primary-600
+                                uppercase tracking-[0.15em] mb-1.5
+                                flex items-center gap-1.5">
+                    <lucide-icon name="map-pin" [size]="11"></lucide-icon>
+                    Lieu de retrait
                   </label>
-                  <select class="w-full bg-transparent border-0 p-0 text-[13px]
-                                 font-medium text-ink-900 cursor-pointer
+                  <select class="w-full bg-transparent border-0 p-0 text-base
+                                 font-semibold text-ink-900 cursor-pointer
                                  focus:outline-none focus:ring-0">
                     <option>Agence Taza</option>
                     <option>Gare ferroviaire</option>
@@ -110,55 +125,70 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
                   </select>
                 </div>
 
-                <div class="px-3 py-2.5 hover:bg-white/40 rounded-xl transition-colors cursor-pointer
-                            sm:border-l sm:border-gray-200">
-                  <label class="block text-[9px] font-bold text-primary-600 uppercase tracking-[0.15em] mb-0.5">
-                    Départ
+                <div class="px-4 py-3.5 hover:bg-primary-50/50 rounded-xl
+                            transition-colors cursor-pointer
+                            sm:border-l sm:border-gray-200
+                            border border-transparent hover:border-primary-200">
+                  <label class="block text-[10px] font-bold text-primary-600
+                                uppercase tracking-[0.15em] mb-1.5
+                                flex items-center gap-1.5">
+                    <lucide-icon name="calendar" [size]="11"></lucide-icon>
+                    Date de départ
                   </label>
                   <input type="date"
-                         class="w-full bg-transparent border-0 p-0 text-[13px]
-                                font-medium text-ink-900 cursor-pointer
+                         class="w-full bg-transparent border-0 p-0 text-base
+                                font-semibold text-ink-900 cursor-pointer
                                 focus:outline-none focus:ring-0" />
                 </div>
 
-                <div class="px-3 py-2.5 hover:bg-white/40 rounded-xl transition-colors cursor-pointer
-                            sm:border-l sm:border-gray-200">
-                  <label class="block text-[9px] font-bold text-primary-600 uppercase tracking-[0.15em] mb-0.5">
-                    Retour
+                <div class="px-4 py-3.5 hover:bg-primary-50/50 rounded-xl
+                            transition-colors cursor-pointer
+                            sm:border-l sm:border-gray-200
+                            border border-transparent hover:border-primary-200">
+                  <label class="block text-[10px] font-bold text-primary-600
+                                uppercase tracking-[0.15em] mb-1.5
+                                flex items-center gap-1.5">
+                    <lucide-icon name="calendar" [size]="11"></lucide-icon>
+                    Date de retour
                   </label>
                   <input type="date"
-                         class="w-full bg-transparent border-0 p-0 text-[13px]
-                                font-medium text-ink-900 cursor-pointer
+                         class="w-full bg-transparent border-0 p-0 text-base
+                                font-semibold text-ink-900 cursor-pointer
                                 focus:outline-none focus:ring-0" />
                 </div>
 
                 <a routerLink="/voitures"
-                   class="bg-ink-900 hover:bg-primary-500 text-white font-semibold
-                          rounded-xl px-5 py-2.5 flex items-center justify-center gap-1.5
-                          transition-all duration-300 group">
-                  <lucide-icon name="search" [size]="16"></lucide-icon>
-                  <span class="hidden sm:inline text-[13px]">Rechercher</span>
-                  <lucide-icon name="arrow-right" [size]="14"
-                               class="hidden sm:inline group-hover:translate-x-0.5
+                   class="bg-primary-500 hover:bg-primary-600 active:bg-primary-700
+                          text-white font-bold rounded-xl
+                          px-6 sm:px-7 py-4
+                          flex items-center justify-center gap-2
+                          transition-all duration-300 group
+                          shadow-lg shadow-primary-500/30
+                          hover:shadow-xl hover:shadow-primary-500/40
+                          hover:-translate-y-0.5">
+                  <lucide-icon name="search" [size]="20"></lucide-icon>
+                  <span class="text-sm sm:text-base">Rechercher</span>
+                  <lucide-icon name="arrow-right" [size]="18"
+                               class="group-hover:translate-x-1
                                       transition-transform"></lucide-icon>
                 </a>
               </div>
             </div>
 
             <!-- Trust stats -->
-            <div class="flex items-center gap-5 sm:gap-7">
+            <div class="flex items-center gap-5 sm:gap-7 pt-2">
               <div>
-                <div class="text-xl font-bold shimmer-text">
+                <div class="text-lg font-bold shimmer-text">
                   {{ vehicles().length || 11 }}
                 </div>
                 <div class="text-[10px] text-ink-500 uppercase tracking-[0.15em] font-semibold mt-0.5">
                   Voitures
                 </div>
               </div>
-              <div class="h-7 w-px bg-gray-200"></div>
+              <div class="h-8 w-px bg-gray-200"></div>
               <div>
                 <div class="flex items-baseline gap-1">
-                  <span class="text-xl font-bold text-ink-900">4.9</span>
+                  <span class="text-lg font-bold text-ink-900">4.9</span>
                   <lucide-icon name="star" [size]="12"
                                class="text-primary-500 fill-current"></lucide-icon>
                 </div>
@@ -166,9 +196,9 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
                   Note moyenne
                 </div>
               </div>
-              <div class="h-7 w-px bg-gray-200"></div>
+              <div class="h-8 w-px bg-gray-200"></div>
               <div>
-                <div class="text-xl font-bold text-ink-900">500+</div>
+                <div class="text-lg font-bold text-ink-900">500+</div>
                 <div class="text-[10px] text-ink-500 uppercase tracking-[0.15em] font-semibold mt-0.5">
                   Clients
                 </div>
