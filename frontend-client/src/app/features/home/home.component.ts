@@ -53,8 +53,8 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
                   pt-24 pb-12 sm:pt-28 sm:pb-14 lg:pt-32 lg:pb-16 w-full">
 
         <!-- ═══ TOP ROW: Text Left + Cars Right ═══ -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-y-10 lg:gap-x-12
-                    items-center mb-10 sm:mb-12">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-y-12 lg:gap-x-12
+                    items-center mb-14 sm:mb-16 lg:mb-12">
 
           <!-- LEFT: Title + subtitle + mini stats -->
           <div class="animate-fade-up max-w-xl">
@@ -125,8 +125,8 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
           </div>
 
           <!-- RIGHT: Car Carousel -->
-          <div class="animate-fade-up" style="animation-delay: 200ms;">
-            <div class="relative h-[340px] sm:h-[400px] lg:h-[440px]">
+          <div class="animate-fade-up mt-4 lg:mt-0" style="animation-delay: 200ms;">
+            <div class="relative h-[380px] sm:h-[420px] lg:h-[460px]">
               <app-car-carousel [slides]="heroCars"></app-car-carousel>
             </div>
           </div>
@@ -137,13 +137,14 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
              style="animation-delay: 400ms;">
 
           <!-- Floating label -->
-          <div class="text-center mb-3">
-            <span class="inline-flex items-center gap-2 text-[10px]
+          <div class="text-center mb-3 px-4">
+            <span class="inline-flex items-center gap-2 text-[9px] sm:text-[10px]
                          font-bold text-primary-700 uppercase
-                         tracking-[0.25em]">
-              <span class="w-6 h-px bg-primary-500/50"></span>
-              Trouvez votre voiture en 30 secondes
-              <span class="w-6 h-px bg-primary-500/50"></span>
+                         tracking-[0.2em] sm:tracking-[0.25em]">
+              <span class="w-4 sm:w-6 h-px bg-primary-500/50"></span>
+              <span class="hidden sm:inline">Trouvez votre voiture en 30 secondes</span>
+              <span class="sm:hidden">Réservez maintenant</span>
+              <span class="w-4 sm:w-6 h-px bg-primary-500/50"></span>
             </span>
           </div>
 
@@ -151,7 +152,7 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
           <div class="bg-white rounded-2xl p-3
                       shadow-[0_30px_80px_-20px_rgba(20,184,166,0.35)]
                       border border-primary-100">
-            <div class="grid grid-cols-1 sm:grid-cols-[1.2fr_1fr_1fr_auto]
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_auto]
                         gap-2 items-stretch">
 
               <!-- Lieu -->

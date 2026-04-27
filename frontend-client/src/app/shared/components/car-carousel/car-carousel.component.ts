@@ -99,24 +99,30 @@ export interface CarSlide {
         </div>
       </div>
 
-      <!-- Bottom: specs + dot indicators -->
-      <div class="mt-6 flex items-center justify-between">
-        <div class="flex items-center gap-4 text-xs text-ink-500">
+      <!-- Bottom: specs (sm+) + dots -->
+      <div class="mt-4 flex items-center justify-between px-1">
+
+        <!-- Specs — hidden on mobile, visible from sm+ -->
+        <div class="hidden sm:flex items-center gap-3 text-xs text-ink-700 font-medium">
           <span class="flex items-center gap-1.5">
-            <lucide-icon name="settings-2" [size]="14"></lucide-icon>
+            <lucide-icon name="settings-2" [size]="13"
+                         class="text-primary-600"></lucide-icon>
             {{ currentSlide().transmission }}
           </span>
+          <span class="w-1 h-1 bg-ink-400 rounded-full"></span>
           <span class="flex items-center gap-1.5">
-            <lucide-icon name="fuel" [size]="14"></lucide-icon>
+            <lucide-icon name="fuel" [size]="13"
+                         class="text-primary-600"></lucide-icon>
             {{ currentSlide().fuel }}
           </span>
         </div>
 
-        <div class="flex items-center gap-2">
+        <!-- Dots — centered on mobile, right-aligned on sm+ -->
+        <div class="flex items-center gap-1.5 mx-auto sm:mx-0 sm:ml-auto">
           @for (car of slides; track car.id; let i = $index) {
             <button (click)="goTo(i)"
                     class="h-1.5 rounded-full transition-all duration-500 hover:bg-primary-400"
-                    [class.w-8]="i === currentIndex()"
+                    [class.w-7]="i === currentIndex()"
                     [class.bg-primary-500]="i === currentIndex()"
                     [class.w-1\.5]="i !== currentIndex()"
                     [class.bg-gray-300]="i !== currentIndex()">
