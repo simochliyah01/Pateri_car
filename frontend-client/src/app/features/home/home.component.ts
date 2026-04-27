@@ -19,13 +19,13 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
   ],
   template: `
     <!-- ============================================================ -->
-    <!-- HERO — PREMIUM MESH + BIG CAROUSEL                          -->
+    <!-- HERO — TITLE+CARS TOP · SEARCH BAR BOTTOM                  -->
     <!-- ============================================================ -->
     <section class="relative bg-mesh-premium border-b border-gray-200
-                    overflow-hidden min-h-[85vh] sm:min-h-[88vh]
-                    flex items-center bg-aurora">
+                    overflow-hidden min-h-[92vh] flex items-center
+                    bg-aurora">
 
-      <!-- Blurred background image — Moroccan road atmosphere -->
+      <!-- Blurred background image -->
       <div class="absolute inset-0 overflow-hidden">
         <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=2400&q=80"
              alt=""
@@ -33,10 +33,11 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
              style="filter: blur(40px) saturate(1.2);"
              aria-hidden="true" />
         <div class="absolute inset-0 bg-white/85"></div>
-        <div class="absolute inset-0 bg-gradient-to-br from-white/60 via-primary-50/40 to-primary-100/30"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-white/60
+                    via-primary-50/40 to-primary-100/30"></div>
       </div>
 
-      <!-- Layered backgrounds for depth -->
+      <!-- Layered backgrounds -->
       <div class="absolute inset-0 bg-noise pointer-events-none"></div>
       <div class="absolute inset-0 bg-dot-grid-premium pointer-events-none"></div>
 
@@ -44,183 +45,191 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
       <div class="absolute top-[10%] -right-32 w-96 h-96 rounded-full
                   bg-primary-200/30 blur-3xl pointer-events-none
                   animate-spotlight"></div>
-      <div class="absolute bottom-[20%] -left-32 w-[28rem] h-[28rem] rounded-full
-                  bg-primary-100/40 blur-3xl pointer-events-none"></div>
+      <div class="absolute bottom-[10%] -left-32 w-[28rem] h-[28rem]
+                  rounded-full bg-primary-100/40 blur-3xl pointer-events-none">
+      </div>
 
       <div class="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-12
-                  pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24 w-full">
+                  pt-24 pb-12 sm:pt-28 sm:pb-14 lg:pt-32 lg:pb-16 w-full">
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-y-12 lg:gap-x-10 xl:gap-x-14 items-center">
+        <!-- ═══ TOP ROW: Text Left + Cars Right ═══ -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-y-10 lg:gap-x-12
+                    items-center mb-10 sm:mb-12">
 
-          <!-- ═══ LEFT: Text + search ═══ -->
+          <!-- LEFT: Title + subtitle + mini stats -->
           <div class="animate-fade-up max-w-xl">
 
-            <!-- Premium badge with ping -->
+            <!-- Badge -->
             <div class="inline-flex items-center gap-2 px-3 py-1
-                        glass-premium rounded-full mb-6">
+                        glass-premium rounded-full mb-5">
               <span class="relative flex">
                 <span class="absolute inline-flex h-2 w-2 rounded-full
                              bg-primary-400 opacity-75 animate-ping"></span>
                 <span class="relative inline-flex rounded-full h-2 w-2
                              bg-primary-500"></span>
               </span>
-              <span class="text-[11px] font-semibold text-ink-900 tracking-[0.15em] uppercase">
+              <span class="text-[11px] font-semibold text-ink-900
+                           tracking-[0.15em] uppercase">
                 Disponible à Taza
               </span>
             </div>
 
-            <!-- Premium headline -->
-            <h1 class="text-2xl sm:text-3xl lg:text-[2.5rem] xl:text-5xl
+            <!-- Headline -->
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.25rem]
                        font-bold tracking-[-0.02em] text-ink-900 mb-4
-                       leading-[1.15] lg:leading-[1.1] max-w-md">
+                       leading-[1.1]">
               La route est
               <span class="relative inline-block">
                 <span class="text-primary-500">à vous</span>
                 <svg class="absolute -bottom-1 left-0 w-full"
-                     height="8" viewBox="0 0 200 8" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
+                     height="8" viewBox="0 0 200 8" fill="none">
                   <path d="M2 5C50 1 100 1 198 5"
                         stroke="#14B8A6" stroke-width="2.5"
                         stroke-linecap="round" stroke-opacity="0.4"/>
                 </svg>
-              </span>,
-              <span class="text-ink-700 font-medium">on s'occupe du reste.</span>
+              </span>,<br>
+              <span class="text-ink-700 font-medium">
+                on s'occupe du reste.
+              </span>
             </h1>
 
             <!-- Subtitle -->
-            <p class="text-sm sm:text-base text-ink-500 mb-8 max-w-md leading-relaxed">
+            <p class="text-sm sm:text-base text-ink-500 mb-6
+                      max-w-md leading-relaxed">
               Réservez en quelques clics. Tarifs transparents, assurance
               incluse, service 24/7.
-              <span class="text-ink-900 font-medium">Aucune surprise.</span>
+              <span class="text-ink-900 font-semibold">Aucune surprise.</span>
             </p>
 
-            <!-- Search card label -->
-            <div class="text-[10px] font-bold text-primary-700 uppercase
-                        tracking-[0.2em] mb-3 flex items-center gap-2">
-              <span class="w-6 h-px bg-primary-500"></span>
-              Réservez maintenant
-            </div>
-
-            <!-- BIG, PROMINENT SEARCH CARD -->
-            <div class="bg-white rounded-2xl p-3 max-w-2xl mb-8
-                        shadow-[0_20px_60px_-15px_rgba(20,184,166,0.25)]
-                        border border-primary-100">
-              <div class="grid grid-cols-1 sm:grid-cols-[1.1fr_1fr_1fr_auto] gap-2 items-stretch">
-
-                <div class="px-4 py-3.5 hover:bg-primary-50/50 rounded-xl
-                            transition-colors cursor-pointer
-                            border border-transparent hover:border-primary-200">
-                  <label class="block text-[10px] font-bold text-primary-600
-                                uppercase tracking-[0.15em] mb-1.5
-                                flex items-center gap-1.5">
-                    <lucide-icon name="map-pin" [size]="11"></lucide-icon>
-                    Lieu de retrait
-                  </label>
-                  <select class="w-full bg-transparent border-0 p-0 text-base
-                                 font-semibold text-ink-900 cursor-pointer
-                                 focus:outline-none focus:ring-0">
-                    <option>Agence Taza</option>
-                    <option>Gare ferroviaire</option>
-                    <option>Livraison domicile</option>
-                  </select>
-                </div>
-
-                <div class="px-4 py-3.5 hover:bg-primary-50/50 rounded-xl
-                            transition-colors cursor-pointer
-                            sm:border-l sm:border-gray-200
-                            border border-transparent hover:border-primary-200">
-                  <label class="block text-[10px] font-bold text-primary-600
-                                uppercase tracking-[0.15em] mb-1.5
-                                flex items-center gap-1.5">
-                    <lucide-icon name="calendar" [size]="11"></lucide-icon>
-                    Date de départ
-                  </label>
-                  <input type="date"
-                         class="w-full bg-transparent border-0 p-0 text-base
-                                font-semibold text-ink-900 cursor-pointer
-                                focus:outline-none focus:ring-0" />
-                </div>
-
-                <div class="px-4 py-3.5 hover:bg-primary-50/50 rounded-xl
-                            transition-colors cursor-pointer
-                            sm:border-l sm:border-gray-200
-                            border border-transparent hover:border-primary-200">
-                  <label class="block text-[10px] font-bold text-primary-600
-                                uppercase tracking-[0.15em] mb-1.5
-                                flex items-center gap-1.5">
-                    <lucide-icon name="calendar" [size]="11"></lucide-icon>
-                    Date de retour
-                  </label>
-                  <input type="date"
-                         class="w-full bg-transparent border-0 p-0 text-base
-                                font-semibold text-ink-900 cursor-pointer
-                                focus:outline-none focus:ring-0" />
-                </div>
-
-                <a routerLink="/voitures"
-                   class="bg-primary-500 hover:bg-primary-600 active:bg-primary-700
-                          text-white font-bold rounded-xl
-                          px-6 sm:px-7 py-4
-                          flex items-center justify-center gap-2
-                          transition-all duration-300 group
-                          shadow-lg shadow-primary-500/30
-                          hover:shadow-xl hover:shadow-primary-500/40
-                          hover:-translate-y-0.5">
-                  <lucide-icon name="search" [size]="20"></lucide-icon>
-                  <span class="text-sm sm:text-base">Rechercher</span>
-                  <lucide-icon name="arrow-right" [size]="18"
-                               class="group-hover:translate-x-1
-                                      transition-transform"></lucide-icon>
-                </a>
-              </div>
-            </div>
-
-            <!-- Trust stats -->
-            <div class="flex items-center gap-5 sm:gap-7 pt-2">
-              <div>
-                <div class="text-lg font-bold shimmer-text">
+            <!-- Mini stats inline -->
+            <div class="flex items-center gap-5 sm:gap-6">
+              <div class="flex items-baseline gap-1.5">
+                <span class="text-lg font-bold shimmer-text">
                   {{ vehicles().length || 11 }}
-                </div>
-                <div class="text-[10px] text-ink-500 uppercase tracking-[0.15em] font-semibold mt-0.5">
-                  Voitures
-                </div>
+                </span>
+                <span class="text-[11px] text-ink-500 font-medium">voitures</span>
               </div>
-              <div class="h-8 w-px bg-gray-200"></div>
-              <div>
-                <div class="flex items-baseline gap-1">
-                  <span class="text-lg font-bold text-ink-900">4.9</span>
-                  <lucide-icon name="star" [size]="12"
-                               class="text-primary-500 fill-current"></lucide-icon>
-                </div>
-                <div class="text-[10px] text-ink-500 uppercase tracking-[0.15em] font-semibold mt-0.5">
-                  Note moyenne
-                </div>
+              <div class="h-4 w-px bg-gray-300"></div>
+              <div class="flex items-center gap-1">
+                <span class="text-lg font-bold text-ink-900">4.9</span>
+                <lucide-icon name="star" [size]="13"
+                             class="text-primary-500 fill-current"></lucide-icon>
+                <span class="text-[11px] text-ink-500 font-medium ml-0.5">note</span>
               </div>
-              <div class="h-8 w-px bg-gray-200"></div>
-              <div>
-                <div class="text-lg font-bold text-ink-900">500+</div>
-                <div class="text-[10px] text-ink-500 uppercase tracking-[0.15em] font-semibold mt-0.5">
-                  Clients
-                </div>
+              <div class="h-4 w-px bg-gray-300"></div>
+              <div class="flex items-baseline gap-1.5">
+                <span class="text-lg font-bold text-ink-900">500+</span>
+                <span class="text-[11px] text-ink-500 font-medium">clients</span>
               </div>
             </div>
           </div>
 
-          <!-- ═══ RIGHT: Premium car carousel ═══ -->
+          <!-- RIGHT: Car Carousel -->
           <div class="animate-fade-up" style="animation-delay: 200ms;">
-            <div class="relative h-[420px] sm:h-[500px] lg:h-[560px] xl:h-[600px]">
+            <div class="relative h-[340px] sm:h-[400px] lg:h-[440px]">
               <app-car-carousel [slides]="heroCars"></app-car-carousel>
             </div>
           </div>
-
         </div>
-      </div>
 
-      <!-- Scroll indicator -->
-      <div class="absolute bottom-6 left-1/2 -translate-x-1/2
-                  flex flex-col items-center gap-2 text-ink-500 animate-bounce">
-        <span class="text-[10px] uppercase tracking-[0.2em] font-medium">Découvrir</span>
-        <lucide-icon name="chevron-down" [size]="16"></lucide-icon>
+        <!-- ═══ BOTTOM: Centered Search Bar ═══ -->
+        <div class="relative max-w-5xl mx-auto animate-fade-up"
+             style="animation-delay: 400ms;">
+
+          <!-- Floating label -->
+          <div class="text-center mb-3">
+            <span class="inline-flex items-center gap-2 text-[10px]
+                         font-bold text-primary-700 uppercase
+                         tracking-[0.25em]">
+              <span class="w-6 h-px bg-primary-500/50"></span>
+              Trouvez votre voiture en 30 secondes
+              <span class="w-6 h-px bg-primary-500/50"></span>
+            </span>
+          </div>
+
+          <!-- BIG prominent search card -->
+          <div class="bg-white rounded-2xl p-3
+                      shadow-[0_30px_80px_-20px_rgba(20,184,166,0.35)]
+                      border border-primary-100">
+            <div class="grid grid-cols-1 sm:grid-cols-[1.2fr_1fr_1fr_auto]
+                        gap-2 items-stretch">
+
+              <!-- Lieu -->
+              <div class="px-4 py-3 hover:bg-primary-50/50 rounded-xl
+                          transition-all cursor-pointer
+                          border border-transparent hover:border-primary-200">
+                <label class="block text-[10px] font-bold text-primary-600
+                              uppercase tracking-[0.15em] mb-1
+                              flex items-center gap-1.5">
+                  <lucide-icon name="map-pin" [size]="11"></lucide-icon>
+                  Lieu de retrait
+                </label>
+                <select class="w-full bg-transparent border-0 p-0
+                               text-sm sm:text-base font-semibold
+                               text-ink-900 cursor-pointer
+                               focus:outline-none focus:ring-0">
+                  <option>Agence Taza</option>
+                  <option>Gare ferroviaire</option>
+                  <option>Livraison domicile</option>
+                </select>
+              </div>
+
+              <!-- Départ -->
+              <div class="px-4 py-3 hover:bg-primary-50/50 rounded-xl
+                          transition-all cursor-pointer
+                          sm:border-l sm:border-gray-200
+                          border border-transparent hover:border-primary-200">
+                <label class="block text-[10px] font-bold text-primary-600
+                              uppercase tracking-[0.15em] mb-1
+                              flex items-center gap-1.5">
+                  <lucide-icon name="calendar" [size]="11"></lucide-icon>
+                  Date de départ
+                </label>
+                <input type="date"
+                       class="w-full bg-transparent border-0 p-0
+                              text-sm sm:text-base font-semibold
+                              text-ink-900 cursor-pointer
+                              focus:outline-none focus:ring-0" />
+              </div>
+
+              <!-- Retour -->
+              <div class="px-4 py-3 hover:bg-primary-50/50 rounded-xl
+                          transition-all cursor-pointer
+                          sm:border-l sm:border-gray-200
+                          border border-transparent hover:border-primary-200">
+                <label class="block text-[10px] font-bold text-primary-600
+                              uppercase tracking-[0.15em] mb-1
+                              flex items-center gap-1.5">
+                  <lucide-icon name="calendar" [size]="11"></lucide-icon>
+                  Date de retour
+                </label>
+                <input type="date"
+                       class="w-full bg-transparent border-0 p-0
+                              text-sm sm:text-base font-semibold
+                              text-ink-900 cursor-pointer
+                              focus:outline-none focus:ring-0" />
+              </div>
+
+              <!-- Search button -->
+              <a routerLink="/voitures"
+                 class="bg-primary-500 hover:bg-primary-600
+                        active:bg-primary-700
+                        text-white font-bold rounded-xl
+                        px-6 sm:px-8 py-4
+                        flex items-center justify-center gap-2
+                        transition-all duration-300 group
+                        shadow-lg shadow-primary-500/30
+                        hover:shadow-xl hover:shadow-primary-500/40
+                        hover:-translate-y-0.5">
+                <lucide-icon name="search" [size]="20"></lucide-icon>
+                <span class="text-sm sm:text-base">Rechercher</span>
+                <lucide-icon name="arrow-right" [size]="18"
+                             class="group-hover:translate-x-1
+                                    transition-transform"></lucide-icon>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
