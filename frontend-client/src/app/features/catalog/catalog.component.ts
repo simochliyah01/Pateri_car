@@ -17,121 +17,148 @@ interface FilterOption {
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, LucideAngularModule, CarCardComponent],
   template: `
-    <!-- Premium hero -->
-    <section class="relative overflow-hidden pt-24 pb-14">
-      <!-- Background image + dark gradient overlay -->
-      <div class="absolute inset-0">
-        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1600&q=80"
-             alt="" class="w-full h-full object-cover scale-105" aria-hidden="true" />
-        <div class="absolute inset-0 bg-gradient-to-br from-black/88 via-gray-900/80
-                    to-primary-900/60 backdrop-blur-sm"></div>
-      </div>
-      <!-- Animated orbs -->
-      <div class="absolute -top-40 -left-24 w-[500px] h-[500px] rounded-full
-                  bg-primary-500/25 blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-24 right-1/3 w-80 h-80 rounded-full
-                  bg-teal-400/20 blur-3xl pointer-events-none"></div>
-      <!-- Dot grid -->
-      <div class="absolute inset-0 pointer-events-none opacity-[0.13]"
-           style="background-image: radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px);
+    <!-- ═══ PREMIUM HERO HEADER (no image) ═══ -->
+    <section class="relative border-b border-gray-200 overflow-hidden pt-28 pb-14 sm:pb-20"
+             style="background: linear-gradient(135deg, #ffffff 0%, #f0fdf9 40%, #e6fffa 70%, #f0fdfa 100%);">
+
+      <!-- Dot grid overlay -->
+      <div class="absolute inset-0 pointer-events-none opacity-[0.35]"
+           style="background-image: radial-gradient(circle, rgba(20,184,166,0.25) 1px, transparent 1px);
                   background-size: 28px 28px;"></div>
 
-      <!-- Content -->
-      <div class="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
-        <div class="grid lg:grid-cols-[1fr_280px] gap-12 items-start">
+      <!-- Orb top-right -->
+      <div class="absolute top-0 -right-32 w-96 h-96 rounded-full
+                  bg-primary-200/40 blur-3xl pointer-events-none"></div>
+      <!-- Orb bottom-left -->
+      <div class="absolute -bottom-20 -left-32 w-[28rem] h-[28rem] rounded-full
+                  bg-primary-100/50 blur-3xl pointer-events-none"></div>
 
-          <!-- Left column -->
+      <div class="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+
+        <!-- Breadcrumb -->
+        <div class="flex items-center gap-2 mb-5">
+          <a routerLink="/home"
+             class="text-sm text-ink-500 hover:text-primary-600
+                    transition-colors font-medium">
+            Accueil
+          </a>
+          <lucide-icon name="chevron-right" [size]="14"
+                       class="text-ink-400"></lucide-icon>
+          <span class="text-sm font-semibold text-primary-600">
+            Notre flotte
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8
+                    lg:gap-12 items-end">
+
+          <!-- LEFT: Title + description -->
           <div>
-            <!-- Breadcrumb -->
-            <div class="flex items-center gap-2 mb-5">
-              <a routerLink="/home"
-                 class="text-sm text-white/60 hover:text-white transition-colors">
-                Accueil
-              </a>
-              <lucide-icon name="chevron-right" [size]="14" class="text-white/40"></lucide-icon>
-              <span class="text-sm font-semibold text-white/90">Notre flotte</span>
+
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-3 py-1
+                        bg-white border border-primary-200 rounded-full mb-5
+                        shadow-sm">
+              <span class="relative flex">
+                <span class="absolute inline-flex h-2 w-2 rounded-full
+                             bg-primary-400 opacity-75 animate-ping"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2
+                             bg-primary-500"></span>
+              </span>
+              <span class="text-[11px] font-semibold text-ink-900
+                           tracking-[0.15em] uppercase">
+                {{ filteredVehicles().length }} voitures en stock
+              </span>
             </div>
 
-            <!-- Live badge -->
-            <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm
-                         border border-white/20 rounded-full px-4 py-1.5 mb-5">
-              <span class="w-2 h-2 rounded-full bg-primary-400 animate-pulse shrink-0"></span>
-              <span class="text-xs font-semibold text-white/90 tracking-wide">
-                Flotte disponible maintenant
-              </span>
-            </span>
-
             <!-- Headline with hand-drawn underline -->
-            <h1 class="text-4xl sm:text-[52px] font-extrabold text-white
-                       leading-[1.1] tracking-tight mb-4">
-              Trouvez<br>
-              <span class="relative whitespace-nowrap">
-                votre voiture
-                <svg class="absolute -bottom-2 left-0 w-full overflow-visible"
-                     height="10" viewBox="0 0 280 10"
-                     preserveAspectRatio="none" aria-hidden="true">
-                  <path d="M2 7 C55 2, 130 9, 195 5 C232 3, 260 8, 278 4"
-                        stroke="rgb(45 212 191)" stroke-width="3.5"
-                        stroke-linecap="round" fill="none" opacity="0.9"/>
+            <h1 class="text-4xl sm:text-5xl lg:text-[3.5rem] font-bold
+                       tracking-[-0.02em] text-ink-900 mb-4
+                       leading-[1.05] max-w-2xl">
+              Trouvez
+              <span class="relative inline-block">
+                <span class="text-primary-500">votre voiture</span>
+                <svg class="absolute -bottom-1 left-0 w-full"
+                     height="8" viewBox="0 0 200 8" fill="none"
+                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M2 5C50 1 100 1 198 5"
+                        stroke="#14B8A6" stroke-width="2.5"
+                        stroke-linecap="round" stroke-opacity="0.4"/>
                 </svg>
               </span>
+              <br>
+              <span class="text-ink-700 font-medium">en quelques clics.</span>
             </h1>
 
             <!-- Description -->
-            <p class="text-white/65 text-base sm:text-lg max-w-lg mb-9 leading-relaxed">
-              {{ filteredVehicles().length }}
-              voiture{{ filteredVehicles().length !== 1 ? 's' : '' }}
-              disponible{{ filteredVehicles().length !== 1 ? 's' : '' }}
-              à la location à Taza et alentours.
+            <p class="text-base sm:text-lg text-ink-500 max-w-xl
+                      leading-relaxed mb-7">
+              Une flotte récente et entretenue, du compact économique au SUV premium.
+              <span class="text-ink-900 font-semibold">
+                Aucun frais caché, assurance incluse.
+              </span>
             </p>
 
-            <!-- Trust badges row -->
-            <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
-              <div class="flex items-center gap-2">
-                <lucide-icon name="shield-check" [size]="20"
-                             class="text-primary-400 shrink-0"></lucide-icon>
+            <!-- Trust badges -->
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+              <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-xl bg-white border border-primary-100
+                            flex items-center justify-center shadow-sm">
+                  <lucide-icon name="shield-check" [size]="18"
+                               class="text-primary-600"></lucide-icon>
+                </div>
                 <div>
-                  <p class="text-sm font-bold text-white leading-none">100%</p>
-                  <p class="text-[11px] text-white/50 mt-0.5">Sécurisé</p>
+                  <div class="font-bold text-ink-900 text-sm">100%</div>
+                  <div class="text-[11px] text-ink-500 font-medium">Assurance</div>
                 </div>
               </div>
-              <div class="flex items-center gap-2">
-                <lucide-icon name="clock" [size]="20"
-                             class="text-primary-400 shrink-0"></lucide-icon>
+              <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-xl bg-white border border-primary-100
+                            flex items-center justify-center shadow-sm">
+                  <lucide-icon name="clock" [size]="18"
+                               class="text-primary-600"></lucide-icon>
+                </div>
                 <div>
-                  <p class="text-sm font-bold text-white leading-none">24/7</p>
-                  <p class="text-[11px] text-white/50 mt-0.5">Support</p>
+                  <div class="font-bold text-ink-900 text-sm">24/7</div>
+                  <div class="text-[11px] text-ink-500 font-medium">Service</div>
                 </div>
               </div>
-              <div class="flex items-center gap-2">
-                <lucide-icon name="map-pin" [size]="20"
-                             class="text-primary-400 shrink-0"></lucide-icon>
+              <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-xl bg-white border border-primary-100
+                            flex items-center justify-center shadow-sm">
+                  <lucide-icon name="map-pin" [size]="18"
+                               class="text-primary-600"></lucide-icon>
+                </div>
                 <div>
-                  <p class="text-sm font-bold text-white leading-none">Taza</p>
-                  <p class="text-[11px] text-white/50 mt-0.5">Livraison</p>
+                  <div class="font-bold text-ink-900 text-sm">Taza</div>
+                  <div class="text-[11px] text-ink-500 font-medium">+ Livraison</div>
                 </div>
               </div>
-              <div class="flex items-center gap-2">
-                <lucide-icon name="star" [size]="20"
-                             class="text-primary-400 shrink-0"></lucide-icon>
+              <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-xl bg-white border border-primary-100
+                            flex items-center justify-center shadow-sm">
+                  <lucide-icon name="star" [size]="18"
+                               class="text-primary-600"></lucide-icon>
+                </div>
                 <div>
-                  <p class="text-sm font-bold text-white leading-none">4.9</p>
-                  <p class="text-[11px] text-white/50 mt-0.5">Note clients</p>
+                  <div class="font-bold text-ink-900 text-sm">4.9</div>
+                  <div class="text-[11px] text-ink-500 font-medium">500+ avis</div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Right column: quick category pills (desktop) -->
-          <div class="hidden lg:block pt-1">
-            <p class="text-[10px] font-bold text-white/40 uppercase
-                      tracking-[0.2em] mb-3">
-              Par catégorie
+          <!-- RIGHT: Quick category filters (desktop only) -->
+          <div class="hidden lg:block">
+            <p class="text-[10px] font-bold text-ink-500 uppercase
+                      tracking-[0.2em] mb-3 text-right">
+              Accès rapide
             </p>
-            <div class="flex flex-col gap-2">
-              @for (cat of quickCategories; track cat.value) {
+            <div class="flex flex-wrap gap-2 justify-end max-w-xs">
+              @for (cat of categoryOptions; track cat.value) {
                 <button (click)="quickSelectCategory(cat.value)"
-                        [class.is-active]="selectedCategories().includes(cat.value)"
+                        [class.is-active]="selectedCategories().includes(cat.value)
+                                           && selectedCategories().length === 1"
                         class="quick-pill">
                   {{ cat.label }}
                 </button>
@@ -141,13 +168,14 @@ interface FilterOption {
 
         </div>
 
-        <!-- Mobile horizontal scroll pills -->
-        <div class="lg:hidden mt-7 -mx-5 px-5 overflow-x-auto">
+        <!-- Mobile: horizontal scrolling categories -->
+        <div class="lg:hidden mt-6 -mx-5 px-5 overflow-x-auto">
           <div class="flex gap-2 pb-2 w-max">
-            @for (cat of quickCategories; track cat.value) {
+            @for (cat of categoryOptions; track cat.value) {
               <button (click)="quickSelectCategory(cat.value)"
-                      [class.is-active]="selectedCategories().includes(cat.value)"
-                      class="quick-pill shrink-0">
+                      [class.is-active]="selectedCategories().includes(cat.value)
+                                         && selectedCategories().length === 1"
+                      class="quick-pill flex-shrink-0">
                 {{ cat.label }}
               </button>
             }
@@ -473,27 +501,32 @@ interface FilterOption {
     .quick-pill {
       display: inline-flex;
       align-items: center;
-      padding: 9px 18px;
-      background: rgba(255, 255, 255, 0.08);
-      color: rgba(255, 255, 255, 0.80);
-      font-size: 13px;
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(20, 184, 166, 0.2);
+      color: #334155;
+      font-size: 12px;
       font-weight: 600;
       border-radius: 100px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
       transition: all 0.2s;
       cursor: pointer;
-      backdrop-filter: blur(8px);
-      text-align: left;
-      width: 100%;
+      white-space: nowrap;
     }
     .quick-pill:hover {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: rgba(255, 255, 255, 0.30);
-      color: white;
+      background: rgba(20, 184, 166, 0.08);
+      border-color: rgba(20, 184, 166, 0.4);
+      color: #0F766E;
+      transform: translateY(-1px);
     }
     .quick-pill.is-active {
-      background: rgb(20 184 166);
-      border-color: rgb(20 184 166);
+      background: #14B8A6;
+      border-color: #14B8A6;
+      color: white;
+      box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+    }
+    .quick-pill.is-active:hover {
+      background: #0D9488;
       color: white;
     }
   `],
@@ -666,10 +699,16 @@ export class CatalogComponent implements OnInit {
   }
 
   quickSelectCategory(value: string) {
-    this.toggleCategory(value);
+    if (this.selectedCategories().length === 1 && this.selectedCategories()[0] === value) {
+      this.selectedCategories.set([]);
+    } else {
+      this.selectedCategories.set([value]);
+    }
+    this.currentPage.set(1);
     setTimeout(() => {
-      document.querySelector('aside')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 120);
+      const results = document.querySelector('section.bg-white');
+      if (results) results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   }
 
   getCategoryLabel(v: string)    { return this.categoryOptions.find(c => c.value === v)?.label ?? v; }
