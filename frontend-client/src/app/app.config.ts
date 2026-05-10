@@ -14,6 +14,7 @@ import {
   FileText, Settings, LogOut, LayoutDashboard,
   DoorOpen, Gauge, XCircle,
   Navigation, Baby, UserPlus, Info,
+  Plus, CalendarX, AlertTriangle,
 } from 'lucide-angular';
 import { routes } from './app.routes';
 
@@ -34,6 +35,7 @@ export const appConfig: ApplicationConfig = {
         FileText, Settings, LogOut, LayoutDashboard,
         DoorOpen, Gauge, XCircle,
         Navigation, Baby, UserPlus, Info,
+        Plus, CalendarX, AlertTriangle,
       })
     ),
   ]
