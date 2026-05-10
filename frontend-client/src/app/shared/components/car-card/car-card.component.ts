@@ -51,7 +51,7 @@ import { Vehicle } from '../../../core/models/vehicle.model';
         <div class="flex items-center gap-3 text-xs text-ink-500 mb-3">
           <span class="flex items-center gap-1">
             <lucide-icon name="settings-2" [size]="13"></lucide-icon>
-            {{ vehicle.transmission === 'AUTOMATIC' ? 'Auto' : 'Manuel' }}
+            {{ vehicle.transmission === 'AUTO' ? 'Auto' : 'Manuel' }}
           </span>
           <span class="flex items-center gap-1">
             <lucide-icon name="fuel" [size]="13"></lucide-icon>
@@ -85,10 +85,10 @@ export class CarCardComponent {
 
   fuelLabel(fuel: string): string {
     const labels: Record<string, string> = {
-      PETROL:   'Essence',
-      DIESEL:   'Diesel',
-      HYBRID:   'Hybride',
-      ELECTRIC: 'Électrique',
+      ESSENCE:    'Essence',
+      DIESEL:     'Diesel',
+      HYBRIDE:    'Hybride',
+      ELECTRIQUE: 'Électrique',
     };
     return labels[fuel] ?? fuel;
   }
