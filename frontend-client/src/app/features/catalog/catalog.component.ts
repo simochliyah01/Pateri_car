@@ -17,160 +17,140 @@ interface FilterOption {
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, LucideAngularModule, CarCardComponent],
   template: `
-    <!-- ═══ PREMIUM HERO HEADER (no image) ═══ -->
-    <section class="relative border-b border-gray-200 overflow-hidden pt-28 pb-14 sm:pb-20"
-             style="background: linear-gradient(135deg, #ffffff 0%, #f0fdf9 40%, #e6fffa 70%, #f0fdfa 100%);">
+    <!-- ═══ COMPACT PREMIUM HERO ═══ -->
+    <section class="relative bg-mesh-premium border-b border-gray-200
+                    overflow-hidden bg-aurora pt-24 pb-8 sm:pb-10">
 
-      <!-- Dot grid overlay -->
-      <div class="absolute inset-0 pointer-events-none opacity-[0.35]"
-           style="background-image: radial-gradient(circle, rgba(20,184,166,0.25) 1px, transparent 1px);
-                  background-size: 28px 28px;"></div>
+      <!-- Layered patterns (subtle) -->
+      <div class="absolute inset-0 bg-noise pointer-events-none"></div>
+      <div class="absolute inset-0 bg-dot-grid-premium pointer-events-none
+                  opacity-50"></div>
 
-      <!-- Orb top-right -->
-      <div class="absolute top-0 -right-32 w-96 h-96 rounded-full
-                  bg-primary-200/40 blur-3xl pointer-events-none"></div>
-      <!-- Orb bottom-left -->
-      <div class="absolute -bottom-20 -left-32 w-[28rem] h-[28rem] rounded-full
-                  bg-primary-100/50 blur-3xl pointer-events-none"></div>
+      <!-- Decorative orbs (smaller) -->
+      <div class="absolute top-0 -right-20 w-64 h-64 rounded-full
+                  bg-primary-200/30 blur-3xl pointer-events-none
+                  animate-spotlight"></div>
+      <div class="absolute -bottom-10 -left-20 w-72 h-72 rounded-full
+                  bg-primary-100/40 blur-3xl pointer-events-none">
+      </div>
 
       <div class="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
 
         <!-- Breadcrumb -->
-        <div class="flex items-center gap-2 mb-5">
+        <div class="flex items-center gap-2 mb-3 animate-fade-up">
           <a routerLink="/home"
-             class="text-sm text-ink-500 hover:text-primary-600
+             class="text-xs text-ink-500 hover:text-primary-600
                     transition-colors font-medium">
             Accueil
           </a>
-          <lucide-icon name="chevron-right" [size]="14"
+          <lucide-icon name="chevron-right" [size]="12"
                        class="text-ink-400"></lucide-icon>
-          <span class="text-sm font-semibold text-primary-600">
+          <span class="text-xs font-semibold text-primary-600">
             Notre flotte
           </span>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8
-                    lg:gap-12 items-end">
+        <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-4
+                    sm:gap-8 items-center">
 
-          <!-- LEFT: Title + description -->
-          <div>
-
-            <!-- Badge -->
-            <div class="inline-flex items-center gap-2 px-3 py-1
-                        bg-white border border-primary-200 rounded-full mb-5
-                        shadow-sm">
-              <span class="relative flex">
-                <span class="absolute inline-flex h-2 w-2 rounded-full
-                             bg-primary-400 opacity-75 animate-ping"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2
-                             bg-primary-500"></span>
-              </span>
-              <span class="text-[11px] font-semibold text-ink-900
-                           tracking-[0.15em] uppercase">
-                {{ filteredVehicles().length }} voitures en stock
-              </span>
+          <!-- LEFT: Compact title block -->
+          <div class="animate-fade-up">
+            <div class="flex items-center gap-3 mb-2">
+              <!-- Inline badge -->
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5
+                          bg-white border border-primary-200 rounded-full
+                          shadow-sm">
+                <span class="relative flex">
+                  <span class="absolute inline-flex h-1.5 w-1.5 rounded-full
+                               bg-primary-400 opacity-75 animate-ping"></span>
+                  <span class="relative inline-flex rounded-full h-1.5 w-1.5
+                               bg-primary-500"></span>
+                </span>
+                <span class="text-[10px] font-semibold text-ink-900
+                             tracking-wider uppercase">
+                  <span class="shimmer-text">{{ filteredVehicles().length }}</span>
+                  dispo
+                </span>
+              </div>
             </div>
 
-            <!-- Headline with hand-drawn underline -->
-            <h1 class="text-4xl sm:text-5xl lg:text-[3.5rem] font-bold
-                       tracking-[-0.02em] text-ink-900 mb-4
-                       leading-[1.05] max-w-2xl">
+            <!-- Compact headline (single line on desktop) -->
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold
+                       tracking-[-0.02em] text-ink-900 mb-2 leading-[1.1]">
               Trouvez
               <span class="relative inline-block">
                 <span class="text-primary-500">votre voiture</span>
-                <svg class="absolute -bottom-1 left-0 w-full"
-                     height="8" viewBox="0 0 200 8" fill="none"
-                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path d="M2 5C50 1 100 1 198 5"
-                        stroke="#14B8A6" stroke-width="2.5"
+                <svg class="absolute -bottom-0.5 left-0 w-full"
+                     height="6" viewBox="0 0 200 6" fill="none">
+                  <path d="M2 4C50 0 100 0 198 4"
+                        stroke="#14B8A6" stroke-width="2"
                         stroke-linecap="round" stroke-opacity="0.4"/>
                 </svg>
               </span>
-              <br>
               <span class="text-ink-700 font-medium">en quelques clics.</span>
             </h1>
 
-            <!-- Description -->
-            <p class="text-base sm:text-lg text-ink-500 max-w-xl
-                      leading-relaxed mb-7">
-              Une flotte récente et entretenue, du compact économique au SUV premium.
-              <span class="text-ink-900 font-semibold">
-                Aucun frais caché, assurance incluse.
-              </span>
+            <!-- Short description -->
+            <p class="text-sm text-ink-500 max-w-xl">
+              Flotte récente · Assurance incluse · Livraison à Taza
             </p>
+          </div>
 
-            <!-- Trust badges -->
-            <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
-              <div class="flex items-center gap-2.5">
-                <div class="w-10 h-10 rounded-xl bg-white border border-primary-100
-                            flex items-center justify-center shadow-sm">
-                  <lucide-icon name="shield-check" [size]="18"
-                               class="text-primary-600"></lucide-icon>
+          <!-- RIGHT: Mini stats inline -->
+          <div class="hidden lg:flex items-center gap-4 animate-fade-up"
+               style="animation-delay: 150ms;">
+            <div class="flex items-center gap-2 px-3 py-2 bg-white
+                        border border-gray-200 rounded-xl shadow-sm">
+              <lucide-icon name="shield-check" [size]="16"
+                           class="text-primary-600"></lucide-icon>
+              <div>
+                <div class="text-xs font-bold text-ink-900 leading-none">
+                  100%
                 </div>
-                <div>
-                  <div class="font-bold text-ink-900 text-sm">100%</div>
-                  <div class="text-[11px] text-ink-500 font-medium">Assurance</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-2.5">
-                <div class="w-10 h-10 rounded-xl bg-white border border-primary-100
-                            flex items-center justify-center shadow-sm">
-                  <lucide-icon name="clock" [size]="18"
-                               class="text-primary-600"></lucide-icon>
-                </div>
-                <div>
-                  <div class="font-bold text-ink-900 text-sm">24/7</div>
-                  <div class="text-[11px] text-ink-500 font-medium">Service</div>
+                <div class="text-[10px] text-ink-500 font-medium mt-0.5">
+                  Assurance
                 </div>
               </div>
-              <div class="flex items-center gap-2.5">
-                <div class="w-10 h-10 rounded-xl bg-white border border-primary-100
-                            flex items-center justify-center shadow-sm">
-                  <lucide-icon name="map-pin" [size]="18"
-                               class="text-primary-600"></lucide-icon>
+            </div>
+            <div class="flex items-center gap-2 px-3 py-2 bg-white
+                        border border-gray-200 rounded-xl shadow-sm">
+              <lucide-icon name="clock" [size]="16"
+                           class="text-primary-600"></lucide-icon>
+              <div>
+                <div class="text-xs font-bold text-ink-900 leading-none">
+                  24/7
                 </div>
-                <div>
-                  <div class="font-bold text-ink-900 text-sm">Taza</div>
-                  <div class="text-[11px] text-ink-500 font-medium">+ Livraison</div>
+                <div class="text-[10px] text-ink-500 font-medium mt-0.5">
+                  Service
                 </div>
               </div>
-              <div class="flex items-center gap-2.5">
-                <div class="w-10 h-10 rounded-xl bg-white border border-primary-100
-                            flex items-center justify-center shadow-sm">
-                  <lucide-icon name="star" [size]="18"
-                               class="text-primary-600"></lucide-icon>
+            </div>
+            <div class="flex items-center gap-2 px-3 py-2 bg-white
+                        border border-gray-200 rounded-xl shadow-sm">
+              <lucide-icon name="star" [size]="16"
+                           class="text-primary-600 fill-current"></lucide-icon>
+              <div>
+                <div class="text-xs font-bold text-ink-900 leading-none">
+                  4.9
                 </div>
-                <div>
-                  <div class="font-bold text-ink-900 text-sm">4.9</div>
-                  <div class="text-[11px] text-ink-500 font-medium">500+ avis</div>
+                <div class="text-[10px] text-ink-500 font-medium mt-0.5">
+                  500+ avis
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- RIGHT: Quick category filters (desktop only) -->
-          <div class="hidden lg:block">
-            <p class="text-[10px] font-bold text-ink-500 uppercase
-                      tracking-[0.2em] mb-3 text-right">
-              Accès rapide
-            </p>
-            <div class="flex flex-wrap gap-2 justify-end max-w-xs">
-              @for (cat of categoryOptions; track cat.value) {
-                <button (click)="quickSelectCategory(cat.value)"
-                        [class.is-active]="selectedCategories().includes(cat.value)
-                                           && selectedCategories().length === 1"
-                        class="quick-pill">
-                  {{ cat.label }}
-                </button>
-              }
-            </div>
-          </div>
-
         </div>
 
-        <!-- Mobile: horizontal scrolling categories -->
-        <div class="lg:hidden mt-6 -mx-5 px-5 overflow-x-auto">
-          <div class="flex gap-2 pb-2 w-max">
+        <!-- Quick category pills (horizontal scroll) -->
+        <div class="mt-5 -mx-5 px-5 sm:mx-0 sm:px-0 overflow-x-auto
+                    scrollbar-hide animate-fade-up"
+             style="animation-delay: 200ms;">
+          <div class="flex gap-2 pb-1 w-max sm:w-auto sm:flex-wrap">
+            <span class="text-[10px] font-bold text-ink-500 uppercase
+                         tracking-[0.15em] self-center mr-2
+                         hidden sm:inline">
+              Catégories:
+            </span>
             @for (cat of categoryOptions; track cat.value) {
               <button (click)="quickSelectCategory(cat.value)"
                       [class.is-active]="selectedCategories().includes(cat.value)
@@ -181,7 +161,6 @@ interface FilterOption {
             }
           </div>
         </div>
-
       </div>
     </section>
 
