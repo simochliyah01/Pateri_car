@@ -9,6 +9,7 @@ export interface RegisterRequest {
   email: string;
   phone: string;
   password: string;
+  roleName: string;
 }
 
 export interface AuthResponse {
@@ -31,6 +32,7 @@ export interface ApiError {
   status: number;
   message: string;
   errors?: Record<string, string>;
+  fieldErrors?: { field: string; message: string }[];
   timestamp?: string;
   path?: string;
 }
