@@ -13,6 +13,7 @@ import {
   Lock, Eye, EyeOff, AlertCircle, Check, CheckCircle, Loader2,
   FileText, Settings, LogOut, LayoutDashboard,
   DoorOpen, Gauge, XCircle,
+  Navigation, Baby, UserPlus, Info,
 } from 'lucide-angular';
 import { routes } from './app.routes';
 
@@ -32,6 +33,7 @@ export const appConfig: ApplicationConfig = {
         Lock, Eye, EyeOff, AlertCircle, Check, CheckCircle, Loader2,
         FileText, Settings, LogOut, LayoutDashboard,
         DoorOpen, Gauge, XCircle,
+        Navigation, Baby, UserPlus, Info,
       })
     ),
   ]
