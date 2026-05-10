@@ -464,10 +464,11 @@ export class RegisterComponent {
 
     const { firstName, lastName, email, phone, password } = this.form.getRawValue();
 
-    this.authService.register({ firstName, lastName, email, phone, password })
+    this.authService.register({ firstName, lastName, email, phone, password, roleName: 'CLIENT' })
       .subscribe({
         next: () => this.router.navigate(['/home']),
         error: (err) => {
+          console.error('Registration error:', err);
           this.errorMessage.set(err.message || 'Erreur lors de la création du compte');
           this.loading.set(false);
         },

@@ -88,25 +88,34 @@ export class AuthService {
 
   private handleError = (error: HttpErrorResponse) => {
     let errorMessage = 'Une erreur est survenue';
+    const body = error.error;
 
     if (error.status === 0) {
       errorMessage = 'Impossible de contacter le serveur. Vérifiez votre connexion.';
     } else if (error.status === 401) {
-      errorMessage = error.error?.message || 'Email ou mot de passe incorrect';
+      errorMessage = body?.message || 'Email ou mot de passe incorrect';
     } else if (error.status === 409) {
-      errorMessage = error.error?.message || 'Cet email est déjà utilisé';
+      errorMessage = body?.message || 'Cet email est déjà utilisé';
     } else if (error.status === 400) {
-      errorMessage = error.error?.message || 'Données invalides';
+      // Prefer field-level errors (backend sends fieldErrors array)
+      if (body?.fieldErrors?.length) {
+        errorMessage = (body.fieldErrors as { field: string; message: string }[])
+          .map(fe => `${fe.field}: ${fe.message}`)
+          .join(' · ');
+      } else {
+        errorMessage = body?.message || 'Données invalides';
+      }
     } else if (error.status >= 500) {
       errorMessage = 'Erreur serveur. Réessayez plus tard.';
-    } else if (error.error?.message) {
-      errorMessage = error.error.message;
+    } else if (body?.message) {
+      errorMessage = body.message;
     }
 
     return throwError(() => ({
       status: error.status,
       message: errorMessage,
-      errors: error.error?.errors,
+      fieldErrors: body?.fieldErrors,
+      errors: body?.errors,
     }));
   };
 }
