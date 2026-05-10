@@ -6,16 +6,16 @@ import { VehicleService } from '../../core/services/vehicle.service';
 import { Vehicle } from '../../core/models/vehicle.model';
 import { CarCardComponent } from '../../shared/components/car-card/car-card.component';
 import { CarCarouselComponent, CarSlide } from '../../shared/components/car-carousel/car-carousel.component';
+import { BrandMarqueeComponent } from '../../shared/components/brand-marquee/brand-marquee.component';
 import { FadeInDirective } from '../../shared/directives/fade-in.directive';
-import { CountUpDirective } from '../../shared/directives/count-up.directive';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     CommonModule, RouterLink, LucideAngularModule,
-    CarCardComponent, CarCarouselComponent,
-    FadeInDirective, CountUpDirective,
+    CarCardComponent, CarCarouselComponent, BrandMarqueeComponent,
+    FadeInDirective,
   ],
   template: `
     <!-- ============================================================ -->
@@ -235,48 +235,9 @@ import { CountUpDirective } from '../../shared/directives/count-up.directive';
     </section>
 
     <!-- ============================================================ -->
-    <!-- LIVE STATS BAR                                                -->
+    <!-- BRAND MARQUEE                                                 -->
     <!-- ============================================================ -->
-    <section class="bg-ink-900 border-b border-ink-800 py-8">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
-          <div class="text-center" appFadeIn>
-            <div class="text-3xl sm:text-4xl font-bold text-white mb-1">
-              <span [appCountUp]="500" suffix="+">0+</span>
-            </div>
-            <p class="text-xs sm:text-sm text-white/60 uppercase tracking-wider">
-              Clients satisfaits
-            </p>
-          </div>
-          <div class="text-center" appFadeIn>
-            <div class="text-3xl sm:text-4xl font-bold text-primary-400 mb-1">
-              <span [appCountUp]="vehicles().length || 50">0</span>
-            </div>
-            <p class="text-xs sm:text-sm text-white/60 uppercase tracking-wider">
-              Voitures disponibles
-            </p>
-          </div>
-          <div class="text-center" appFadeIn>
-            <div class="text-3xl sm:text-4xl font-bold text-white mb-1">
-              24<span class="text-primary-400">/</span>7
-            </div>
-            <p class="text-xs sm:text-sm text-white/60 uppercase tracking-wider">
-              Service disponible
-            </p>
-          </div>
-          <div class="text-center" appFadeIn>
-            <div class="text-3xl sm:text-4xl font-bold text-white mb-1
-                        flex items-center justify-center gap-1">
-              4.9
-              <lucide-icon name="star" [size]="24" class="text-primary-400"></lucide-icon>
-            </div>
-            <p class="text-xs sm:text-sm text-white/60 uppercase tracking-wider">
-              Note moyenne
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <app-brand-marquee></app-brand-marquee>
 
     <!-- ============================================================ -->
     <!-- FEATURED CARS                                                 -->

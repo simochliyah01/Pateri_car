@@ -1,20 +1,40 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, signal, computed } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent],
+  imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent],
   template: `
     <div class="min-h-screen flex flex-col">
-      <app-header />
+      @if (!isAuthRoute()) {
+        <app-header />
+      }
       <main class="flex-1">
         <router-outlet />
       </main>
-      <app-footer />
+      @if (!isAuthRoute()) {
+        <app-footer />
+      }
     </div>
   `,
 })
-export class AppComponent {}
+export class AppComponent {
+  private router = inject(Router);
+  private currentUrl = signal(this.router.url);
+
+  isAuthRoute = computed(() => {
+    const url = this.currentUrl();
+    return url.startsWith('/login') || url.startsWith('/register');
+  });
+
+  constructor() {
+    this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe((e: any) => this.currentUrl.set(e.urlAfterRedirects || e.url));
+  }
+}
