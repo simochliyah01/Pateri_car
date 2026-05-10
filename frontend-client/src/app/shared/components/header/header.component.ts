@@ -103,7 +103,7 @@ import { AuthService } from '../../../core/services/auth.service';
                         <lucide-icon name="user" [size]="16"></lucide-icon>
                         Mon profil
                       </a>
-                      <a class="dropdown-item">
+                      <a routerLink="/mes-reservations" class="dropdown-item">
                         <lucide-icon name="calendar" [size]="16"></lucide-icon>
                         Mes réservations
                       </a>
@@ -190,7 +190,8 @@ import { AuthService } from '../../../core/services/auth.service';
             <div class="pt-3 mt-3 border-t border-gray-200/50 space-y-2">
               @if (authService.isAuthenticated()) {
                 <a class="mobile-link cursor-pointer">Mon profil</a>
-                <a class="mobile-link cursor-pointer">Mes réservations</a>
+                <a routerLink="/mes-reservations" (click)="closeMobile()"
+                   class="mobile-link">Mes réservations</a>
                 @if (authService.isAdmin()) {
                   <a class="mobile-link cursor-pointer text-primary-600">
                     Tableau de bord
