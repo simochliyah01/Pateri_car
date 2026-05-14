@@ -71,12 +71,10 @@ interface StatusTab {
           }
         </div>
 
-        <!-- Loading -->
         @if (loading()) {
           <div class="space-y-4">
             @for (i of [1,2,3]; track i) {
-              <div class="bg-white border border-gray-200 rounded-2xl
-                          p-5 animate-pulse">
+              <div class="bg-white border border-gray-200 rounded-2xl p-5 animate-pulse">
                 <div class="flex gap-4">
                   <div class="w-20 h-20 bg-gray-100 rounded-xl"></div>
                   <div class="flex-1 space-y-3">
@@ -88,16 +86,10 @@ interface StatusTab {
               </div>
             }
           </div>
-        }
-
-        <!-- Empty state -->
-        @else if (filteredReservations().length === 0) {
-          <div class="bg-surface-50 border-2 border-dashed border-gray-200
-                      rounded-2xl py-16 px-6 text-center">
-            <div class="w-20 h-20 bg-white rounded-full mx-auto mb-5
-                        flex items-center justify-center border border-gray-200">
-              <lucide-icon name="calendar-x" [size]="32"
-                           class="text-ink-400"></lucide-icon>
+        } @else if (filteredReservations().length === 0) {
+          <div class="bg-surface-50 border-2 border-dashed border-gray-200 rounded-2xl py-16 px-6 text-center">
+            <div class="w-20 h-20 bg-white rounded-full mx-auto mb-5 flex items-center justify-center border border-gray-200">
+              <lucide-icon name="calendar-x" [size]="32" class="text-ink-400"></lucide-icon>
             </div>
             <h3 class="text-xl font-bold text-ink-900 mb-2">
               @if (activeTab() === 'ALL') {
@@ -108,58 +100,34 @@ interface StatusTab {
             </h3>
             <p class="text-ink-500 mb-6 max-w-md mx-auto">
               @if (activeTab() === 'ALL') {
-                Découvrez notre flotte et réservez votre première voiture
-                en quelques clics.
+                Découvrez notre flotte et réservez votre première voiture en quelques clics.
               } @else {
                 Essayez un autre filtre ou créez une nouvelle réservation.
               }
             </p>
             <a routerLink="/voitures"
-               class="inline-flex items-center gap-2 bg-primary-500
-                      hover:bg-primary-600 text-white font-semibold
-                      px-6 py-3 rounded-xl transition-colors">
+               class="inline-flex items-center gap-2 bg-primary-500 hover:bg-primary-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors">
               Voir les voitures disponibles
               <lucide-icon name="arrow-right" [size]="16"></lucide-icon>
             </a>
           </div>
-        }
-
-        <!-- Reservations list -->
-        @else {
+        } @else {
           <div class="space-y-4">
             @for (r of filteredReservations(); track r.id) {
-              <div class="bg-white border border-gray-200 rounded-2xl
-                          p-5 hover:border-primary-300 transition-all group">
-
+              <div class="bg-white border border-gray-200 rounded-2xl p-5 hover:border-primary-300 transition-all group">
                 <div class="flex flex-col sm:flex-row gap-4">
-
-                  <!-- Vehicle visual -->
-                  <div class="w-full sm:w-24 h-24 bg-gradient-to-br
-                              from-primary-50 to-surface-50 rounded-xl
-                              flex items-center justify-center
-                              flex-shrink-0 border border-gray-100">
-                    <lucide-icon name="car" [size]="32"
-                                 class="text-primary-600"></lucide-icon>
+                  <div class="w-full sm:w-24 h-24 bg-gradient-to-br from-primary-50 to-surface-50 rounded-xl flex items-center justify-center flex-shrink-0 border border-gray-100">
+                    <lucide-icon name="car" [size]="32" class="text-primary-600"></lucide-icon>
                   </div>
-
-                  <!-- Main info -->
                   <div class="flex-1 min-w-0">
-                    <div class="flex flex-wrap items-start justify-between
-                                gap-2 mb-2">
+                    <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
                       <div>
                         <div class="flex items-center gap-2 mb-1">
-                          <span class="text-[10px] font-bold text-ink-500
-                                       uppercase tracking-wider font-mono">
-                            {{ r.reservationNumber }}
-                          </span>
+                          <span class="text-[10px] font-bold text-ink-500 uppercase tracking-wider font-mono">{{ r.reservationNumber }}</span>
                           <span [class]="getStatusClasses(r.status)"
-                                class="inline-flex items-center gap-1.5
-                                       px-2.5 py-0.5 rounded-full text-xs
-                                       font-semibold border">
+                                class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border">
                             @if (r.status === 'PENDING') {
-                              <span class="w-1.5 h-1.5 bg-amber-500
-                                           rounded-full animate-soft-pulse">
-                              </span>
+                              <span class="w-1.5 h-1.5 bg-amber-500 rounded-full animate-soft-pulse"></span>
                             }
                             {{ getStatusLabel(r.status) }}
                           </span>
@@ -170,61 +138,33 @@ interface StatusTab {
                         </h3>
                       </div>
                       <div class="text-right">
-                        <div class="text-xl font-bold text-ink-900">
-                          {{ r.totalPrice }} DH
-                        </div>
-                        <div class="text-[10px] text-ink-500">
-                          {{ r.durationDays }} jour(s)
-                        </div>
+                        <div class="text-xl font-bold text-ink-900">{{ r.totalPrice }} DH</div>
+                        <div class="text-[10px] text-ink-500">{{ r.durationDays }} jour(s)</div>
                       </div>
                     </div>
-
-                    <!-- Details row -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2
-                                mt-3 text-sm">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 text-sm">
                       <div class="flex items-center gap-2 text-ink-700">
-                        <lucide-icon name="calendar" [size]="14"
-                                     class="text-primary-600 flex-shrink-0">
-                        </lucide-icon>
-                        <span class="truncate">
-                          {{ formatDate(r.startDate) }} → {{ formatDate(r.endDate) }}
-                        </span>
+                        <lucide-icon name="calendar" [size]="14" class="text-primary-600 flex-shrink-0"></lucide-icon>
+                        <span class="truncate">{{ formatDate(r.startDate) }} → {{ formatDate(r.endDate) }}</span>
                       </div>
                       <div class="flex items-center gap-2 text-ink-700">
-                        <lucide-icon name="map-pin" [size]="14"
-                                     class="text-primary-600 flex-shrink-0">
-                        </lucide-icon>
-                        <span class="truncate">
-                          {{ getLocationLabel(r.pickupLocation) }}
-                        </span>
+                        <lucide-icon name="map-pin" [size]="14" class="text-primary-600 flex-shrink-0"></lucide-icon>
+                        <span class="truncate">{{ getLocationLabel(r.pickupLocation) }}</span>
                       </div>
                     </div>
-
                     @if (r.options && r.options.length > 0) {
                       <div class="flex flex-wrap gap-1.5 mt-3">
                         @for (opt of r.options; track opt.id) {
-                          <span class="inline-flex items-center bg-primary-50
-                                       text-primary-700 px-2 py-0.5
-                                       rounded-full text-[10px] font-semibold">
-                            {{ getOptionLabel(opt.optionType) }}
-                          </span>
+                          <span class="inline-flex items-center bg-primary-50 text-primary-700 px-2 py-0.5 rounded-full text-[10px] font-semibold">{{ getOptionLabel(opt.optionType) }}</span>
                         }
                       </div>
                     }
-
-                    <!-- Actions row -->
-                    <div class="flex flex-wrap items-center gap-2 mt-4
-                                pt-4 border-t border-gray-100">
-                      <span class="text-[11px] text-ink-500">
-                        Créée le {{ formatDateTime(r.createdAt) }}
-                      </span>
+                    <div class="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-gray-100">
+                      <span class="text-[11px] text-ink-500">Créée le {{ formatDateTime(r.createdAt) }}</span>
                       <div class="ml-auto flex gap-2">
                         @if (canCancel(r.status)) {
                           <button (click)="openCancelModal(r)"
-                                  class="px-4 py-2 text-xs font-semibold
-                                         text-red-600 hover:bg-red-50
-                                         rounded-lg transition-colors
-                                         flex items-center gap-1.5">
+                                  class="px-4 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-1.5">
                             <lucide-icon name="x-circle" [size]="14"></lucide-icon>
                             Annuler
                           </button>
