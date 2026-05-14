@@ -131,35 +131,28 @@ interface OptionItem {
           <!-- Progress bar -->
           <div class="mb-8">
             <div class="flex items-center justify-between mb-3">
-              @for (s of [1,2,3,4]; track s; let i = $index) {
-                <div class="flex items-center"
-                     [class.flex-1]="i < 3">
+              @for (s of [1,2,3,4]; track s; let i = $index; let isLast = $last) {
+                <div class="flex items-center" [class.flex-1]="!isLast">
                   <div class="flex flex-col items-center gap-2">
-                    <div class="w-9 h-9 rounded-full flex items-center
-                                justify-center font-bold text-sm
-                                transition-all"
+                    <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm transition-all"
                          [class.bg-primary-500]="step() >= s"
                          [class.text-white]="step() >= s"
                          [class.bg-white]="step() < s"
                          [class.text-ink-400]="step() < s"
                          [class.border-2]="step() < s"
                          [class.border-gray-300]="step() < s"
-                         [class.shadow-lg]="step() === s"
-                         [class.shadow-primary-500\/30]="step() === s">
+                         [class.shadow-lg]="step() === s">
                       @if (step() > s) {
                         <lucide-icon name="check" [size]="16"></lucide-icon>
                       } @else {
-                        {{ s }}
+                        <span>{{ s }}</span>
                       }
                     </div>
-                    <span class="text-[10px] font-semibold uppercase
-                                 tracking-wider hidden sm:block"
+                    <span class="text-[10px] font-semibold uppercase tracking-wider hidden sm:block"
                           [class.text-primary-600]="step() >= s"
-                          [class.text-ink-400]="step() < s">
-                      {{ stepLabels[i] }}
-                    </span>
+                          [class.text-ink-400]="step() < s">{{ stepLabels[i] }}</span>
                   </div>
-                  @if (i < 3) {
+                  @if (!isLast) {
                     <div class="flex-1 h-0.5 mx-2 transition-colors"
                          [class.bg-primary-500]="step() > s"
                          [class.bg-gray-200]="step() <= s"></div>

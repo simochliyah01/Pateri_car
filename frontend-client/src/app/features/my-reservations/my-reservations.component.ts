@@ -56,18 +56,17 @@ interface StatusTab {
         <div class="flex gap-1 mb-6 overflow-x-auto scrollbar-hide pb-1">
           @for (tab of tabs; track tab.key) {
             <button (click)="setActiveTab(tab.key)"
-                    class="flex-shrink-0 px-4 py-2 rounded-lg text-sm
-                           font-semibold transition-all flex items-center gap-2"
                     [class.bg-primary-500]="activeTab() === tab.key"
                     [class.text-white]="activeTab() === tab.key"
                     [class.shadow-lg]="activeTab() === tab.key"
-                    [class.text-ink-700]="activeTab() !== tab.key">
-              {{ tab.label }}
+                    [class.text-ink-700]="activeTab() !== tab.key"
+                    [class.hover:bg-gray-100]="activeTab() !== tab.key"
+                    class="flex-shrink-0 px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
+              <span>{{ tab.label }}</span>
               <span class="text-[10px] px-1.5 py-0.5 rounded-full font-bold"
-                    [class.bg-white\/20]="activeTab() === tab.key"
-                    [class.bg-gray-200]="activeTab() !== tab.key">
-                {{ countForStatus(tab.key) }}
-              </span>
+                    [class.bg-white]="activeTab() === tab.key"
+                    [class.text-primary-700]="activeTab() === tab.key"
+                    [class.bg-gray-200]="activeTab() !== tab.key">{{ countForStatus(tab.key) }}</span>
             </button>
           }
         </div>
