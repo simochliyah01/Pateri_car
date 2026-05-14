@@ -32,7 +32,7 @@ interface StatusTab {
             </h1>
             <p class="text-ink-500">
               {{ totalCount() }} réservation(s) ·
-              Bonjour {{ authService.currentUser()?.firstName }} 👋
+              Bonjour {{ authService.currentUser()?.firstName }}
             </p>
           </div>
 
