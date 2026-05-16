@@ -13,6 +13,7 @@ type ViewMode = 'table' | 'grid';
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, LucideAngularModule],
   template: `
+    <div class="p-5 sm:p-8">
     <!-- ═══ HEADER ═══ -->
     <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
       <div>
@@ -817,6 +818,7 @@ type ViewMode = 'table' | 'grid';
         </div>
       </div>
     }
+    </div>
   `,
   styles: [`
     .th-cell {
