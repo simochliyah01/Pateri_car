@@ -15,6 +15,15 @@ import {
   DoorOpen, Gauge, XCircle,
   Navigation, Baby, UserPlus, Info,
   Plus, CalendarX, AlertTriangle,
+  TrendingUp, TrendingDown, Bell, ExternalLink,
+  RefreshCw,
+  Pencil, Trash2,
+  Upload,
+  ArrowUpDown, ArrowUp, ArrowDown,
+  Key, Wrench,
+  List, LayoutGrid,
+  Target,
+  RotateCcw, Building2,
 } from 'lucide-angular';
 import { routes } from './app.routes';
 
@@ -36,6 +45,15 @@ export const appConfig: ApplicationConfig = {
         DoorOpen, Gauge, XCircle,
         Navigation, Baby, UserPlus, Info,
         Plus, CalendarX, AlertTriangle,
+        TrendingUp, TrendingDown, Bell, ExternalLink,
+        RefreshCw,
+        Pencil, Trash2,
+        Upload,
+        ArrowUpDown, ArrowUp, ArrowDown,
+        Key, Wrench,
+        List, LayoutGrid,
+        Target,
+        RotateCcw, Building2,
       })
     ),
   ]
