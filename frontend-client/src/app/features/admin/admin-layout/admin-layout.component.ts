@@ -165,7 +165,7 @@ interface NavSection {
               </button>
 
               <div class="relative">
-                <button (click)="userMenuOpen.update(v => !v)"
+                <button (click)="toggleUserMenu()"
                         class="flex items-center gap-2 p-1 hover:bg-gray-100 rounded-lg transition-colors">
                   <div class="w-9 h-9 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center font-bold text-white text-sm">
                     {{ userInitials() }}
@@ -318,6 +318,7 @@ export class AdminLayoutComponent implements OnInit {
   }
 
   toggleMobileMenu() { this.mobileMenuOpen.update(v => !v); }
+  toggleUserMenu()   { this.userMenuOpen.update(v => !v); }
   closeMobileMenu()  { this.mobileMenuOpen.set(false); }
 
   logout() {
