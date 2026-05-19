@@ -25,6 +25,7 @@ import {
   Target,
   RotateCcw, Building2,
   Zap, Inbox, CalendarPlus,
+  Ban,
 } from 'lucide-angular';
 import { routes } from './app.routes';
 
@@ -56,6 +57,7 @@ export const appConfig: ApplicationConfig = {
         Target,
         RotateCcw, Building2,
         Zap, Inbox, CalendarPlus,
+        Ban,
       })
     ),
   ]
