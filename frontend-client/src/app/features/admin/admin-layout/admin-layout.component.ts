@@ -4,6 +4,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet, Router } from '@angular/rou
 import { LucideAngularModule } from 'lucide-angular';
 import { AuthService } from '../../../core/services/auth.service';
 import { AdminStatsService } from '../../../core/services/admin-stats.service';
+import { NotificationService, NotificationDto } from '../../../core/services/notification.service';
 
 interface NavItem {
   label: string;
@@ -155,14 +156,82 @@ interface NavSection {
                 Voir le site
               </a>
 
-              <button class="relative p-2.5 bg-white border border-gray-200 hover:border-primary-300 rounded-lg transition-colors">
-                <lucide-icon name="bell" [size]="16" class="text-ink-700"></lucide-icon>
-                @if (pendingCount() > 0) {
-                  <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-white">
-                    {{ pendingCount() > 9 ? '9+' : pendingCount() }}
-                  </span>
+              <!-- Bell + dropdown -->
+              <div class="relative">
+                <button (click)="toggleNotifications()"
+                        class="relative p-2.5 bg-white border border-gray-200 hover:border-primary-300 rounded-lg transition-colors">
+                  <lucide-icon name="bell" [size]="16" class="text-ink-700"></lucide-icon>
+                  @if (notificationService.unreadCount() > 0) {
+                    <span class="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-white">
+                      {{ notificationService.unreadCount() > 9 ? '9+' : notificationService.unreadCount() }}
+                    </span>
+                  }
+                </button>
+
+                @if (notificationsOpen()) {
+                  <div class="absolute right-0 top-12 w-96 bg-white border border-gray-200 rounded-2xl shadow-2xl overflow-hidden z-50"
+                       (click)="$event.stopPropagation()">
+                    <!-- Header -->
+                    <div class="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+                      <h3 class="font-bold text-ink-900 text-sm">Notifications</h3>
+                      @if (notificationService.unreadCount() > 0) {
+                        <button (click)="markAllRead()"
+                                class="text-xs font-semibold text-primary-600 hover:text-primary-700">
+                          Tout marquer lu
+                        </button>
+                      }
+                    </div>
+
+                    <!-- List -->
+                    <div class="max-h-96 overflow-y-auto">
+                      @if (loadingNotifs()) {
+                        <div class="p-6 text-center text-sm text-ink-500">
+                          Chargement...
+                        </div>
+                      } @else if (notifications().length === 0) {
+                        <div class="p-8 text-center">
+                          <lucide-icon name="bell-off" [size]="28" class="text-ink-300 mx-auto mb-2"></lucide-icon>
+                          <p class="text-sm text-ink-500">Aucune notification</p>
+                        </div>
+                      } @else {
+                        @for (n of notifications(); track n.id) {
+                          <button (click)="handleNotificationClick(n)"
+                                  [class.bg-primary-50]="!n.read"
+                                  class="w-full px-4 py-3 hover:bg-surface-50 flex items-start gap-3 border-b border-gray-50 text-left transition-colors group">
+                            <div [ngClass]="{
+                              'bg-primary-100 text-primary-700': getNotifColor(n.type) === 'primary',
+                              'bg-blue-100 text-blue-700': getNotifColor(n.type) === 'blue',
+                              'bg-red-100 text-red-700': getNotifColor(n.type) === 'red',
+                              'bg-amber-100 text-amber-700': getNotifColor(n.type) === 'amber'
+                            }" class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <lucide-icon [name]="getNotifIcon(n.type)" [size]="14"></lucide-icon>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                              <div class="flex items-center gap-2 mb-0.5">
+                                <p class="font-semibold text-ink-900 text-sm truncate">{{ n.title }}</p>
+                                @if (!n.read) {
+                                  <span class="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0"></span>
+                                }
+                              </div>
+                              <p class="text-xs text-ink-500 line-clamp-2">{{ n.message }}</p>
+                              <p class="text-[10px] text-ink-400 mt-1">{{ formatRelative(n.createdAt) }}</p>
+                            </div>
+                          </button>
+                        }
+                      }
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="px-4 py-2.5 border-t border-gray-100 bg-surface-50">
+                      <a routerLink="/admin/notifications"
+                         (click)="notificationsOpen.set(false)"
+                         class="block text-center text-xs font-semibold text-primary-600 hover:text-primary-700">
+                        Voir toutes les notifications
+                      </a>
+                    </div>
+                  </div>
                 }
-              </button>
+              </div>
 
               <div class="relative">
                 <button (click)="toggleUserMenu()"
@@ -220,7 +289,7 @@ interface NavSection {
         </header>
 
         <!-- Page content -->
-        <main class="flex-1 min-w-0" (click)="userMenuOpen.set(false)">
+        <main class="flex-1 min-w-0" (click)="closeDropdowns()">
           <router-outlet></router-outlet>
         </main>
       </div>
@@ -272,13 +341,17 @@ interface NavSection {
   `],
 })
 export class AdminLayoutComponent implements OnInit {
-  protected authService = inject(AuthService);
-  private statsService  = inject(AdminStatsService);
-  private router        = inject(Router);
+  protected authService        = inject(AuthService);
+  private statsService         = inject(AdminStatsService);
+  private router               = inject(Router);
+  protected notificationService = inject(NotificationService);
 
-  mobileMenuOpen = signal(false);
-  userMenuOpen   = signal(false);
-  pendingCount   = signal(0);
+  mobileMenuOpen    = signal(false);
+  userMenuOpen      = signal(false);
+  notificationsOpen = signal(false);
+  notifications     = signal<NotificationDto[]>([]);
+  loadingNotifs     = signal(false);
+  pendingCount      = signal(0);
 
   navSections: NavSection[] = [
     {
@@ -293,8 +366,9 @@ export class AdminLayoutComponent implements OnInit {
     {
       title: 'Analytics',
       items: [
-        { label: 'Statistiques', icon: 'trending-up', route: '/admin/stats' },
-        { label: 'Paramètres',   icon: 'settings',    route: '/admin/parametres' },
+        { label: 'Statistiques',   icon: 'trending-up', route: '/admin/stats' },
+        { label: 'Paramètres',     icon: 'settings',    route: '/admin/parametres' },
+        { label: 'Notifications',  icon: 'bell',        route: '/admin/notifications', badge: () => this.notificationService.unreadCount() },
       ],
     },
   ];
@@ -306,8 +380,12 @@ export class AdminLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.notificationService.refreshUnreadCount();
     this.loadPendingCount();
-    setInterval(() => this.loadPendingCount(), 30_000);
+    setInterval(() => {
+      this.notificationService.refreshUnreadCount();
+      this.loadPendingCount();
+    }, 30_000);
   }
 
   loadPendingCount() {
@@ -317,9 +395,83 @@ export class AdminLayoutComponent implements OnInit {
     });
   }
 
+  toggleNotifications() {
+    this.notificationsOpen.update(v => !v);
+    this.userMenuOpen.set(false);
+    if (this.notificationsOpen()) {
+      this.loadNotifications();
+    }
+  }
+
+  loadNotifications() {
+    this.loadingNotifs.set(true);
+    this.notificationService.list(10).subscribe({
+      next: (data) => {
+        this.notifications.set(data);
+        this.loadingNotifs.set(false);
+      },
+      error: () => this.loadingNotifs.set(false),
+    });
+  }
+
+  handleNotificationClick(notif: NotificationDto) {
+    if (!notif.read) {
+      this.notificationService.markAsRead(notif.id).subscribe({
+        next: () => this.notificationService.refreshUnreadCount(),
+      });
+    }
+    if (notif.linkUrl) {
+      this.router.navigateByUrl(notif.linkUrl);
+    }
+    this.notificationsOpen.set(false);
+  }
+
+  markAllRead() {
+    this.notificationService.markAllAsRead().subscribe({
+      next: () => {
+        this.notificationService.refreshUnreadCount();
+        this.loadNotifications();
+      },
+    });
+  }
+
+  formatRelative(dateStr: string): string {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return "A l'instant";
+    if (diffMins < 60) return `il y a ${diffMins} min`;
+    if (diffHours < 24) return `il y a ${diffHours}h`;
+    if (diffDays < 7) return `il y a ${diffDays}j`;
+    return date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
+  }
+
+  getNotifIcon(type: string): string {
+    switch (type) {
+      case 'RESERVATION_CREATED': return 'calendar-plus';
+      case 'RESERVATION_CONFIRMED': return 'check-circle';
+      case 'RESERVATION_CANCELLED': return 'x-circle';
+      default: return 'bell';
+    }
+  }
+
+  getNotifColor(type: string): string {
+    switch (type) {
+      case 'RESERVATION_CREATED': return 'primary';
+      case 'RESERVATION_CONFIRMED': return 'blue';
+      case 'RESERVATION_CANCELLED': return 'red';
+      default: return 'amber';
+    }
+  }
+
   toggleMobileMenu() { this.mobileMenuOpen.update(v => !v); }
-  toggleUserMenu()   { this.userMenuOpen.update(v => !v); }
+  toggleUserMenu()   { this.userMenuOpen.update(v => !v); this.notificationsOpen.set(false); }
   closeMobileMenu()  { this.mobileMenuOpen.set(false); }
+  closeDropdowns()   { this.userMenuOpen.set(false); this.notificationsOpen.set(false); }
 
   logout() {
     this.authService.logout();
