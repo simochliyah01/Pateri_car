@@ -34,7 +34,7 @@ interface NavSection {
       <!-- PREMIUM SIDEBAR -->
       <aside [class.translate-x-0]="mobileMenuOpen()"
              [class.-translate-x-full]="!mobileMenuOpen()"
-             class="fixed inset-y-0 left-0 z-50 w-72 bg-ink-900 transform transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-auto lg:flex-shrink-0 flex flex-col">
+             class="fixed inset-y-0 left-0 z-50 w-72 bg-ink-900 transform transition-transform duration-300 lg:translate-x-0 flex flex-col">
 
         <!-- Brand -->
         <div class="relative px-5 pt-6 pb-5 border-b border-white/5">
@@ -122,7 +122,7 @@ interface NavSection {
       </aside>
 
       <!-- MAIN AREA -->
-      <div class="flex-1 flex flex-col min-w-0">
+      <div class="flex-1 flex flex-col min-w-0 lg:ml-72">
 
         <!-- PREMIUM TOPBAR -->
         <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-lg border-b border-gray-200/60">
