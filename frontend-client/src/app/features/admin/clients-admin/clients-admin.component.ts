@@ -7,8 +7,6 @@ import { Client, ClientStatus } from '../../../core/models/client.model';
 
 type StatusFilter = 'ALL' | ClientStatus;
 type SortKey = 'newest' | 'name' | 'reservationsDesc' | 'reservationsAsc';
-type ViewMode = 'cards' | 'table';
-
 @Component({
   selector: 'app-admin-clients',
   standalone: true,
@@ -118,22 +116,6 @@ type ViewMode = 'cards' | 'table';
                          class="absolute right-3 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none"></lucide-icon>
           </div>
 
-          <div class="flex border border-gray-200 rounded-lg overflow-hidden bg-surface-50">
-            <button (click)="viewMode.set('cards')"
-                    [class.bg-white]="viewMode() === 'cards'"
-                    [class.text-primary-600]="viewMode() === 'cards'"
-                    [class.text-ink-500]="viewMode() !== 'cards'"
-                    class="px-3 py-2.5 text-sm transition-colors">
-              <lucide-icon name="layout-grid" [size]="16"></lucide-icon>
-            </button>
-            <button (click)="viewMode.set('table')"
-                    [class.bg-white]="viewMode() === 'table'"
-                    [class.text-primary-600]="viewMode() === 'table'"
-                    [class.text-ink-500]="viewMode() !== 'table'"
-                    class="px-3 py-2.5 text-sm transition-colors">
-              <lucide-icon name="list" [size]="16"></lucide-icon>
-            </button>
-          </div>
         </div>
       </div>
 
@@ -178,82 +160,6 @@ type ViewMode = 'cards' | 'table';
             }
           </p>
         </div>
-      } @else if (viewMode() === 'cards') {
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          @for (c of paginatedClients(); track c.id) {
-            <div class="bg-white border border-gray-200 rounded-2xl p-5 hover:shadow-lg hover:border-primary-200 transition-all cursor-pointer"
-                 (click)="openDetails(c)">
-              <!-- Header -->
-              <div class="flex items-start gap-3 mb-4">
-                <div [ngClass]="getAvatarClasses(c)"
-                     class="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-white text-sm flex-shrink-0 shadow-md">
-                  {{ getInitials(c) }}
-                </div>
-                <div class="flex-1 min-w-0">
-                  <h3 class="font-bold text-ink-900 truncate">{{ c.firstName }} {{ c.lastName }}</h3>
-                  <p class="text-xs text-ink-500 truncate">{{ c.email }}</p>
-                </div>
-                <span [ngClass]="getStatusBadgeClasses(c.status)"
-                      class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap flex-shrink-0">
-                  @if (c.status === 'VIP') {
-                    <lucide-icon name="star" [size]="10"></lucide-icon>
-                  }
-                  {{ getStatusLabel(c.status) }}
-                </span>
-              </div>
-
-              <!-- Contact -->
-              <div class="space-y-1.5 mb-4 pb-4 border-b border-gray-100">
-                @if (c.phone) {
-                  <div class="flex items-center gap-2 text-xs text-ink-700">
-                    <lucide-icon name="phone" [size]="12" class="text-ink-400 flex-shrink-0"></lucide-icon>
-                    <span>{{ c.phone }}</span>
-                  </div>
-                }
-                @if (c.city) {
-                  <div class="flex items-center gap-2 text-xs text-ink-700">
-                    <lucide-icon name="map-pin" [size]="12" class="text-ink-400 flex-shrink-0"></lucide-icon>
-                    <span>{{ c.city }}</span>
-                  </div>
-                }
-                @if (c.cinPassport) {
-                  <div class="flex items-center gap-2 text-xs text-ink-700">
-                    <lucide-icon name="file-text" [size]="12" class="text-ink-400 flex-shrink-0"></lucide-icon>
-                    <span class="font-mono">{{ c.cinPassport }}</span>
-                  </div>
-                }
-              </div>
-
-              <!-- Stats -->
-              <div class="grid grid-cols-2 gap-2">
-                <div class="bg-surface-50 rounded-lg p-2.5">
-                  <div class="text-[10px] font-bold text-ink-500 uppercase tracking-wider">Réservations</div>
-                  <div class="text-xl font-bold text-ink-900 mt-0.5">{{ c.reservationCount ?? 0 }}</div>
-                </div>
-                <div class="bg-surface-50 rounded-lg p-2.5">
-                  <div class="text-[10px] font-bold text-ink-500 uppercase tracking-wider">Inscrit</div>
-                  <div class="text-xs font-semibold text-ink-900 mt-0.5">{{ formatDate(c.createdAt) }}</div>
-                </div>
-              </div>
-            </div>
-          }
-        </div>
-
-        @if (totalPages() > 1) {
-          <div class="mt-6 flex items-center justify-between">
-            <span class="text-xs text-ink-500">Page {{ currentPage() }} / {{ totalPages() }}</span>
-            <div class="flex gap-1">
-              <button (click)="prevPage()" [disabled]="currentPage() === 1"
-                      class="px-3 py-1.5 text-xs font-semibold border border-gray-200 rounded-lg hover:border-primary-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
-                Précédent
-              </button>
-              <button (click)="nextPage()" [disabled]="currentPage() === totalPages()"
-                      class="px-3 py-1.5 text-xs font-semibold border border-gray-200 rounded-lg hover:border-primary-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
-                Suivant
-              </button>
-            </div>
-          </div>
-        }
       } @else {
         <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden">
           <div class="overflow-x-auto">
@@ -472,7 +378,6 @@ export class ClientsAdminComponent implements OnInit {
   searchQuery = signal('');
   status      = signal<StatusFilter>('ALL');
   sortBy      = signal<SortKey>('newest');
-  viewMode    = signal<ViewMode>('cards');
   currentPage = signal(1);
   readonly pageSize = 9;
 

@@ -7,8 +7,6 @@ import { ReservationService, ReservationDto } from '../../../core/services/reser
 
 type StatusFilter = 'ALL' | 'PENDING' | 'CONFIRMED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'DISPUTE';
 type SortKey = 'newest' | 'oldest' | 'priceDesc' | 'priceAsc' | 'startDate';
-type ViewMode = 'cards' | 'table';
-
 @Component({
   selector: 'app-admin-reservations',
   standalone: true,
@@ -142,24 +140,6 @@ type ViewMode = 'cards' | 'table';
                          class="absolute right-3 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none"></lucide-icon>
           </div>
 
-          <div class="flex border border-gray-200 rounded-lg overflow-hidden bg-surface-50">
-            <button (click)="viewMode.set('cards')"
-                    [class.bg-white]="viewMode() === 'cards'"
-                    [class.text-primary-600]="viewMode() === 'cards'"
-                    [class.text-ink-500]="viewMode() !== 'cards'"
-                    class="px-3 py-2.5 text-sm transition-colors"
-                    title="Vue cartes">
-              <lucide-icon name="layout-grid" [size]="16"></lucide-icon>
-            </button>
-            <button (click)="viewMode.set('table')"
-                    [class.bg-white]="viewMode() === 'table'"
-                    [class.text-primary-600]="viewMode() === 'table'"
-                    [class.text-ink-500]="viewMode() !== 'table'"
-                    class="px-3 py-2.5 text-sm transition-colors"
-                    title="Vue tableau">
-              <lucide-icon name="list" [size]="16"></lucide-icon>
-            </button>
-          </div>
         </div>
       </div>
 
@@ -201,89 +181,6 @@ type ViewMode = 'cards' | 'table';
             <p class="text-sm text-ink-500">Les réservations apparaîtront ici</p>
           }
         </div>
-      } @else if (viewMode() === 'cards') {
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          @for (r of paginatedReservations(); track r.id) {
-            <div class="bg-white border border-gray-200 rounded-2xl p-5 hover:shadow-lg hover:border-primary-200 transition-all">
-              <div class="flex items-start justify-between mb-4">
-                <div class="flex items-center gap-3 min-w-0">
-                  <div class="w-11 h-11 bg-gradient-to-br from-primary-50 to-surface-50 rounded-xl flex items-center justify-center flex-shrink-0 border border-gray-100">
-                    <lucide-icon name="car" [size]="18" class="text-primary-600"></lucide-icon>
-                  </div>
-                  <div class="min-w-0">
-                    <div class="font-mono text-[11px] font-bold text-ink-500 mb-0.5">{{ r.reservationNumber }}</div>
-                    <div class="font-bold text-ink-900 text-sm truncate">{{ r.vehicleBrand }} {{ r.vehicleModel }}</div>
-                  </div>
-                </div>
-                <span [ngClass]="getStatusBadgeClasses(r.status)"
-                      class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap flex-shrink-0 ml-2">
-                  {{ getStatusLabel(r.status) }}
-                </span>
-              </div>
-
-              <div class="space-y-2 mb-4 pb-4 border-b border-gray-100">
-                <div class="flex items-center gap-2 text-sm">
-                  <lucide-icon name="user" [size]="13" class="text-ink-400 flex-shrink-0"></lucide-icon>
-                  <span class="font-semibold text-ink-900 truncate">{{ r.clientName }}</span>
-                  @if (r.clientEmail) {
-                    <span class="text-ink-500 text-xs truncate hidden sm:block">· {{ r.clientEmail }}</span>
-                  }
-                </div>
-                <div class="flex items-center gap-2 text-sm text-ink-700">
-                  <lucide-icon name="calendar" [size]="13" class="text-ink-400 flex-shrink-0"></lucide-icon>
-                  <span>{{ formatDate(r.startDate) }} → {{ formatDate(r.endDate) }}</span>
-                  <span class="text-ink-500 text-xs">({{ r.durationDays }}j)</span>
-                </div>
-                <div class="flex items-center gap-2 text-sm text-ink-700">
-                  <lucide-icon name="map-pin" [size]="13" class="text-ink-400 flex-shrink-0"></lucide-icon>
-                  <span>{{ getPickupLabel(r.pickupLocation) }}</span>
-                </div>
-              </div>
-
-              <div class="flex items-center justify-between">
-                <div>
-                  <div class="text-[10px] font-bold text-ink-500 uppercase tracking-wider">Total</div>
-                  <div class="text-lg font-bold text-ink-900">{{ r.totalPrice }} DH</div>
-                </div>
-                <div class="flex gap-1">
-                  @if (r.status === 'PENDING') {
-                    <button (click)="doConfirm(r)" [disabled]="actioning() === r.id"
-                            title="Confirmer"
-                            class="p-2 bg-primary-500 hover:bg-primary-600 disabled:bg-gray-300 text-white rounded-lg transition-colors">
-                      <lucide-icon name="check" [size]="14"></lucide-icon>
-                    </button>
-                  }
-                  @if (r.status === 'PENDING' || r.status === 'CONFIRMED') {
-                    <button (click)="openCancel(r)" title="Annuler"
-                            class="p-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-colors">
-                      <lucide-icon name="x" [size]="14"></lucide-icon>
-                    </button>
-                  }
-                  <button (click)="openDetails(r)" title="Détails"
-                          class="p-2 bg-gray-100 hover:bg-gray-200 text-ink-700 rounded-lg transition-colors">
-                    <lucide-icon name="eye" [size]="14"></lucide-icon>
-                  </button>
-                </div>
-              </div>
-            </div>
-          }
-        </div>
-
-        @if (totalPages() > 1) {
-          <div class="mt-6 flex items-center justify-between">
-            <span class="text-xs text-ink-500">Page {{ currentPage() }} / {{ totalPages() }}</span>
-            <div class="flex gap-1">
-              <button (click)="prevPage()" [disabled]="currentPage() === 1"
-                      class="px-3 py-1.5 text-xs font-semibold border border-gray-200 rounded-lg hover:border-primary-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
-                Précédent
-              </button>
-              <button (click)="nextPage()" [disabled]="currentPage() === totalPages()"
-                      class="px-3 py-1.5 text-xs font-semibold border border-gray-200 rounded-lg hover:border-primary-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
-                Suivant
-              </button>
-            </div>
-          </div>
-        }
       } @else {
         <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden">
           <div class="overflow-x-auto">
@@ -533,7 +430,6 @@ export class ReservationsAdminComponent implements OnInit {
   searchQuery = signal('');
   status      = signal<StatusFilter>('ALL');
   sortBy      = signal<SortKey>('newest');
-  viewMode    = signal<ViewMode>('cards');
   currentPage = signal(1);
   readonly pageSize = 8;
 
