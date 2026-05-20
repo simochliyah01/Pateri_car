@@ -7,8 +7,6 @@ import { Vehicle, VehicleStatus } from '../../../core/models/vehicle.model';
 import { VehicleFormModalComponent } from './vehicle-form-modal.component';
 
 type SortKey = 'newest' | 'priceAsc' | 'priceDesc' | 'name' | 'mileageAsc' | 'mileageDesc' | 'yearDesc';
-type ViewMode = 'table' | 'grid';
-
 @Component({
   selector: 'app-vehicles-admin',
   standalone: true,
@@ -175,25 +173,6 @@ type ViewMode = 'table' | 'grid';
           <option value="UTILITAIRE">Utilitaire</option>
         </select>
 
-        <!-- View toggle -->
-        <div class="flex border border-gray-200 rounded-lg overflow-hidden bg-surface-50">
-          <button (click)="viewMode.set('table')"
-                  [class.bg-white]="viewMode() === 'table'"
-                  [class.text-primary-600]="viewMode() === 'table'"
-                  [class.text-ink-500]="viewMode() !== 'table'"
-                  class="px-3 py-2.5 font-semibold text-sm transition-colors"
-                  title="Vue tableau">
-            <lucide-icon name="list" [size]="16"></lucide-icon>
-          </button>
-          <button (click)="viewMode.set('grid')"
-                  [class.bg-white]="viewMode() === 'grid'"
-                  [class.text-primary-600]="viewMode() === 'grid'"
-                  [class.text-ink-500]="viewMode() !== 'grid'"
-                  class="px-3 py-2.5 font-semibold text-sm transition-colors"
-                  title="Vue grille">
-            <lucide-icon name="layout-grid" [size]="16"></lucide-icon>
-          </button>
-        </div>
       </div>
 
       <!-- Active filter chips -->
@@ -286,7 +265,7 @@ type ViewMode = 'table' | 'grid';
           </button>
         }
       </div>
-    } @else if (viewMode() === 'table') {
+    } @else {
       <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full">
@@ -470,111 +449,6 @@ type ViewMode = 'table' | 'grid';
           </div>
         }
       </div>
-    } @else {
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        @for (v of paginatedVehicles(); track v.id) {
-          <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden
-                      hover:border-primary-300 hover:shadow-lg transition-all group">
-
-            <!-- Image -->
-            <div class="relative aspect-[4/3] bg-gradient-to-br from-primary-50
-                        to-surface-50 overflow-hidden">
-              @if (v.hasImage) {
-                <img [src]="getImageUrl(v.id)"
-                     [alt]="v.brand + ' ' + v.model"
-                     class="w-full h-full object-cover group-hover:scale-105
-                            transition-transform duration-300"
-                     loading="lazy" />
-              } @else {
-                <div class="absolute inset-0 flex items-center justify-center">
-                  <lucide-icon name="car" [size]="40"
-                               class="text-primary-300"></lucide-icon>
-                </div>
-              }
-              <!-- Status badge -->
-              <div class="absolute top-3 left-3">
-                <span [ngClass]="getStatusSelectClasses(v.status)"
-                      class="inline-flex items-center px-2.5 py-1 rounded-full
-                             text-[10px] font-bold border backdrop-blur-sm">
-                  {{ getStatusLabel(v.status) }}
-                </span>
-              </div>
-              <!-- Price badge -->
-              <div class="absolute top-3 right-3 bg-white/95 backdrop-blur-sm
-                          px-2.5 py-1 rounded-lg shadow-sm">
-                <span class="text-sm font-bold text-ink-900">{{ v.pricePerDay }}</span>
-                <span class="text-[10px] text-ink-500 ml-0.5">DH/j</span>
-              </div>
-            </div>
-
-            <!-- Body -->
-            <div class="p-4">
-              <h3 class="font-bold text-ink-900 truncate">
-                {{ v.brand }} {{ v.model }}
-              </h3>
-              <p class="text-xs text-ink-500 mb-1">{{ v.year }} · {{ v.color || '—' }}</p>
-              <p class="font-mono text-[11px] font-semibold text-ink-700 mb-3">
-                {{ v.licensePlate }}
-              </p>
-
-              <div class="flex flex-wrap gap-1.5 mb-3">
-                <span class="inline-flex items-center px-2 py-0.5 bg-ink-100
-                             text-ink-700 rounded text-[10px] font-semibold">
-                  {{ getCategoryLabel(v.category) }}
-                </span>
-                <span class="inline-flex items-center px-2 py-0.5 bg-surface-50
-                             text-ink-600 rounded text-[10px]">
-                  {{ getFuelLabel(v.fuelType) }}
-                </span>
-                <span class="inline-flex items-center px-2 py-0.5 bg-surface-50
-                             text-ink-600 rounded text-[10px]">
-                  {{ v.transmission === 'AUTO' ? 'Auto' : 'Manuelle' }}
-                </span>
-              </div>
-
-              <div class="flex items-center justify-between pt-3 border-t border-gray-100">
-                <div class="text-[10px] text-ink-500">
-                  {{ formatMileage(v.currentMileage) }}
-                </div>
-                <div class="flex gap-1">
-                  <button (click)="openEdit(v)" title="Modifier"
-                          class="p-1.5 text-ink-600 hover:bg-primary-50
-                                 hover:text-primary-600 rounded transition-colors">
-                    <lucide-icon name="pencil" [size]="14"></lucide-icon>
-                  </button>
-                  <button (click)="openDelete(v)" title="Supprimer"
-                          class="p-1.5 text-red-600 hover:bg-red-50 rounded
-                                 transition-colors">
-                    <lucide-icon name="trash-2" [size]="14"></lucide-icon>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        }
-      </div>
-
-      @if (totalPages() > 1) {
-        <div class="mt-6 flex items-center justify-between">
-          <span class="text-xs text-ink-500">
-            Page {{ currentPage() }} / {{ totalPages() }}
-          </span>
-          <div class="flex gap-1">
-            <button (click)="prevPage()" [disabled]="currentPage() === 1"
-                    class="px-3 py-1.5 text-xs font-semibold border border-gray-200
-                           rounded hover:border-primary-500 disabled:opacity-30
-                           disabled:cursor-not-allowed transition-colors">
-              ← Précédent
-            </button>
-            <button (click)="nextPage()" [disabled]="currentPage() === totalPages()"
-                    class="px-3 py-1.5 text-xs font-semibold border border-gray-200
-                           rounded hover:border-primary-500 disabled:opacity-30
-                           disabled:cursor-not-allowed transition-colors">
-              Suivant →
-            </button>
-          </div>
-        </div>
-      }
     }
 
     <!-- Form modal -->
@@ -680,7 +554,6 @@ export class VehiclesAdminComponent implements OnInit {
   filterStatus   = signal<'ALL' | VehicleStatus>('ALL');
   filterCategory = signal<string>('ALL');
   sortBy         = signal<SortKey>('newest');
-  viewMode       = signal<ViewMode>('table');
   currentPage    = signal(1);
   pageSize       = 10;
 
