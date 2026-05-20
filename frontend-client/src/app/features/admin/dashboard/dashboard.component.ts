@@ -289,46 +289,74 @@ import { ReservationService } from '../../../core/services/reservation.service';
         <!-- ACTIVITY FEED + QUICK ACTIONS -->
         <div class="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-4 sm:gap-6">
 
-          <!-- Activity Feed -->
-          <div class="bg-white border border-gray-200 rounded-2xl p-5 sm:p-6">
-            <div class="flex items-center justify-between mb-5">
+          <!-- Activity Table -->
+          <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden">
+            <!-- Header -->
+            <div class="px-5 sm:px-6 py-4 border-b border-gray-100 flex items-center justify-between">
               <div>
                 <h3 class="font-bold text-ink-900 flex items-center gap-2">
                   Activité récente
-                  <span class="inline-flex items-center px-1.5 py-0.5 bg-primary-100 text-primary-700 rounded-full text-[10px] font-bold">
+                  <span class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-primary-100 text-primary-700 rounded-full text-[10px] font-bold">
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse"></span>
                     Live
                   </span>
                 </h3>
-                <p class="text-xs text-ink-500">Les derniers événements</p>
+                <p class="text-xs text-ink-500 mt-0.5">Les derniers événements</p>
               </div>
               <a routerLink="/admin/reservations"
-                 class="text-xs font-semibold text-primary-600 hover:text-primary-700">
+                 class="text-xs font-semibold text-primary-600 hover:text-primary-700 flex items-center gap-1">
                 Voir tout
+                <lucide-icon name="arrow-right" [size]="12"></lucide-icon>
               </a>
             </div>
 
             @if (stats()!.activityFeed.length === 0) {
-              <div class="text-center py-10 text-ink-500 text-sm">
-                <lucide-icon name="inbox" [size]="32" class="mx-auto mb-2 text-ink-300"></lucide-icon>
-                <p>Aucune activité récente</p>
+              <div class="text-center py-12 px-6">
+                <lucide-icon name="inbox" [size]="32" class="text-ink-300 mx-auto mb-2"></lucide-icon>
+                <p class="text-sm text-ink-500">Aucune activité récente</p>
               </div>
             } @else {
-              <div class="space-y-1">
-                @for (item of stats()!.activityFeed; track item.id) {
-                  <div class="flex items-start gap-3 p-3 rounded-xl hover:bg-surface-50 transition-colors">
-                    <div [ngClass]="getActivityIconClasses(item.meta?.color)"
-                         class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <lucide-icon [name]="item.meta?.icon || 'circle'" [size]="14"></lucide-icon>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                      <p class="text-sm font-semibold text-ink-900 truncate">{{ item.title }}</p>
-                      <p class="text-[11px] text-ink-500 truncate">{{ item.subtitle }}</p>
-                    </div>
-                    <span class="text-[10px] text-ink-400 font-medium whitespace-nowrap mt-1">
-                      {{ formatRelative(item.timestamp) }}
-                    </span>
-                  </div>
-                }
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead class="bg-surface-50 border-b border-gray-100">
+                    <tr>
+                      <th class="text-left px-5 sm:px-6 py-2.5 text-[10px] font-bold text-ink-500 uppercase tracking-wider w-16">Type</th>
+                      <th class="text-left px-3 py-2.5 text-[10px] font-bold text-ink-500 uppercase tracking-wider">Événement</th>
+                      <th class="text-left px-3 py-2.5 text-[10px] font-bold text-ink-500 uppercase tracking-wider hidden md:table-cell">Détails</th>
+                      <th class="text-right px-5 sm:px-6 py-2.5 text-[10px] font-bold text-ink-500 uppercase tracking-wider w-24">Quand</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (item of stats()!.activityFeed; track item.id) {
+                      <tr class="border-b border-gray-50 last:border-b-0 hover:bg-surface-50 transition-colors cursor-pointer">
+                        <td class="px-5 sm:px-6 py-3">
+                          <div [ngClass]="getActivityIconClasses(item.meta?.color)"
+                               class="w-8 h-8 rounded-lg flex items-center justify-center">
+                            <lucide-icon [name]="item.meta?.icon || 'circle'" [size]="14"></lucide-icon>
+                          </div>
+                        </td>
+                        <td class="px-3 py-3">
+                          <div class="font-semibold text-ink-900 text-sm truncate max-w-[200px]">
+                            {{ item.title }}
+                          </div>
+                          <div class="md:hidden text-[11px] text-ink-500 truncate mt-0.5">
+                            {{ item.subtitle }}
+                          </div>
+                        </td>
+                        <td class="px-3 py-3 hidden md:table-cell">
+                          <span class="text-[11px] text-ink-500 truncate block max-w-[220px]">
+                            {{ item.subtitle }}
+                          </span>
+                        </td>
+                        <td class="px-5 sm:px-6 py-3 text-right">
+                          <span class="text-[11px] font-medium text-ink-500 whitespace-nowrap">
+                            {{ formatRelative(item.timestamp) }}
+                          </span>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
               </div>
             }
           </div>
