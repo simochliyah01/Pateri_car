@@ -299,7 +299,7 @@ interface DayConfig {
                       <input type="number" min="0" [(ngModel)]="form().feeAgence"
                              (ngModelChange)="markDirty()"
                              class="form-input pr-12" />
-                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold">DH</span>
+                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold pointer-events-none">DH</span>
                     </div>
                   </div>
                   <div>
@@ -308,7 +308,7 @@ interface DayConfig {
                       <input type="number" min="0" [(ngModel)]="form().feeGare"
                              (ngModelChange)="markDirty()"
                              class="form-input pr-12" />
-                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold">DH</span>
+                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold pointer-events-none">DH</span>
                     </div>
                   </div>
                   <div>
@@ -317,7 +317,7 @@ interface DayConfig {
                       <input type="number" min="0" [(ngModel)]="form().feeDomicile"
                              (ngModelChange)="markDirty()"
                              class="form-input pr-12" />
-                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold">DH</span>
+                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold pointer-events-none">DH</span>
                     </div>
                   </div>
                 </div>
@@ -342,8 +342,8 @@ interface DayConfig {
                     <div class="relative">
                       <input type="number" min="0" [(ngModel)]="form().pricingGps"
                              (ngModelChange)="markDirty()"
-                             class="form-input pr-16" />
-                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold">DH/jour</span>
+                             class="form-input pr-20" />
+                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold pointer-events-none">DH/jour</span>
                     </div>
                   </div>
                   <div>
@@ -351,8 +351,8 @@ interface DayConfig {
                     <div class="relative">
                       <input type="number" min="0" [(ngModel)]="form().pricingChildSeat"
                              (ngModelChange)="markDirty()"
-                             class="form-input pr-16" />
-                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold">DH/jour</span>
+                             class="form-input pr-20" />
+                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold pointer-events-none">DH/jour</span>
                     </div>
                   </div>
                   <div>
@@ -360,8 +360,8 @@ interface DayConfig {
                     <div class="relative">
                       <input type="number" min="0" [(ngModel)]="form().pricingAdditionalDriver"
                              (ngModelChange)="markDirty()"
-                             class="form-input pr-16" />
-                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold">DH/jour</span>
+                             class="form-input pr-20" />
+                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold pointer-events-none">DH/jour</span>
                     </div>
                   </div>
                   <div>
@@ -369,8 +369,8 @@ interface DayConfig {
                     <div class="relative">
                       <input type="number" min="0" [(ngModel)]="form().pricingFullInsurance"
                              (ngModelChange)="markDirty()"
-                             class="form-input pr-16" />
-                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold">DH/jour</span>
+                             class="form-input pr-20" />
+                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold pointer-events-none">DH/jour</span>
                     </div>
                   </div>
                 </div>
@@ -401,7 +401,7 @@ interface DayConfig {
                       <input type="number" min="1" [(ngModel)]="form().minRentalDays"
                              (ngModelChange)="markDirty()"
                              class="form-input pr-16" />
-                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold">jours</span>
+                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold pointer-events-none">jours</span>
                     </div>
                   </div>
                   <div>
@@ -410,7 +410,7 @@ interface DayConfig {
                       <input type="number" min="1" [(ngModel)]="form().maxRentalDays"
                              (ngModelChange)="markDirty()"
                              class="form-input pr-16" />
-                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold">jours</span>
+                      <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold pointer-events-none">jours</span>
                     </div>
                   </div>
                 </div>
@@ -421,7 +421,7 @@ interface DayConfig {
                     <input type="number" min="0" [(ngModel)]="form().cancellationHours"
                            (ngModelChange)="markDirty()"
                            class="form-input pr-20" />
-                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold">heures</span>
+                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-ink-500 font-bold pointer-events-none">heures</span>
                   </div>
                   <p class="text-xs text-ink-500 mt-2 flex items-center gap-1.5">
                     <lucide-icon name="info" [size]="12"></lucide-icon>
