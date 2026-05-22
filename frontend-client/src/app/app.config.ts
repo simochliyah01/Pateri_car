@@ -27,6 +27,7 @@ import {
   Zap, Inbox, CalendarPlus,
   Ban,
   BellOff, CheckCheck,
+  CalendarCheck, Quote,
 } from 'lucide-angular';
 import { routes } from './app.routes';
 
@@ -60,6 +61,7 @@ export const appConfig: ApplicationConfig = {
         Zap, Inbox, CalendarPlus,
         Ban,
         BellOff, CheckCheck,
+        CalendarCheck, Quote,
       })
     ),
   ]

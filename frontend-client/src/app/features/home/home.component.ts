@@ -244,21 +244,21 @@ import { FadeInDirective } from '../../shared/directives/fade-in.directive';
     <!-- ============================================================ -->
     <section class="py-20 sm:py-24" appFadeIn>
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-end justify-between mb-10">
+        <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
           <div>
-            <span class="text-xs font-semibold text-primary-600 uppercase
-                         tracking-wider mb-3 block">Notre sélection</span>
-            <h2 class="text-3xl sm:text-4xl font-bold text-ink-900 tracking-tight">
-              Des voitures qui vous ressemblent
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary-50 rounded-full mb-3">
+              <lucide-icon name="sparkles" [size]="14" class="text-primary-600"></lucide-icon>
+              <span class="text-[11px] font-bold text-primary-700 uppercase tracking-[0.15em]">Notre sélection</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-ink-900">
+              Véhicules populaires
             </h2>
+            <p class="text-sm text-ink-500 mt-2">Les voitures les plus réservées par nos clients</p>
           </div>
           <a routerLink="/voitures"
-             class="hidden sm:flex items-center gap-2 text-sm font-semibold
-                    text-primary-600 hover:text-primary-700 group">
-            Tout voir
-            <lucide-icon name="arrow-right" [size]="16"
-                         class="group-hover:translate-x-1 transition-transform">
-            </lucide-icon>
+             class="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 hover:text-primary-700 group">
+            Voir tout le catalogue
+            <lucide-icon name="arrow-right" [size]="16" class="group-hover:translate-x-1 transition-transform"></lucide-icon>
           </a>
         </div>
 
@@ -437,20 +437,22 @@ import { FadeInDirective } from '../../shared/directives/fade-in.directive';
           </h2>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
-          <div class="hidden lg:block absolute top-7 left-[12.5%] right-[12.5%]
-                      h-px bg-gradient-to-r from-primary-500/30 via-primary-500
-                      to-primary-500/30"></div>
-
-          @for (step of steps; track step.number) {
-            <div class="relative text-center" appFadeIn>
-              <div class="relative z-10 w-14 h-14 bg-primary-500 text-white
-                          rounded-full flex items-center justify-center
-                          font-bold text-xl mx-auto mb-5 ring-4 ring-ink-900">
-                {{ step.number }}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          @for (step of howItWorksSteps; track step.num; let i = $index) {
+            <div class="relative group">
+              @if (i < 3) {
+                <div class="hidden lg:block absolute top-8 left-[60%] w-full h-px bg-gradient-to-r from-primary-500/40 to-transparent"></div>
+              }
+              <div class="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/[0.08] hover:border-primary-500/30 transition-all">
+                <div class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-primary-500 text-white text-sm font-bold flex items-center justify-center shadow-lg shadow-primary-500/40">
+                  {{ step.num }}
+                </div>
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shadow-lg shadow-primary-500/30 mb-4 group-hover:scale-110 transition-transform">
+                  <lucide-icon [name]="step.icon" [size]="24" class="text-white"></lucide-icon>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">{{ step.title }}</h3>
+                <p class="text-sm text-white/60 leading-relaxed">{{ step.desc }}</p>
               </div>
-              <h3 class="font-semibold text-lg mb-2">{{ step.title }}</h3>
-              <p class="text-sm text-white/60 leading-relaxed">{{ step.description }}</p>
             </div>
           }
         </div>
@@ -476,22 +478,39 @@ import { FadeInDirective } from '../../shared/directives/fade-in.directive';
           </h2>
         </div>
 
+        <!-- Trust strip -->
+        <div class="flex flex-wrap items-center justify-center gap-6 sm:gap-10 mb-10">
+          <div class="text-center">
+            <div class="text-2xl sm:text-3xl font-bold text-ink-900">4.8/5</div>
+            <div class="text-xs text-ink-500">Note moyenne</div>
+          </div>
+          <div class="w-px h-10 bg-gray-200"></div>
+          <div class="text-center">
+            <div class="text-2xl sm:text-3xl font-bold text-ink-900">500+</div>
+            <div class="text-xs text-ink-500">Clients satisfaits</div>
+          </div>
+          <div class="w-px h-10 bg-gray-200"></div>
+          <div class="text-center">
+            <div class="text-2xl sm:text-3xl font-bold text-ink-900">98%</div>
+            <div class="text-xs text-ink-500">Recommandent</div>
+          </div>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           @for (t of testimonials; track t.name) {
             <div class="bg-white border border-gray-200 rounded-2xl p-6
                         hover:border-primary-500 hover:-translate-y-1
                         transition-all duration-300">
-              <div class="flex gap-0.5 mb-4">
+              <lucide-icon name="quote" [size]="20" class="text-primary-200 mb-2"></lucide-icon>
+              <div class="flex gap-0.5 mb-3">
                 @for (s of [1,2,3,4,5]; track s) {
-                  <lucide-icon name="star" [size]="14" class="text-primary-500"></lucide-icon>
+                  <lucide-icon name="star" [size]="14" class="text-amber-400 fill-amber-400"></lucide-icon>
                 }
               </div>
               <p class="text-ink-700 leading-relaxed mb-6 text-sm">"{{ t.text }}"</p>
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-primary-50 text-primary-700
-                            rounded-full flex items-center justify-center
-                            font-semibold text-sm flex-shrink-0">
-                  {{ t.initials }}
+                <div class="w-11 h-11 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-md">
+                  {{ getTestimonialInitials(t.name) }}
                 </div>
                 <div>
                   <p class="font-semibold text-ink-900 text-sm">{{ t.name }}</p>
@@ -526,19 +545,30 @@ import { FadeInDirective } from '../../shared/directives/fade-in.directive';
             </p>
             <div class="flex flex-col sm:flex-row gap-3">
               <a routerLink="/voitures"
-                 class="inline-flex items-center justify-center gap-2
-                        bg-primary-500 hover:bg-primary-600 text-white
-                        font-semibold px-7 py-3.5 rounded-lg transition-colors">
+                 class="inline-flex items-center justify-center gap-2 bg-white hover:bg-primary-50 text-ink-900 font-bold px-6 py-3.5 rounded-xl shadow-xl transition-all hover:scale-105">
+                <lucide-icon name="car" [size]="18"></lucide-icon>
                 Voir nos voitures
-                <lucide-icon name="arrow-right" [size]="18"></lucide-icon>
+                <lucide-icon name="arrow-right" [size]="16"></lucide-icon>
               </a>
-              <a class="inline-flex items-center justify-center gap-2
-                        glass text-white border border-white/30
-                        hover:bg-white/10 font-semibold px-7 py-3.5
-                        rounded-lg transition-colors cursor-pointer">
+              <a routerLink="/contact"
+                 class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 text-white font-bold px-6 py-3.5 rounded-xl transition-all">
                 <lucide-icon name="phone" [size]="18"></lucide-icon>
                 Nous contacter
               </a>
+            </div>
+            <div class="flex flex-wrap gap-6 mt-8 pt-8 border-t border-white/20">
+              <div class="flex items-center gap-2">
+                <lucide-icon name="check-circle" [size]="16" class="text-primary-300"></lucide-icon>
+                <span class="text-sm text-white/80">Sans frais cachés</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <lucide-icon name="check-circle" [size]="16" class="text-primary-300"></lucide-icon>
+                <span class="text-sm text-white/80">Annulation gratuite</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <lucide-icon name="check-circle" [size]="16" class="text-primary-300"></lucide-icon>
+                <span class="text-sm text-white/80">Assistance 24/7</span>
+              </div>
             </div>
           </div>
         </div>
@@ -598,25 +628,25 @@ export class HomeComponent {
       image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=80' },
   ];
 
-  steps = [
-    { number: 1, title: 'Choisissez',
-      description: 'Parcourez notre catalogue et trouvez votre voiture.' },
-    { number: 2, title: 'Réservez',
-      description: 'Sélectionnez vos dates et options en ligne.' },
-    { number: 3, title: 'Confirmation',
-      description: "Notre équipe vous contacte pour finaliser." },
-    { number: 4, title: 'Roulez',
-      description: "Récupérez votre voiture et profitez du voyage." },
+  howItWorksSteps = [
+    { num: 1, icon: 'search',          title: 'Choisissez', desc: 'Parcourez notre flotte et trouvez la voiture idéale' },
+    { num: 2, icon: 'calendar-check',  title: 'Réservez',   desc: 'Sélectionnez vos dates et options en quelques clics' },
+    { num: 3, icon: 'shield-check',    title: 'Confirmez',  desc: 'Recevez la confirmation et préparez vos documents' },
+    { num: 4, icon: 'car',             title: 'Roulez',     desc: 'Récupérez votre véhicule et profitez de la route' },
   ];
 
   testimonials = [
-    { name: 'Karim El Mansouri', initials: 'KM', role: 'Client depuis 2024',
+    { name: 'Karim El Mansouri', role: 'Client depuis 2024',
       text: "Service impeccable, voiture en parfait état. Je recommande vivement PATERI CAR pour la location à Taza." },
-    { name: 'Fatima Zahra', initials: 'FZ', role: 'Cliente régulière',
+    { name: 'Fatima Zahra', role: 'Cliente régulière',
       text: "Tarifs très compétitifs et personnel à l'écoute. La réservation en ligne est super simple." },
-    { name: 'Youssef Bennani', initials: 'YB', role: "Voyage d'affaires",
+    { name: 'Youssef Bennani', role: "Voyage d'affaires",
       text: "Voiture livrée à l'heure, sans frais cachés. Exactement ce que je cherchais pour mes déplacements." },
   ];
+
+  getTestimonialInitials(name: string): string {
+    return name.split(' ').map(p => p[0] ?? '').join('').toUpperCase().slice(0, 2);
+  }
 
   constructor() {
     this.vehicleService.getAllVehicles().subscribe({
