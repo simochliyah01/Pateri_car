@@ -15,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import org.springframework.security.core.Authentication;
 
 @RestController
 @RequestMapping("/auth")
@@ -42,6 +43,20 @@ public class AuthController {
         return ResponseEntity.ok(authService.refreshToken(request));
     }
 
+    @PutMapping("/change-password")
+    @Operation(summary = "Change the authenticated user's password",
+               security = @SecurityRequirement(name = "bearerAuth"))
+    public ResponseEntity<Void> changePassword(
+            Authentication authentication,
+            @RequestBody Map<String, String> body) {
+        authService.changePassword(
+            authentication.getName(),
+            body.get("currentPassword"),
+            body.get("newPassword")
+        );
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/me")
     @Operation(summary = "Get the currently authenticated user",
                security = @SecurityRequirement(name = "bearerAuth"))
@@ -54,6 +69,7 @@ public class AuthController {
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
+                .phone(user.getPhone())
                 .role(user.getRole().getName())
                 .build());
     }

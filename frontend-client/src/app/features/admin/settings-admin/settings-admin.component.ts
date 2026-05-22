@@ -156,19 +156,19 @@ interface DayConfig {
                   <div>
                     <label class="form-label">Email professionnel *</label>
                     <div class="relative">
-                      <lucide-icon name="mail" [size]="14" class="absolute left-3 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none"></lucide-icon>
+                      <lucide-icon name="mail" [size]="14" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none"></lucide-icon>
                       <input type="email" [(ngModel)]="form().email"
                              (ngModelChange)="markDirty()"
-                             class="form-input pl-10" />
+                             class="form-input-icon" />
                     </div>
                   </div>
                   <div>
                     <label class="form-label">Téléphone *</label>
                     <div class="relative">
-                      <lucide-icon name="phone" [size]="14" class="absolute left-3 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none"></lucide-icon>
+                      <lucide-icon name="phone" [size]="14" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none"></lucide-icon>
                       <input type="tel" [(ngModel)]="form().phone"
                              (ngModelChange)="markDirty()"
-                             class="form-input pl-10" />
+                             class="form-input-icon" />
                     </div>
                   </div>
                 </div>
@@ -176,11 +176,11 @@ interface DayConfig {
                 <div>
                   <label class="form-label">Adresse</label>
                   <div class="relative">
-                    <lucide-icon name="map-pin" [size]="14" class="absolute left-3 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none"></lucide-icon>
+                    <lucide-icon name="map-pin" [size]="14" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none"></lucide-icon>
                     <input type="text" [(ngModel)]="form().address"
                            (ngModelChange)="markDirty()"
                            placeholder="Avenue, rue, numéro..."
-                           class="form-input pl-10" />
+                           class="form-input-icon" />
                   </div>
                 </div>
 
@@ -530,15 +530,77 @@ interface DayConfig {
                     </div>
                   </div>
 
-                  <div class="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center flex-shrink-0">
-                      <lucide-icon name="info" [size]="14" class="text-white"></lucide-icon>
+                </div>
+              </div>
+
+              <!-- Change password -->
+              <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden">
+                <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-br from-blue-50/50 to-white">
+                  <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                      <lucide-icon name="lock" [size]="20" class="text-white"></lucide-icon>
                     </div>
-                    <p class="text-xs text-amber-900 leading-relaxed">
-                      La gestion du mot de passe et email sera disponible prochainement.
-                      Contactez le support pour modifier ces informations.
-                    </p>
+                    <div>
+                      <h2 class="text-lg font-bold text-ink-900">Mot de passe</h2>
+                      <p class="text-xs text-ink-500">Modifiez votre mot de passe de connexion</p>
+                    </div>
                   </div>
+                </div>
+
+                <div class="p-6 space-y-4">
+                  <div>
+                    <label class="form-label">Mot de passe actuel</label>
+                    <input type="password"
+                           [ngModel]="pwdCurrent()"
+                           (ngModelChange)="pwdCurrent.set($event)"
+                           placeholder="••••••••"
+                           class="form-input" />
+                  </div>
+
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label class="form-label">Nouveau mot de passe</label>
+                      <input type="password"
+                             [ngModel]="pwdNew()"
+                             (ngModelChange)="pwdNew.set($event)"
+                             placeholder="Min. 8 caractères"
+                             class="form-input" />
+                    </div>
+                    <div>
+                      <label class="form-label">Confirmer le nouveau</label>
+                      <input type="password"
+                             [ngModel]="pwdConfirm()"
+                             (ngModelChange)="pwdConfirm.set($event)"
+                             placeholder="Répétez le mot de passe"
+                             class="form-input" />
+                    </div>
+                  </div>
+
+                  @if (pwdError()) {
+                    <div class="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 flex items-start gap-2">
+                      <lucide-icon name="alert-circle" [size]="16" class="flex-shrink-0 mt-0.5"></lucide-icon>
+                      <span>{{ pwdError() }}</span>
+                    </div>
+                  }
+
+                  @if (pwdSuccess()) {
+                    <div class="p-3 bg-primary-50 border border-primary-200 rounded-lg text-sm text-primary-700 flex items-center gap-2">
+                      <lucide-icon name="check-circle" [size]="16"></lucide-icon>
+                      <span class="font-medium">Mot de passe modifié avec succès</span>
+                    </div>
+                  }
+
+                  <button (click)="submitPasswordChange()"
+                          [disabled]="pwdSaving() || !pwdCurrent() || !pwdNew() || !pwdConfirm()"
+                          class="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-colors">
+                    @if (pwdSaving()) {
+                      <lucide-icon name="loader-2" [size]="14" class="animate-spin"></lucide-icon>
+                      Modification...
+                    } @else {
+                      <lucide-icon name="key" [size]="14"></lucide-icon>
+                      Changer le mot de passe
+                    }
+                  </button>
                 </div>
               </div>
 
@@ -626,6 +688,21 @@ interface DayConfig {
       border-color: #14B8A6;
       box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
     }
+    .form-input-icon {
+      width: 100%;
+      padding: 10px 14px 10px 42px;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      font-size: 14px;
+      color: #0F172A;
+      background: white;
+      transition: all 0.15s;
+    }
+    .form-input-icon:focus {
+      outline: none;
+      border-color: #14B8A6;
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+    }
 
     .settings-tab {
       display: flex;
@@ -662,6 +739,13 @@ export class SettingsAdminComponent implements OnInit {
   savedMessage = signal(false);
   hasChanges = signal(false);
   showResetConfirm = signal(false);
+
+  pwdCurrent = signal('');
+  pwdNew = signal('');
+  pwdConfirm = signal('');
+  pwdSaving = signal(false);
+  pwdError = signal<string | null>(null);
+  pwdSuccess = signal(false);
 
   activeTab = signal<'agency' | 'hours' | 'fees' | 'rules' | 'notifications' | 'account'>('agency');
 
@@ -734,6 +818,47 @@ export class SettingsAdminComponent implements OnInit {
     this.showResetConfirm.set(false);
     this.savedMessage.set(true);
     setTimeout(() => this.savedMessage.set(false), 3000);
+  }
+
+  submitPasswordChange() {
+    this.pwdError.set(null);
+    this.pwdSuccess.set(false);
+
+    const current = this.pwdCurrent();
+    const newPwd = this.pwdNew();
+    const confirm = this.pwdConfirm();
+
+    if (newPwd.length < 8) {
+      this.pwdError.set('Le nouveau mot de passe doit contenir au moins 8 caractères');
+      return;
+    }
+    if (newPwd !== confirm) {
+      this.pwdError.set('Les mots de passe ne correspondent pas');
+      return;
+    }
+    if (newPwd === current) {
+      this.pwdError.set("Le nouveau mot de passe doit être différent de l'actuel");
+      return;
+    }
+
+    this.pwdSaving.set(true);
+    this.authService.changePassword(current, newPwd).subscribe({
+      next: () => {
+        this.pwdSaving.set(false);
+        this.pwdSuccess.set(true);
+        this.pwdCurrent.set('');
+        this.pwdNew.set('');
+        this.pwdConfirm.set('');
+        setTimeout(() => this.pwdSuccess.set(false), 4000);
+      },
+      error: (err: any) => {
+        this.pwdSaving.set(false);
+        this.pwdError.set(
+          err?.message ||
+          'Impossible de modifier le mot de passe. Vérifiez votre mot de passe actuel.'
+        );
+      },
+    });
   }
 
   logout() {
