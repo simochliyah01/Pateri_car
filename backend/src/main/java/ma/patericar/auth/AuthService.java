@@ -1,6 +1,7 @@
 package ma.patericar.auth;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ma.patericar.auth.dto.AuthResponse;
 import ma.patericar.auth.dto.LoginRequest;
 import ma.patericar.auth.dto.RefreshTokenRequest;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -94,10 +96,14 @@ public class AuthService {
 
     @Transactional
     public void changePassword(String email, String currentPassword, String newPassword) {
+        log.info("changePassword called for email: {}", email);
+
         User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable"));
+            .orElseThrow(() -> new IllegalArgumentException("Utilisateur introuvable"));
+        log.info("User found: id={}", user.getId());
 
         if (!passwordEncoder.matches(currentPassword, user.getPasswordHash())) {
+            log.warn("Current password mismatch for {}", email);
             throw new IllegalArgumentException("Le mot de passe actuel est incorrect");
         }
 
@@ -107,6 +113,7 @@ public class AuthService {
 
         user.setPasswordHash(passwordEncoder.encode(newPassword));
         userRepository.save(user);
+        log.info("Password changed successfully for {}", email);
     }
 
     private AuthResponse buildAuthResponse(User user) {

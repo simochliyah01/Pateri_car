@@ -46,9 +46,12 @@ public class AuthController {
     @PutMapping("/change-password")
     @Operation(summary = "Change the authenticated user's password",
                security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<Void> changePassword(
+    public ResponseEntity<?> changePassword(
             Authentication authentication,
             @RequestBody Map<String, String> body) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(401).body(Map.of("message", "Non authentifié"));
+        }
         authService.changePassword(
             authentication.getName(),
             body.get("currentPassword"),
