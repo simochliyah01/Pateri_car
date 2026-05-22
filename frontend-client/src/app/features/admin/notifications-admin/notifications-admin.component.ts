@@ -123,10 +123,7 @@ interface NotifGroup {
             </div>
           }
         </div>
-      }
-
-      <!-- Empty -->
-      @else if (filteredNotifications().length === 0) {
+      } @else if (filteredNotifications().length === 0) {
         <div class="bg-white border-2 border-dashed border-gray-200 rounded-2xl py-16 px-6 text-center">
           <div class="w-16 h-16 bg-gradient-to-br from-surface-50 to-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center">
             <lucide-icon name="bell-off" [size]="28" class="text-ink-400"></lucide-icon>
@@ -144,10 +141,7 @@ interface NotifGroup {
             Les notifications apparaitront ici des qu'il y a de l'activite
           </p>
         </div>
-      }
-
-      <!-- DATE-GROUPED LIST -->
-      @else {
+      } @else {
         <div class="space-y-6">
           @for (group of groupedNotifications(); track group.label) {
             <div>
