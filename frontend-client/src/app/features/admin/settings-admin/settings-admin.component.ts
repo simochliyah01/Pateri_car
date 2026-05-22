@@ -550,29 +550,50 @@ interface DayConfig {
                 <div class="p-6 space-y-4">
                   <div>
                     <label class="form-label">Mot de passe actuel</label>
-                    <input type="password"
-                           [ngModel]="pwdCurrent()"
-                           (ngModelChange)="pwdCurrent.set($event)"
-                           placeholder="••••••••"
-                           class="form-input" />
+                    <div class="relative">
+                      <input [type]="showPwdCurrent() ? 'text' : 'password'"
+                             [ngModel]="pwdCurrent()"
+                             (ngModelChange)="pwdCurrent.set($event)"
+                             placeholder="••••••••"
+                             class="form-input pr-11" />
+                      <button type="button" (click)="togglePwdCurrent()"
+                              class="absolute right-3 top-1/2 -translate-y-1/2 text-ink-400 hover:text-ink-700 transition-colors p-0.5"
+                              [attr.aria-label]="showPwdCurrent() ? 'Masquer' : 'Afficher'">
+                        <lucide-icon [name]="showPwdCurrent() ? 'eye-off' : 'eye'" [size]="16"></lucide-icon>
+                      </button>
+                    </div>
                   </div>
 
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label class="form-label">Nouveau mot de passe</label>
-                      <input type="password"
-                             [ngModel]="pwdNew()"
-                             (ngModelChange)="pwdNew.set($event)"
-                             placeholder="Min. 8 caractères"
-                             class="form-input" />
+                      <div class="relative">
+                        <input [type]="showPwdNew() ? 'text' : 'password'"
+                               [ngModel]="pwdNew()"
+                               (ngModelChange)="pwdNew.set($event)"
+                               placeholder="Min. 8 caractères"
+                               class="form-input pr-11" />
+                        <button type="button" (click)="togglePwdNew()"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-ink-400 hover:text-ink-700 transition-colors p-0.5"
+                                [attr.aria-label]="showPwdNew() ? 'Masquer' : 'Afficher'">
+                          <lucide-icon [name]="showPwdNew() ? 'eye-off' : 'eye'" [size]="16"></lucide-icon>
+                        </button>
+                      </div>
                     </div>
                     <div>
                       <label class="form-label">Confirmer le nouveau</label>
-                      <input type="password"
-                             [ngModel]="pwdConfirm()"
-                             (ngModelChange)="pwdConfirm.set($event)"
-                             placeholder="Répétez le mot de passe"
-                             class="form-input" />
+                      <div class="relative">
+                        <input [type]="showPwdConfirm() ? 'text' : 'password'"
+                               [ngModel]="pwdConfirm()"
+                               (ngModelChange)="pwdConfirm.set($event)"
+                               placeholder="Répétez le mot de passe"
+                               class="form-input pr-11" />
+                        <button type="button" (click)="togglePwdConfirm()"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-ink-400 hover:text-ink-700 transition-colors p-0.5"
+                                [attr.aria-label]="showPwdConfirm() ? 'Masquer' : 'Afficher'">
+                          <lucide-icon [name]="showPwdConfirm() ? 'eye-off' : 'eye'" [size]="16"></lucide-icon>
+                        </button>
+                      </div>
                     </div>
                   </div>
 
@@ -746,6 +767,14 @@ export class SettingsAdminComponent implements OnInit {
   pwdSaving = signal(false);
   pwdError = signal<string | null>(null);
   pwdSuccess = signal(false);
+
+  showPwdCurrent = signal(false);
+  showPwdNew = signal(false);
+  showPwdConfirm = signal(false);
+
+  togglePwdCurrent() { this.showPwdCurrent.update(v => !v); }
+  togglePwdNew() { this.showPwdNew.update(v => !v); }
+  togglePwdConfirm() { this.showPwdConfirm.update(v => !v); }
 
   activeTab = signal<'agency' | 'hours' | 'fees' | 'rules' | 'notifications' | 'account'>('agency');
 
