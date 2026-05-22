@@ -5,6 +5,8 @@ import ma.patericar.auth.dto.AuthResponse;
 import ma.patericar.auth.dto.LoginRequest;
 import ma.patericar.auth.dto.RefreshTokenRequest;
 import ma.patericar.auth.dto.RegisterRequest;
+import ma.patericar.client.Client;
+import ma.patericar.client.ClientRepository;
 import ma.patericar.common.exceptions.ConflictException;
 import ma.patericar.common.exceptions.ResourceNotFoundException;
 import ma.patericar.user.Role;
@@ -25,6 +27,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final ClientRepository clientRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -49,6 +52,18 @@ public class AuthService {
                 .build();
 
         userRepository.save(user);
+
+        // For CLIENT role: create a matching Client record so reservations can be linked.
+        if ("CLIENT".equalsIgnoreCase(role.getName())
+                && !clientRepository.existsByEmail(request.getEmail())) {
+            clientRepository.save(Client.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .email(request.getEmail())
+                .phone(request.getPhone())
+                .build());
+        }
+
         return buildAuthResponse(user);
     }
 
@@ -77,6 +92,23 @@ public class AuthService {
         return buildAuthResponse(user);
     }
 
+    @Transactional
+    public void changePassword(String email, String currentPassword, String newPassword) {
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable"));
+
+        if (!passwordEncoder.matches(currentPassword, user.getPasswordHash())) {
+            throw new IllegalArgumentException("Le mot de passe actuel est incorrect");
+        }
+
+        if (newPassword == null || newPassword.length() < 8) {
+            throw new IllegalArgumentException("Le nouveau mot de passe doit contenir au moins 8 caractères");
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
     private AuthResponse buildAuthResponse(User user) {
         String accessToken  = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
@@ -90,6 +122,7 @@ public class AuthService {
                         .email(user.getEmail())
                         .firstName(user.getFirstName())
                         .lastName(user.getLastName())
+                        .phone(user.getPhone())
                         .role(user.getRole().getName())
                         .build())
                 .build();
