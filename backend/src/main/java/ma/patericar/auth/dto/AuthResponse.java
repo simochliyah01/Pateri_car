@@ -20,6 +20,7 @@ public class AuthResponse {
         String email;
         String firstName;
         String lastName;
+        String phone;
         String role;
     }
 }

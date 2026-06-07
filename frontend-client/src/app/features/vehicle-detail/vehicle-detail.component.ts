@@ -696,17 +696,17 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
   getImageUrl(): string {
     const veh = this.vehicle();
     if (!veh) return '';
+    if (veh.hasImage) return this.vehicleService.getVehicleImageUrl(veh.id);
     const map: Record<string, string> = {
-      'Renault Clio': 'assets/cars/clio5.png',
+      'Renault Clio':   'assets/cars/clio5.png',
       'Renault Clio 5': 'assets/cars/clio5.png',
-      'Peugeot 208': 'assets/cars/208.png',
-      'Dacia Logan': 'assets/cars/dacia.png',
-      'Dacia Sandero': 'assets/cars/dacia.png',
-      'Dacia Duster': 'assets/cars/dacia.png',
-      'Opel Corsa': 'assets/cars/opel.png',
+      'Peugeot 208':    'assets/cars/208.png',
+      'Dacia Logan':    'assets/cars/dacia.png',
+      'Dacia Sandero':  'assets/cars/dacia.png',
+      'Dacia Duster':   'assets/cars/dacia.png',
+      'Opel Corsa':     'assets/cars/opel.png',
     };
-    const key = `${veh.brand} ${veh.model}`;
-    return map[key] || 'assets/cars/clio5.png';
+    return map[`${veh.brand} ${veh.model}`] ?? 'assets/cars/clio5.png';
   }
 
   getCategoryLabel(cat: string): string {

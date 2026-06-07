@@ -15,6 +15,7 @@ export interface CreateReservationRequest {
   endDate: string;
   internalNotes?: string;
   options?: { optionType: OptionType; quantity: number }[];
+  clientId?: number;  // omit for CLIENT self-service; provide when admin creates on behalf of client
 }
 
 export interface ReservationOptionDto {
@@ -67,5 +68,20 @@ export class ReservationService {
       `${this.apiUrl}/${id}/cancel`,
       { reason }
     );
+  }
+
+  getAllReservations(
+    status?: ReservationStatus,
+    page = 0,
+    size = 50
+  ): Observable<{ content: ReservationDto[]; totalElements: number;
+                   totalPages: number; number: number; size: number }> {
+    let url = `${this.apiUrl}?page=${page}&size=${size}`;
+    if (status) url += `&status=${status}`;
+    return this.http.get<any>(url);
+  }
+
+  confirm(id: number): Observable<ReservationDto> {
+    return this.http.post<ReservationDto>(`${this.apiUrl}/${id}/confirm`, {});
   }
 }

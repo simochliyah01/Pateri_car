@@ -2,11 +2,13 @@ package ma.patericar.common.exceptions;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -85,6 +87,28 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleIllegalArgument(IllegalArgumentException ex,
                                                           HttpServletRequest req) {
         return build(HttpStatus.BAD_REQUEST, ex.getMessage(), req.getRequestURI(), null);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiError> handleDataIntegrity(DataIntegrityViolationException ex,
+                                                        HttpServletRequest req) {
+        String message = "Conflit de données : une valeur unique est déjà utilisée";
+        if (ex.getMessage() != null && ex.getMessage().contains("email")) {
+            message = "Cet email est déjà utilisé";
+        }
+        return build(HttpStatus.CONFLICT, message, req.getRequestURI(), null);
+    }
+
+    @ExceptionHandler(TransactionSystemException.class)
+    public ResponseEntity<ApiError> handleTransactionSystem(TransactionSystemException ex,
+                                                            HttpServletRequest req) {
+        Throwable cause = ex.getRootCause();
+        if (cause instanceof DataIntegrityViolationException dive) {
+            return handleDataIntegrity(dive, req);
+        }
+        log.error("Transaction error on {}", req.getRequestURI(), ex);
+        return build(HttpStatus.INTERNAL_SERVER_ERROR, "Erreur de transaction",
+                req.getRequestURI(), null);
     }
 
     @ExceptionHandler(Exception.class)

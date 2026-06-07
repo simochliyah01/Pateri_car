@@ -6,6 +6,7 @@ import ma.patericar.auth.dto.AuthResponse;
 import ma.patericar.auth.dto.LoginRequest;
 import ma.patericar.auth.dto.RefreshTokenRequest;
 import ma.patericar.auth.dto.RegisterRequest;
+import ma.patericar.auth.dto.UpdateProfileRequest;
 import ma.patericar.client.Client;
 import ma.patericar.client.ClientRepository;
 import ma.patericar.common.exceptions.ConflictException;
@@ -92,6 +93,48 @@ public class AuthService {
             throw new ma.patericar.common.exceptions.ConflictException("Refresh token has expired");
         }
         return buildAuthResponse(user);
+    }
+
+    @Transactional
+    public AuthResponse.UserInfo updateProfile(String currentEmail, UpdateProfileRequest req) {
+        User user = userRepository.findByEmail(currentEmail)
+            .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable"));
+
+        if (!req.email().equals(currentEmail)) {
+            userRepository.findByEmail(req.email()).ifPresent(existing -> {
+                if (!existing.getId().equals(user.getId())) {
+                    throw new ConflictException("Cet email est déjà utilisé");
+                }
+            });
+        }
+
+        user.setFirstName(req.firstName());
+        user.setLastName(req.lastName());
+        user.setEmail(req.email());
+        if (req.phone() != null && !req.phone().isBlank()) {
+            user.setPhone(req.phone());
+        }
+        User saved = userRepository.save(user);
+
+        // Keep the Client record in sync for CLIENT role users
+        if ("CLIENT".equalsIgnoreCase(saved.getRole().getName())) {
+            clientRepository.findByEmail(currentEmail).ifPresent(client -> {
+                client.setFirstName(saved.getFirstName());
+                client.setLastName(saved.getLastName());
+                client.setEmail(saved.getEmail());
+                if (saved.getPhone() != null) client.setPhone(saved.getPhone());
+                clientRepository.save(client);
+            });
+        }
+
+        return AuthResponse.UserInfo.builder()
+            .id(saved.getId())
+            .email(saved.getEmail())
+            .firstName(saved.getFirstName())
+            .lastName(saved.getLastName())
+            .phone(saved.getPhone())
+            .role(saved.getRole().getName())
+            .build();
     }
 
     @Transactional

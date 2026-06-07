@@ -25,10 +25,14 @@ export interface Vehicle {
   deposit?:           number;
   kmIncludedPerDay?:  number;
   pricePerExtraKm?:   number;
-  currentMileage?:    number;
-  lastOilChangeKm?:   number;
-  status:             VehicleStatus;
-  description?:       string;
-  createdAt?:         string;
-  updatedAt?:         string;
+  currentMileage?:       number;
+  lastOilChangeKm?:      number;
+  insuranceExpiry?:      string;
+  registrationExpiry?:   string;
+  technicalVisitExpiry?: string;
+  status:                VehicleStatus;
+  description?:          string;
+  hasImage?:             boolean;
+  createdAt?:            string;
+  updatedAt?:            string;
 }

@@ -43,6 +43,7 @@ public class VehicleDto {
     Integer lastOilChangeKm;
     VehicleStatus status;
     String description;
+    boolean hasImage;
     OffsetDateTime createdAt;
     OffsetDateTime updatedAt;
 }

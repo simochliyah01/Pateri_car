@@ -38,6 +38,7 @@ public final class VehicleMapper {
                 .lastOilChangeKm(v.getLastOilChangeKm())
                 .status(v.getStatus())
                 .description(v.getDescription())
+                .hasImage(v.getImageData() != null && v.getImageData().length > 0)
                 .createdAt(v.getCreatedAt())
                 .updatedAt(v.getUpdatedAt())
                 .build();

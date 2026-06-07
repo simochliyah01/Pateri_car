@@ -25,13 +25,8 @@ import { FadeInDirective } from '../../shared/directives/fade-in.directive';
                     overflow-hidden min-h-[92vh] flex items-center
                     bg-aurora">
 
-      <!-- Blurred background image -->
+      <!-- Gradient overlay (no external image) -->
       <div class="absolute inset-0 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=2400&q=80"
-             alt=""
-             class="absolute inset-0 w-full h-full object-cover scale-110"
-             style="filter: blur(40px) saturate(1.2);"
-             aria-hidden="true" />
         <div class="absolute inset-0 bg-white/85"></div>
         <div class="absolute inset-0 bg-gradient-to-br from-white/60
                     via-primary-50/40 to-primary-100/30"></div>
@@ -404,10 +399,15 @@ import { FadeInDirective } from '../../shared/directives/fade-in.directive';
             <a [routerLink]="['/voitures']" [queryParams]="{category: cat.key}"
                class="group relative aspect-[3/4] rounded-2xl overflow-hidden
                       cursor-pointer block">
-              <img [src]="cat.image" [alt]="cat.label"
-                   class="w-full h-full object-cover group-hover:scale-110
-                          transition-transform duration-700"
-                   loading="lazy" />
+              @if (getCategoryVehicleImage(cat.key)) {
+                <img [src]="getCategoryVehicleImage(cat.key)!"
+                     [alt]="cat.label"
+                     class="absolute inset-0 w-full h-full object-cover
+                            group-hover:scale-110 transition-transform duration-700"
+                     loading="lazy" />
+              } @else {
+                <div class="absolute inset-0 bg-gradient-to-br from-primary-600 to-primary-900"></div>
+              }
               <div class="absolute inset-0 bg-gradient-to-t from-ink-900/90
                           via-ink-900/30 to-transparent"></div>
               <div class="absolute bottom-4 left-4 right-4">
@@ -462,14 +462,8 @@ import { FadeInDirective } from '../../shared/directives/fade-in.directive';
     <!-- ============================================================ -->
     <!-- TESTIMONIALS                                                   -->
     <!-- ============================================================ -->
-    <section class="py-20 sm:py-24 relative overflow-hidden">
-      <div class="absolute inset-0">
-        <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1920&q=80"
-             alt="" class="w-full h-full object-cover" loading="lazy" />
-        <div class="absolute inset-0 bg-white/95"></div>
-      </div>
-
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" appFadeIn>
+    <section class="py-20 sm:py-24 bg-surface-50 border-y border-gray-100">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" appFadeIn>
         <div class="text-center max-w-2xl mx-auto mb-12">
           <span class="text-xs font-semibold text-primary-600 uppercase
                        tracking-wider mb-3 block">Témoignages</span>
@@ -529,9 +523,13 @@ import { FadeInDirective } from '../../shared/directives/fade-in.directive';
     <section class="py-20 sm:py-24" appFadeIn>
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="relative rounded-3xl overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1920&q=80"
-               alt="" class="absolute inset-0 w-full h-full object-cover"
-               loading="lazy" />
+          @if (ctaVehicleImage()) {
+            <img [src]="ctaVehicleImage()!"
+                 alt="Pateri Car"
+                 class="absolute inset-0 w-full h-full object-cover" />
+          } @else {
+            <div class="absolute inset-0 bg-gradient-to-br from-ink-900 to-primary-900"></div>
+          }
           <div class="absolute inset-0 bg-gradient-to-r from-ink-900/95 to-ink-900/70"></div>
 
           <div class="relative px-8 sm:px-14 py-14 sm:py-20 max-w-2xl">
@@ -586,6 +584,16 @@ export class HomeComponent {
     this.vehicles().filter(v => v.status === 'AVAILABLE').slice(0, 4)
   );
 
+  ctaVehicleImage = computed(() => {
+    const v = this.vehicles().find(x => x.hasImage);
+    return v ? `http://localhost:8090/api/vehicles/${v.id}/image` : null;
+  });
+
+  getCategoryVehicleImage(category: string): string | null {
+    const match = this.vehicles().find(v => v.category === category && v.hasImage);
+    return match ? `http://localhost:8090/api/vehicles/${match.id}/image` : null;
+  }
+
   heroCars: CarSlide[] = [
     {
       id: 1, brand: 'Renault', name: 'Clio 5',
@@ -614,18 +622,12 @@ export class HomeComponent {
   ];
 
   categories = [
-    { key: 'ECONOMY',     label: 'Économique',
-      image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600&q=80' },
-    { key: 'COMPACT',     label: 'Compacte',
-      image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&q=80' },
-    { key: 'SUV',         label: 'SUV',
-      image: 'https://images.unsplash.com/photo-1567343483496-bb5c12bd1d96?w=600&q=80' },
-    { key: 'LUXURY',      label: 'Premium',
-      image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80' },
-    { key: 'VAN',         label: 'Utilitaire',
-      image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&q=80' },
-    { key: 'CONVERTIBLE', label: 'Cabriolet',
-      image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=80' },
+    { key: 'ECONOMIQUE',  label: 'Économique' },
+    { key: 'COMPACTE',    label: 'Compacte'   },
+    { key: 'BERLINE',     label: 'Berline'    },
+    { key: 'SUV',         label: 'SUV'        },
+    { key: 'PREMIUM',     label: 'Premium'    },
+    { key: 'UTILITAIRE',  label: 'Utilitaire' },
   ];
 
   howItWorksSteps = [

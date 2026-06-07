@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule, Phone, Mail, MapPin,
   Facebook, Instagram } from 'lucide-angular';
+import { SettingsService } from '../../../core/services/settings.service';
 
 @Component({
   selector: 'app-footer',
@@ -46,15 +47,15 @@ import { LucideAngularModule, Phone, Mail, MapPin,
             <ul class="space-y-3 text-sm text-gray-400">
               <li class="flex items-start gap-2">
                 <lucide-icon [img]="MapPin" [size]="16" class="mt-0.5 flex-shrink-0"></lucide-icon>
-                <span>Taza, Maroc</span>
+                <span>{{ settings().address }}, {{ settings().city }}</span>
               </li>
               <li class="flex items-center gap-2">
                 <lucide-icon [img]="Phone" [size]="16"></lucide-icon>
-                <span>+212 6XX XXX XXX</span>
+                <span>{{ settings().phone }}</span>
               </li>
               <li class="flex items-center gap-2">
                 <lucide-icon [img]="Mail" [size]="16"></lucide-icon>
-                <span>contact&#64;patericar.ma</span>
+                <span>{{ settings().email }}</span>
               </li>
             </ul>
           </div>
@@ -97,6 +98,9 @@ import { LucideAngularModule, Phone, Mail, MapPin,
   `,
 })
 export class FooterComponent {
+  private settingsService = inject(SettingsService);
+  settings = this.settingsService.settings;
+
   Phone = Phone;
   Mail = Mail;
   MapPin = MapPin;

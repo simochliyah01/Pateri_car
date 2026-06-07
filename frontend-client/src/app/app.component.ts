@@ -29,7 +29,7 @@ export class AppComponent {
 
   isAuthRoute = computed(() => {
     const url = this.currentUrl();
-    return url.startsWith('/login') || url.startsWith('/register');
+    return url.startsWith('/login') || url.startsWith('/register') || url.startsWith('/admin');
   });
 
   constructor() {
