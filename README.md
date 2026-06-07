@@ -24,12 +24,46 @@ PATERI CAR is a full-stack SaaS application that lets a car rental agency manage
 - **Angular CLI 17** — `npm install -g @angular/cli@17`
 - **Docker Desktop** — [docker.com](https://www.docker.com/products/docker-desktop)
 
-## Quick Start
+## Quick Start with Docker (recommended)
+
+The entire stack (PostgreSQL + Spring Boot backend + Angular frontend) runs with a single command.
+
+### 1. Copy the environment template
+```bash
+cp .env.example .env
+# Edit .env and set real values, especially JWT_SECRET
+```
+
+### 2. Start everything
+```bash
+docker compose up -d
+```
+
+### 3. Access the application
+- Frontend (client): http://localhost
+- Backend API: http://localhost:8080/api
+- Swagger UI: http://localhost:8080/api/docs
+- PostgreSQL: localhost:5432
+
+### 4. View logs
+```bash
+docker compose logs -f
+```
+
+### 5. Stop and clean up
+```bash
+docker compose down              # stop containers, keep data
+docker compose down -v           # stop containers AND delete volumes (full reset)
+```
+
+---
+
+## Manual Setup (without Docker)
 
 ### 1. Start the database
 
 ```bash
-docker compose up -d
+docker compose up postgres -d
 ```
 
 PostgreSQL will be available on `localhost:5432`.  
