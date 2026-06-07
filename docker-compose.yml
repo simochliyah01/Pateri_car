@@ -67,6 +67,12 @@ services:
       JWT_SECRET:            ${JWT_SECRET}
       FRONTEND_CLIENT_URL:   ${FRONTEND_CLIENT_URL:-http://localhost}
       FRONTEND_ADMIN_URL:    ${FRONTEND_ADMIN_URL:-http://localhost}
+      # Mail — defaults to disabled/localhost; override in .env for real SMTP
+      MAIL_HOST:             ${MAIL_HOST:-localhost}
+      MAIL_PORT:             ${MAIL_PORT:-1025}
+      MAIL_USERNAME:         ${MAIL_USERNAME:-}
+      MAIL_PASSWORD:         ${MAIL_PASSWORD:-}
+      MANAGEMENT_HEALTH_MAIL_ENABLED: "false"
     ports:
       - "${BACKEND_PORT:-8080}:8080"
     volumes:
