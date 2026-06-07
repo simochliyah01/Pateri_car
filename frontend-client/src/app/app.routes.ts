@@ -23,6 +23,13 @@ export const routes: Routes = [
     title: 'Détail voiture - PATERI CAR'
   },
   {
+    path: 'profile',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/profile/profile.component')
+      .then(m => m.ProfileComponent),
+    title: 'Mon profil - PATERI CAR'
+  },
+  {
     path: 'voitures/:id/reserver',
     canActivate: [authGuard],
     loadComponent: () => import('./features/reservation-wizard/reservation-wizard.component')

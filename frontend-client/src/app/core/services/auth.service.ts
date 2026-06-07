@@ -48,6 +48,19 @@ export class AuthService {
     return this.http.put<void>(`${this.apiUrl}/change-password`, { currentPassword, newPassword });
   }
 
+  updateProfile(data: { firstName: string; lastName: string; email: string; phone?: string }): Observable<AuthUser> {
+    return this.http.put<AuthUser>(`${this.apiUrl}/profile`, data);
+  }
+
+  refreshCurrentUser(updatedUser: Partial<AuthUser>): void {
+    const stored = localStorage.getItem(STORAGE_KEYS.USER);
+    if (stored) {
+      const merged: AuthUser = { ...JSON.parse(stored), ...updatedUser };
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(merged));
+      this._currentUser.set(merged);
+    }
+  }
+
   logout(): void {
     localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
     localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);

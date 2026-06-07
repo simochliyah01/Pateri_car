@@ -328,12 +328,25 @@ interface OptionItem {
                     <div>
                       <label class="block text-sm font-semibold text-ink-900
                                     mb-2">Téléphone</label>
-                      <input type="tel"
-                             [value]="currentUser()?.phone || ''"
-                             disabled
-                             class="w-full px-4 py-3 border border-gray-200
-                                    rounded-xl text-sm bg-gray-50
-                                    text-ink-700" />
+                      @if (currentUser()?.phone) {
+                        <input type="tel"
+                               [value]="currentUser()!.phone"
+                               disabled
+                               class="w-full px-4 py-3 border border-gray-200
+                                      rounded-xl text-sm bg-gray-50
+                                      text-ink-700" />
+                      } @else {
+                        <input type="tel"
+                               [ngModel]="phoneInput()"
+                               (ngModelChange)="phoneInput.set($event)"
+                               placeholder="Ex: 0612345678"
+                               class="w-full px-4 py-3 border border-amber-300
+                                      rounded-xl text-sm
+                                      focus:outline-none focus:border-primary-500" />
+                        <p class="text-xs text-amber-600 mt-1">
+                          Votre numéro n'est pas enregistré — saisissez-le pour continuer.
+                        </p>
+                      }
                     </div>
                   </div>
                 </div>
@@ -583,6 +596,7 @@ export class ReservationWizardComponent implements OnInit {
   startDate = '';
   endDate = '';
   notes = '';
+  phoneInput = signal('');
 
   minDate = new Date(Date.now() + 24 * 60 * 60 * 1000)
     .toISOString().split('T')[0];
@@ -662,10 +676,16 @@ export class ReservationWizardComponent implements OnInit {
     if (this.step() === 1) {
       return !!this.startDate && !!this.endDate && this.durationDays() > 0;
     }
+    if (this.step() === 3) {
+      const phone = (this.currentUser()?.phone || this.phoneInput()).trim();
+      return phone.length >= 10;
+    }
     return true;
   });
 
   ngOnInit() {
+    this.phoneInput.set(this.currentUser()?.phone || '');
+
     this.route.queryParamMap.subscribe(params => {
       this.startDate = params.get('startDate') || '';
       this.endDate = params.get('endDate') || '';
@@ -708,12 +728,15 @@ export class ReservationWizardComponent implements OnInit {
     this.submitting.set(true);
     this.errorMessage.set(null);
 
+    const phone = (this.currentUser()?.phone || this.phoneInput()).trim();
+
     const request = {
       vehicleId: this.vehicle()!.id,
       pickupLocation: this.pickupLocation,
       startDate: this.startDate,
       endDate: this.endDate,
       internalNotes: this.notes || undefined,
+      clientPhone: phone || undefined,
       options: this.selectedOptions().map(o => ({
         optionType: o.type,
         quantity: 1,
@@ -727,11 +750,26 @@ export class ReservationWizardComponent implements OnInit {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       },
       error: (err) => {
-        this.errorMessage.set(
-          err.error?.message ||
-          'Une erreur est survenue. Veuillez réessayer.'
-        );
+        const body = err?.error ?? err;
+        let message = 'Une erreur est survenue. Veuillez réessayer.';
+
+        if (Array.isArray(body?.fieldErrors) && body.fieldErrors.length > 0) {
+          message = body.fieldErrors
+            .map((fe: { field: string; message: string }) => `${fe.message} (${fe.field})`)
+            .join(' · ');
+        } else if (body?.message && body.message !== 'Validation failed') {
+          message = body.message;
+        } else if (err?.status === 409) {
+          message = 'Ce véhicule n\'est pas disponible sur cette période.';
+        } else if (err?.status === 400) {
+          message = 'Données invalides. Vérifiez tous les champs.';
+        } else if (err?.status === 401) {
+          message = 'Session expirée. Reconnectez-vous.';
+        }
+
+        this.errorMessage.set(message);
         this.submitting.set(false);
+        console.error('Reservation creation failed:', err);
       },
     });
   }

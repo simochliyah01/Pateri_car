@@ -1,5 +1,6 @@
 package ma.patericar.vehicle;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Entity
@@ -104,6 +106,16 @@ public class Vehicle {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @JsonIgnore
+    @Column(name = "image_data", columnDefinition = "BYTEA")
+    private byte[] imageData;
+
+    @Column(name = "image_content_type", length = 100)
+    private String imageContentType;
+
+    @Column(name = "image_uploaded_at")
+    private LocalDateTime imageUploadedAt;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

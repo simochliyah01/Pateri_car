@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { Vehicle } from '../../../core/models/vehicle.model';
+import { VehicleService } from '../../../core/services/vehicle.service';
 
 @Component({
   selector: 'app-car-card',
@@ -16,7 +17,7 @@ import { Vehicle } from '../../../core/models/vehicle.model';
 
       <!-- Real photo -->
       <div class="aspect-[4/3] overflow-hidden bg-surface-50 relative">
-        <img [src]="getImageUrl(vehicle.brand, vehicle.model)"
+        <img [src]="imageUrl"
              [alt]="vehicle.brand + ' ' + vehicle.model"
              class="w-full h-full object-cover group-hover:scale-105
                     transition-transform duration-500"
@@ -82,6 +83,15 @@ import { Vehicle } from '../../../core/models/vehicle.model';
 })
 export class CarCardComponent {
   @Input({ required: true }) vehicle!: Vehicle;
+  private vehicleService = inject(VehicleService);
+
+  private readonly PLACEHOLDER = 'assets/cars/dacia.png';
+
+  get imageUrl(): string {
+    return this.vehicle.hasImage
+      ? this.vehicleService.getVehicleImageUrl(this.vehicle.id)
+      : this.PLACEHOLDER;
+  }
 
   fuelLabel(fuel: string): string {
     const labels: Record<string, string> = {
@@ -91,20 +101,5 @@ export class CarCardComponent {
       ELECTRIQUE: 'Électrique',
     };
     return labels[fuel] ?? fuel;
-  }
-
-  getImageUrl(brand: string, model: string): string {
-    const carImages: Record<string, string> = {
-      'Dacia Logan':    'https://images.unsplash.com/photo-1502877338535-766e1452684a?w=600&q=80',
-      'Dacia Sandero':  'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600&q=80',
-      'Dacia Duster':   'https://images.unsplash.com/photo-1567343483496-bb5c12bd1d96?w=600&q=80',
-      'Renault Clio':   'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&q=80',
-      'Renault Captur': 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=600&q=80',
-      'Peugeot 208':    'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&q=80',
-      'Hyundai i20':    'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&q=80',
-      'Toyota Yaris':   'https://images.unsplash.com/photo-1542362567-b07e54358753?w=600&q=80',
-    };
-    return carImages[`${brand} ${model}`]
-      ?? 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&q=80';
   }
 }

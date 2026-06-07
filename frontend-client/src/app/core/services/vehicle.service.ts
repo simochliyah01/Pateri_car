@@ -80,4 +80,22 @@ export class VehicleService {
   deleteVehicle(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  updateVehicleStatus(id: number, status: VehicleStatus): Observable<Vehicle> {
+    return this.http.put<Vehicle>(`${this.apiUrl}/${id}`, { status });
+  }
+
+  uploadVehicleImage(id: number, file: File): Observable<Vehicle> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<Vehicle>(`${this.apiUrl}/${id}/image`, formData);
+  }
+
+  deleteVehicleImage(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}/image`);
+  }
+
+  getVehicleImageUrl(id: number): string {
+    return `${this.apiUrl}/${id}/image`;
+  }
 }

@@ -9,6 +9,7 @@ import ma.patericar.auth.dto.AuthResponse;
 import ma.patericar.auth.dto.LoginRequest;
 import ma.patericar.auth.dto.RefreshTokenRequest;
 import ma.patericar.auth.dto.RegisterRequest;
+import ma.patericar.auth.dto.UpdateProfileRequest;
 import ma.patericar.user.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -58,6 +59,19 @@ public class AuthController {
             body.get("newPassword")
         );
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/profile")
+    @Operation(summary = "Update the authenticated user's profile",
+               security = @SecurityRequirement(name = "bearerAuth"))
+    public ResponseEntity<AuthResponse.UserInfo> updateProfile(
+            Authentication authentication,
+            @Valid @RequestBody UpdateProfileRequest req) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(401).build();
+        }
+        AuthResponse.UserInfo updated = authService.updateProfile(authentication.getName(), req);
+        return ResponseEntity.ok(updated);
     }
 
     @GetMapping("/me")

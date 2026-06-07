@@ -99,7 +99,7 @@ import { AuthService } from '../../../core/services/auth.service';
 
                     <!-- Menu items -->
                     <div class="py-1.5">
-                      <a class="dropdown-item">
+                      <a routerLink="/profile" class="dropdown-item">
                         <lucide-icon name="user" [size]="16"></lucide-icon>
                         Mon profil
                       </a>
@@ -118,7 +118,7 @@ import { AuthService } from '../../../core/services/auth.service';
 
                       @if (authService.isAdmin()) {
                         <div class="my-1.5 border-t border-gray-100"></div>
-                        <a class="dropdown-item text-primary-600">
+                        <a routerLink="/admin" class="dropdown-item text-primary-600">
                           <lucide-icon name="layout-dashboard" [size]="16"></lucide-icon>
                           Tableau de bord
                         </a>
@@ -189,11 +189,11 @@ import { AuthService } from '../../../core/services/auth.service';
 
             <div class="pt-3 mt-3 border-t border-gray-200/50 space-y-2">
               @if (authService.isAuthenticated()) {
-                <a class="mobile-link cursor-pointer">Mon profil</a>
+                <a routerLink="/profile" (click)="closeMobile()" class="mobile-link">Mon profil</a>
                 <a routerLink="/mes-reservations" (click)="closeMobile()"
                    class="mobile-link">Mes réservations</a>
                 @if (authService.isAdmin()) {
-                  <a class="mobile-link cursor-pointer text-primary-600">
+                  <a routerLink="/admin" (click)="closeMobile()" class="mobile-link text-primary-600">
                     Tableau de bord
                   </a>
                 }

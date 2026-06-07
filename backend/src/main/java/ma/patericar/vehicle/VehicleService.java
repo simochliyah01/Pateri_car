@@ -6,9 +6,14 @@ import ma.patericar.common.exceptions.ResourceNotFoundException;
 import ma.patericar.vehicle.dto.CreateVehicleRequest;
 import ma.patericar.vehicle.dto.UpdateVehicleRequest;
 import ma.patericar.vehicle.dto.VehicleDto;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -77,5 +82,49 @@ public class VehicleService {
                 .stream()
                 .map(VehicleMapper::toDto)
                 .toList();
+    }
+
+    @Transactional
+    public VehicleDto uploadImage(Long id, MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("Le fichier est vide");
+        }
+        String contentType = file.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            throw new IllegalArgumentException("Le fichier doit être une image");
+        }
+        if (file.getSize() > 2L * 1024 * 1024) {
+            throw new IllegalArgumentException("L'image ne doit pas dépasser 2 MB");
+        }
+        Vehicle vehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> ResourceNotFoundException.of("Vehicle", id));
+        vehicle.setImageData(file.getBytes());
+        vehicle.setImageContentType(contentType);
+        vehicle.setImageUploadedAt(LocalDateTime.now());
+        return VehicleMapper.toDto(vehicleRepository.save(vehicle));
+    }
+
+    public ResponseEntity<byte[]> getImage(Long id) {
+        Vehicle vehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> ResourceNotFoundException.of("Vehicle", id));
+        if (vehicle.getImageData() == null) {
+            return ResponseEntity.notFound().build();
+        }
+        String ct = vehicle.getImageContentType() != null
+                ? vehicle.getImageContentType() : "image/jpeg";
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(ct))
+                .header("Cache-Control", "public, max-age=3600")
+                .body(vehicle.getImageData());
+    }
+
+    @Transactional
+    public void deleteImage(Long id) {
+        Vehicle vehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> ResourceNotFoundException.of("Vehicle", id));
+        vehicle.setImageData(null);
+        vehicle.setImageContentType(null);
+        vehicle.setImageUploadedAt(null);
+        vehicleRepository.save(vehicle);
     }
 }
