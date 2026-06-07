@@ -81,6 +81,7 @@ temp/
 # ─── Environment & Secrets ───────────────────────────────────────────────────
 .env
 .env.*
+!.env.example
 *.env
 *.env.local
 application-local.yml
