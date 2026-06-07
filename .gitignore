@@ -1,14 +1,21 @@
-# ─── Java / Maven ───────────────────────────────────────────────────────────
+# ─── Java / Maven ────────────────────────────────────────────────────────────
 target/
 *.class
 *.jar
 *.war
 *.ear
 *.nar
-hs_err_pid*
 .mvn/wrapper/maven-wrapper.jar
+hs_err_pid*
+replay_pid*
 
-# ─── Node / Angular ─────────────────────────────────────────────────────────
+# ─── Spring Boot ─────────────────────────────────────────────────────────────
+spring.log
+backend-restart.log
+application-secrets.yml
+application-secrets.yaml
+
+# ─── Node.js / Angular ───────────────────────────────────────────────────────
 node_modules/
 dist/
 .angular/
@@ -16,36 +23,78 @@ dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+coverage/
+.nyc_output/
+.cache/
 
-# ─── IDE ────────────────────────────────────────────────────────────────────
+# ─── IDE — IntelliJ IDEA ─────────────────────────────────────────────────────
 .idea/
 *.iml
 *.ipr
 *.iws
+.classpath
+.project
+.settings/
+*.factorypath
+
+# ─── IDE — Eclipse ───────────────────────────────────────────────────────────
+.classpath
+.project
+.settings/
+bin/
+
+# ─── IDE — VS Code ───────────────────────────────────────────────────────────
 .vscode/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+*.code-workspace
 
-# ─── Environment / Secrets ──────────────────────────────────────────────────
-.env
-.env.*
-application-local.yml
-application-local.yaml
-application-secret.yml
+# ─── IDE — Vim / Emacs ───────────────────────────────────────────────────────
+*.swp
+*.swo
+*~
+\#*\#
 
-# ─── OS ─────────────────────────────────────────────────────────────────────
+# ─── OS — macOS ──────────────────────────────────────────────────────────────
 .DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
+
+# ─── OS — Windows ────────────────────────────────────────────────────────────
 ehthumbs.db
 Thumbs.db
 desktop.ini
 
-# ─── Logs ───────────────────────────────────────────────────────────────────
+# ─── Docker ──────────────────────────────────────────────────────────────────
+# NOTE: Dockerfile and docker-compose.yml are tracked intentionally
+.docker/
+docker-volumes/
+
+# ─── Logs & Temp ─────────────────────────────────────────────────────────────
 logs/
 *.log
+tmp/
+temp/
+*.tmp
+*.temp
+
+# ─── Environment & Secrets ───────────────────────────────────────────────────
+.env
+.env.*
+*.env
+*.env.local
+application-local.yml
+application-local.yaml
+application-secret.yml
+application-secrets.yml
+*.pem
+*.key
+*.p12
+*.jks
+secrets/
+
+# ─── Build artifacts ─────────────────────────────────────────────────────────
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
