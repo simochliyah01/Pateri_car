@@ -1,5 +1,7 @@
 # PATERI CAR
 
+[![CI](https://github.com/simochliyah01/Pateri_car/actions/workflows/ci.yml/badge.svg)](https://github.com/simochliyah01/Pateri_car/actions/workflows/ci.yml)
+
 Car rental management system for a single agency in Taza, Morocco.
 
 ## Description
