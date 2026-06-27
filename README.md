@@ -1,5 +1,8 @@
 # PATERI CAR
 
+[![CI](https://github.com/simochliyah01/Pateri_car/actions/workflows/ci.yml/badge.svg)](https://github.com/simochliyah01/Pateri_car/actions/workflows/ci.yml)
+[![CD](https://github.com/simochliyah01/Pateri_car/actions/workflows/cd.yml/badge.svg)](https://github.com/simochliyah01/Pateri_car/actions/workflows/cd.yml)
+
 Car rental management system for a single agency in Taza, Morocco.
 
 ## Description
@@ -24,12 +27,66 @@ PATERI CAR is a full-stack SaaS application that lets a car rental agency manage
 - **Angular CLI 17** — `npm install -g @angular/cli@17`
 - **Docker Desktop** — [docker.com](https://www.docker.com/products/docker-desktop)
 
-## Quick Start
+## Quick Start with Docker (recommended)
+
+The entire stack (PostgreSQL + Spring Boot backend + Angular frontend) runs with a single command.
+
+### 1. Copy the environment template
+```bash
+cp .env.example .env
+# Edit .env and set real values, especially JWT_SECRET
+```
+
+### 2. Start everything
+```bash
+docker compose up -d
+```
+
+### 3. Access the application
+- Frontend (client): http://localhost
+- Backend API: http://localhost:8080/api
+- Swagger UI: http://localhost:8080/api/docs
+- PostgreSQL: localhost:5432
+
+### 4. View logs
+```bash
+docker compose logs -f
+```
+
+### 5. Stop and clean up
+```bash
+docker compose down              # stop containers, keep data
+docker compose down -v           # stop containers AND delete volumes (full reset)
+```
+
+---
+
+## Docker images (published on GHCR)
+
+Production-ready images are automatically built and published to GitHub Container Registry whenever code is merged to `main`.
+
+| Image | Pull command |
+|---|---|
+| Backend (Spring Boot) | `docker pull ghcr.io/simochliyah01/pateri-car-backend:latest` |
+| Frontend (Angular + Nginx) | `docker pull ghcr.io/simochliyah01/pateri-car-frontend:latest` |
+
+### Available tags
+- `latest` — most recent build from `main`
+- `sha-<short-sha>` — pinned to a specific commit (recommended for production)
+- `main` — same as `latest` (built from the `main` branch)
+
+### Pipeline triggers
+- **Push to `main`** — tests + build + push to GHCR (full CD)
+- **Manual dispatch** — available in the GitHub Actions UI for emergency rebuilds
+
+---
+
+## Manual Setup (without Docker)
 
 ### 1. Start the database
 
 ```bash
-docker compose up -d
+docker compose up postgres -d
 ```
 
 PostgreSQL will be available on `localhost:5432`.  
