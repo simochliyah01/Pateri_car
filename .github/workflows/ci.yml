@@ -1,0 +1,145 @@
+name: CI
+
+# Run on PRs to develop/main and on direct pushes to develop
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop, main ]
+
+# Cancel older runs when a new commit is pushed to the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ============================================================
+  # BACKEND — Spring Boot (Maven + JUnit + JaCoCo)
+  # ============================================================
+  backend:
+    name: Backend (Maven + JUnit + JaCoCo)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17 (Temurin) with Maven cache
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Show Maven version
+        working-directory: backend
+        run: mvn -v
+
+      - name: Compile (no tests yet)
+        working-directory: backend
+        run: mvn -B compile
+
+      - name: Run unit tests (Surefire)
+        working-directory: backend
+        run: mvn -B test
+
+      - name: Run integration tests (Failsafe) and generate JaCoCo report
+        working-directory: backend
+        run: mvn -B verify
+
+      - name: Upload Surefire test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-surefire-reports
+          path: backend/target/surefire-reports/
+          retention-days: 7
+
+      - name: Upload Failsafe test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-failsafe-reports
+          path: backend/target/failsafe-reports/
+          retention-days: 7
+
+      - name: Upload JaCoCo coverage HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-jacoco-coverage
+          path: backend/target/site/jacoco/
+          retention-days: 14
+
+  # ============================================================
+  # FRONTEND — Angular (npm + Karma headless Chrome)
+  # ============================================================
+  frontend:
+    name: Frontend (npm + Karma headless)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20 with npm cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend-client/package-lock.json
+
+      - name: Install dependencies (legacy-peer-deps for ng2-charts compatibility)
+        working-directory: frontend-client
+        run: npm ci --legacy-peer-deps
+
+      - name: Run tests headlessly with coverage
+        working-directory: frontend-client
+        run: npm run test:ci
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage
+          path: frontend-client/coverage/
+          retention-days: 14
+
+  # ============================================================
+  # DOCKER BUILD — validate Dockerfiles still compile
+  # (no push — that comes in the CD workflow)
+  # ============================================================
+  docker-build:
+    name: Docker build (validation only)
+    runs-on: ubuntu-latest
+    needs: [ backend, frontend ]
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build backend image (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: false
+          tags: patericar-backend:ci
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,scope=backend,mode=max
+
+      - name: Build frontend image (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend-client
+          file: ./frontend-client/Dockerfile
+          push: false
+          tags: patericar-frontend-client:ci
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,scope=frontend,mode=max
