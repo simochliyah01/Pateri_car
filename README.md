@@ -1,6 +1,7 @@
 # PATERI CAR
 
 [![CI](https://github.com/simochliyah01/Pateri_car/actions/workflows/ci.yml/badge.svg)](https://github.com/simochliyah01/Pateri_car/actions/workflows/ci.yml)
+[![CD](https://github.com/simochliyah01/Pateri_car/actions/workflows/cd.yml/badge.svg)](https://github.com/simochliyah01/Pateri_car/actions/workflows/cd.yml)
 
 Car rental management system for a single agency in Taza, Morocco.
 
@@ -57,6 +58,26 @@ docker compose logs -f
 docker compose down              # stop containers, keep data
 docker compose down -v           # stop containers AND delete volumes (full reset)
 ```
+
+---
+
+## Docker images (published on GHCR)
+
+Production-ready images are automatically built and published to GitHub Container Registry whenever code is merged to `main`.
+
+| Image | Pull command |
+|---|---|
+| Backend (Spring Boot) | `docker pull ghcr.io/simochliyah01/pateri-car-backend:latest` |
+| Frontend (Angular + Nginx) | `docker pull ghcr.io/simochliyah01/pateri-car-frontend:latest` |
+
+### Available tags
+- `latest` — most recent build from `main`
+- `sha-<short-sha>` — pinned to a specific commit (recommended for production)
+- `main` — same as `latest` (built from the `main` branch)
+
+### Pipeline triggers
+- **Push to `main`** — tests + build + push to GHCR (full CD)
+- **Manual dispatch** — available in the GitHub Actions UI for emergency rebuilds
 
 ---
 
